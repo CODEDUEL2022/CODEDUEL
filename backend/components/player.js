@@ -54,14 +54,14 @@ export const postPlayerData = function (req, res) {
       trunFlag: 0,
     });
   }
-  return json(numClients[req.body.RoomId]);
+  return numClients[req.body.RoomId];
 };
 
 export const getTurn = function (req, res) {
   const selectTrunId = playerDB.findIndex(
     (e) => e.playerId === req.body.playerId
   );
-  return json(playerDB[selectTrunId].trunFlag);
+  return playerDB[selectTrunId].trunFlag;
 };
 export const controlTrun = function (req, res) {
   const selectTrunId = playerDB.findIndex(
