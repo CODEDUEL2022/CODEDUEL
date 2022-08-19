@@ -3,7 +3,7 @@
  * postCardDraw -> フロントにドローしたカードリストを送る関数　帰り値はプレイヤーのカードリスト
  */
 
-import playerDB from "../server.js";
+import playerDB from "../DB.js";
 import comboDB from "../DB.js";
 import cardDB from "../DB.js";
 
