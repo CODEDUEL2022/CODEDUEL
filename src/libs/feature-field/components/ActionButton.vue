@@ -1,15 +1,20 @@
 <template>
-    <v-btn @click="useCards" class="btn action" v-if="attack_decision">発動</v-btn>
-    <p v-else>発動可能なカードを選択してください</p>
+  <v-btn @click="$emit('handleAction')" class="btn action" v-if="isEnableAction"
+    >発動</v-btn
+  >
+  <p v-else>発動可能なカードを選択してください</p>
 </template>
 
 <script>
-
+export default {
+  name: "ActionButton",
+  props: ["isEnableAction"],
+};
 </script>
 
 <style scoped>
 .btn {
-  margin-right: 1rem;
+  margin: 2rem;
   width: 100px;
 }
 

@@ -1,8 +1,9 @@
 <template>
   <HomeTemplate
-    @handleSendId="onSendRoomId(id)"
+    :roomId="roomId"
+    @handleSendId="onSendRoomId(roomId)"
     @handleStart="onPush()"
-    @handleSetIssue="onSetIssue()"
+    @handleSetIssue="onSetId()"
   />
 </template>
 <script>
@@ -17,47 +18,41 @@ export default {
   data() {
     return {
       number: "",
-      id: "",
+      roomId: "",
       socket: io("localhost:3000"),
-      turnFlag: 0,
-      RoomId: "",
+      turn_flag: 0,
       playerId: "",
     };
   },
   mounted() {
-    this.socket.on("logined", function (userId) {
-      console.log(userId);
-    });
+    this.socket.on("logined");
   },
   methods: {
-    onSetIssue: function () {
+    onSetId: function () {
       // HACK: ID作る関数入れておく
-      this.id = Math.random().toString(32).substring(2);
+      this.roomId = Math.random().toString(32).substring(2);
     },
-    //追加機能：クエリにplayerIdを追加。同じルーム内でのプレイヤーを識別するのに利用。
-    onSendRoomId: function (id) {
-      console.log(id)
+    //追加機能：クエリにplayer_Idを追加。同じルーム内でのプレイヤーを識別するのに利用。
+    onSendRoomId: function (roomId) {
       this.playerId = Math.random().toString(32).substring(2);
-      this.RoomId = id;
-      this.socket.emit("login", this.RoomId);
+      this.roomId = roomId;
+      this.socket.emit("login", roomId);
       this.$axios
         .post("/playerData", {
-          RoomId: this.RoomId,
+          RoomId: roomId,
           playerId: this.playerId,
           decId: 0 //仮においている。本来はデッキ選択用
         })
         .then((res) => {
-          //res.dataがRoomにいる人数 ここで場合分けすればOK
-          console.log(res.data);
+          //res.dataがRoomにいる人数ここで場合分けすればOK
         });
     },
     //ページ遷移機能
     onPush: function () {
-      console.log(this.RoomId);
       alert("start!");
       this.$router.push({
         name: "field",
-        query: { room: this.RoomId, id: this.playerId },
+        query: { room: this.roomId, id: this.playerId },
       });
     },
   },
