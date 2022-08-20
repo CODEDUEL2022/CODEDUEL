@@ -18,7 +18,7 @@
     <div class="field">
       <VueDrag
         v-model="selectedData"
-        group="myGroup"
+        group="yourGroup"
         @start="drag = true"
         @end="drag = false"
         :options="options"
@@ -42,7 +42,7 @@
     </div>
     <VueDrag
       v-model="yourData"
-      group="myGroup"
+      group="yourGroup"
       @start="drag = true"
       @end="drag = false"
       :options="options"
@@ -94,7 +94,7 @@ export default {
     return {
       // draganddrop用のデータ
       options: {
-        group: "myGroup",
+        group: "yourGroup",
         animation: 200,
       },
       yourData: [],
@@ -115,7 +115,7 @@ export default {
       .then((res) => {
         console.log(res.data);
         for (let i = 0; i < res.data.length; i++) {
-          this.myData.push(res.data[i]);
+          this.yourData.push(res.data[i]);
         }
         console.log(this.yourData);
         console.log("hogehoge");
