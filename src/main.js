@@ -1,5 +1,5 @@
 import Vue from "vue";
-import App from "../src/apps/pages/App.vue";
+import App from "../src/apps/App.vue";
 import router from "./router";
 import vuetify from "./plugins/vuetify";
 import http from "./axios"; // 追加
