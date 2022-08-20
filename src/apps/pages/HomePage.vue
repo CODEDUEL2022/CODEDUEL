@@ -41,6 +41,7 @@ export default {
         .post("/playerData", {
           RoomId: roomId,
           playerId: this.playerId,
+          decId: 0 //仮においている。本来はデッキ選択用
         })
         .then((res) => {
           //res.dataがRoomにいる人数ここで場合分けすればOK

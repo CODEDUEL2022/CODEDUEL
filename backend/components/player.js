@@ -8,8 +8,45 @@
 
 import { comboDB } from "../DB.js";
 import { cardDB } from "../DB.js";
-import { playerDB } from "../DB.js";
 
+let playerDB = [
+  //初期化
+  {
+    RoomId: "",
+    playerId: "",
+    cardList: [],
+    myHP: 200,
+    enemyHP: 200,
+    cardListNumber: [],
+    turnFlag: 0,
+    decId: 0 //デッキの種類を選ぶ　初期は0で、ルームに入る際に選択&フロントエンドから送信してもらいたい
+  },
+];
+
+
+export const cardDraw = function (selectId) {
+  console.log("ドロー関数が発火されました");
+  console.log(playerDB[selectId])
+  for (let j = playerDB[selectId].cardList.length; j < 6; ) {
+    //tmpには、デッキの中からランダムに1つ数字を選ぶようにしている
+    //const tmp = Number(Math.floor(Math.random() * selectDec(playerDB[selectId].decId).length));
+    const tmp = Number(Math.floor(Math.random() * 56));
+    //選んだIDのものをpushする
+    //playerDB[selectId].cardList.push(selectDec(playerDB[selectId].decId)[tmp]);
+    playerDB[selectId].cardList.push(cardDB[tmp]);
+    
+    j++;
+  }
+};
+
+export const postCardDraw = function (req, res) {
+  const selectId = playerDB.findIndex((e) => e.playerId === req.body.playerId);
+  if (req.body.cardData.length != 0) {
+    playerDB[selectId].cardList = req.body.cardData;
+  }
+  cardDraw(selectId);
+  return playerDB[selectId].cardList;
+};
 
 
 
@@ -39,7 +76,7 @@ export const postPlayerData = function (req, res, numClients) {
   if (numClients[req.body.RoomId] == 1) {
     playerDB.push({
       RoomId: req.body.RoomId,
-      playerId: req.body.PlayerId,
+      playerId: req.body.playerId,
       cardList: [],
       myHP: 200,
       enemyHP: 200,
@@ -50,7 +87,7 @@ export const postPlayerData = function (req, res, numClients) {
   } else {
     playerDB.push({
       RoomId: req.body.RoomId,
-      playerId: req.body.PlayerId,
+      playerId: req.body.playerId,
       cardList: [],
       myHP: 200,
       enemyHP: 200,

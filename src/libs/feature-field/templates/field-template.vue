@@ -22,12 +22,12 @@
           class="item"
         >
           <v-card height="242px" max-width="200px" hover class="black">
-            <!-- <v-img
-                aspect-ratio="475/400"
-                height="242px"
-                :src="require(`../assets/cards/${select.img}`)"
-              > -->
-            <!-- </v-img> -->
+            <v-img
+              aspect-ratio="475/400"
+              height="242px"
+              :src="require(`../../ui/assets/cards/${select.img}`)"
+            >
+            </v-img>
           </v-card>
         </div>
       </VueDrag>
@@ -42,7 +42,7 @@
     >
       <div v-for="mine in myData" :key="`second-${mine.id}`" class="item">
         <v-card hover class="black" height="222px">
-          <!-- <v-img :src="require(`../assets/cards/${mine.img}`)"> </v-img> -->
+          <v-img :src="require(`../../ui/assets/cards/${mine.img}`)"> </v-img>
         </v-card>
       </div>
     </VueDrag>
