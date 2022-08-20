@@ -41,16 +41,16 @@
       </VueDrag>
     </div>
     <VueDrag
-      v-model="myData"
+      v-model="yourData"
       group="myGroup"
       @start="drag = true"
       @end="drag = false"
       :options="options"
       class="area"
     >
-      <div v-for="mine in myData" :key="`second-${mine.id}`" class="item">
+      <div v-for="yours in yourData" :key="`second-${yours.id}`" class="item">
         <v-card hover class="black" height="222px">
-          <v-img :src="require(`../../ui/assets/cards/${mine.img}`)"> </v-img>
+          <v-img :src="require(`../../ui/assets/cards/${yours.img}`)"> </v-img>
         </v-card>
       </div>
     </VueDrag>
@@ -97,19 +97,19 @@ export default {
         group: "myGroup",
         animation: 200,
       },
-      myData: [],
+      yourData: [],
       selectedData: [],
       message: message,
     };
   },
   created() {
-    this.myData = [];
+    this.yourData = [];
     const searchParams = new URLSearchParams(window.location.search);
-    console.log(this.myData);
+    console.log(this.yourData);
     // カードをドローする処理
     this.$axios
       .post("/cardDraw", {
-        cardData: this.myData,
+        cardData: this.yourData,
         playerId: searchParams.get("id"),
       })
       .then((res) => {
@@ -117,7 +117,7 @@ export default {
         for (let i = 0; i < res.data.length; i++) {
           this.myData.push(res.data[i]);
         }
-        console.log(this.myData);
+        console.log(this.yourData);
         console.log("hogehoge");
       });
   },
