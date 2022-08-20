@@ -80,3 +80,16 @@ export const controlTrun = function (req, res) {
   playerDB[selectId].trunFlag += 1;
   playerDB[selectTrunId].trunFlag += 1;
 };
+
+export const reload = function (req, res) {
+  let playerDBFromLocalStorage = {
+    RoomId: localStorage.getItem("RoomId"),
+    playerId: localStorage.getItem("playerId"),
+    cardList: localStorage.getItem("cardList"),
+    myHP: localStorage.getItem("myHP"),
+    enemyHP: localStorage.getItem("enemyHP"),
+    cardListNumber: localStorage.getItem("cardListNumber"),
+    trunFlag: localStorage.getItem("trunFlag"),
+  };
+  return playerDBFromLocalStorage;
+};
