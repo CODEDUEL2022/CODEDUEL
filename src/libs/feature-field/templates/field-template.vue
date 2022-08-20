@@ -63,7 +63,7 @@ export default {
     VueDrag,
     GeneralCutIn,
     },
-    data () {
+    data() {
         return {
             // draganddrop用のデータ
             options: {
@@ -73,10 +73,12 @@ export default {
             myData: [],
             selectedData: [],
             message: message,
-        }
+        };
     },
     created() {
+    this.myData = []
     const searchParams = new URLSearchParams(window.location.search);
+    console.log(this.myData)
     // カードをドローする処理
     this.$axios
       .post("/cardDraw", {
