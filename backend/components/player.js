@@ -6,9 +6,9 @@
  * controlTrun -> turnFlagを1進める
  */
 
-import {playerDB} from "../DB.js";
-import {comboDB} from "../DB.js";
-import {cardDB} from "../DB.js";
+import { playerDB } from "../DB.js";
+import { comboDB } from "../DB.js";
+import { cardDB } from "../DB.js";
 
 export const postHP = function (req, res) {
   let selectId = playerDB.findIndex((e) => e.playerId === req.body.playerId);
