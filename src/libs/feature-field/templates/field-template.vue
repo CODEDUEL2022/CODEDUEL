@@ -1,5 +1,6 @@
 <template>
-<v-app>
+  <v-app>
+    <GeneralCutIn :message="message" />
     <ActionButton></ActionButton>
     <HpDisplay></HpDisplay>
     <RoundDisplay></RoundDisplay>
@@ -42,96 +43,95 @@
         </v-card>
       </div>
     </VueDrag>
-</v-app>
+  </v-app>
 </template>
 
 <script>
-import ActionButton from "../components/ActionButton.vue"
-import HpDisplay from "../components/HpDisplay.vue"
-import RoundDisplay from "../components/RoundDisplay.vue"
+import ActionButton from "../components/ActionButton.vue";
+import HpDisplay from "../components/HpDisplay.vue";
+import RoundDisplay from "../components/RoundDisplay.vue";
 import VueDrag from "vuedraggable";
+import GeneralCutIn from "../components/GeneralCutIn.vue";
 
 export default {
-    name: "FieldTemplate",
-    components: {
+  name: "FieldTemplate",
+  components: {
     ActionButton,
     HpDisplay,
     RoundDisplay,
-    VueDrag
-    },
-    data () {
-        return {
-            // draganddrop用のデータ
-            options: {
-                group: "myGroup",
-                animation: 200,
-            },
-            myData: [
-                {
-                    id: 1,
-                    name: "Javascript",
-                    type: "language",
-                    img: "JavaScript.png",
-                    action: "attack",
-                    value: 10,
-                    field: "",
-                    set_id: 0,
-                },
-                {
-                    id: 2,
-                    name: "HTML",
-                    type: "language",
-                    img: "HTML.png",
-                    action: "attack",
-                    value: 10,
-                    field: "",
-                    set_id: 0,
-                },
-                {
-                    id: 3,
-                    name: "CSS",
-                    type: "language",
-                    img: "CSS.png",
-                    action: "attack",
-                    value: 10,
-                    field: "",
-                    set_id: 0,
-                },
-                {
-                    id: 4,
-                    name: "Django",
-                    type: "framework",
-                    img: "Django.png",
-                    action: "attack",
-                    value: 20,
-                    field: "LinuxOS",
-                    set_id: 10,
-                },
-                {
-                    id: 5,
-                    name: "FastAPI",
-                    type: "framework",
-                    img: "FastAPI.png",
-                    action: "attack",
-                    value: 10,
-                    field: "LinuxOS",
-                    set_id: 10,
-                },
-                {
-                    id: 6,
-                    name: "jQuery",
-                    type: "framework",
-                    img: "jQuery.png",
-                    action: "attack",
-                    value: 10,
-                    field: "",
-                    set_id: 10,
-                },
-            ],
-            selectedData: []
-        }
-    }
-}
+    VueDrag,
+    GeneralCutIn,
+  },
+  props: ["message"],
+  data() {
+    return {
+      myData: [
+        {
+          id: 1,
+          name: "Javascript",
+          type: "language",
+          img: "JavaScript.png",
+          action: "attack",
+          value: 10,
+          field: "",
+          set_id: 0,
+        },
+        {
+          id: 2,
+          name: "HTML",
+          type: "language",
+          img: "HTML.png",
+          action: "attack",
+          value: 10,
+          field: "",
+          set_id: 0,
+        },
+        {
+          id: 3,
+          name: "CSS",
+          type: "language",
+          img: "CSS.png",
+          action: "attack",
+          value: 10,
+          field: "",
+          set_id: 0,
+        },
+        {
+          id: 4,
+          name: "Django",
+          type: "framework",
+          img: "Django.png",
+          action: "attack",
+          value: 20,
+          field: "LinuxOS",
+          set_id: 10,
+        },
+        {
+          id: 5,
+          name: "FastAPI",
+          type: "framework",
+          img: "FastAPI.png",
+          action: "attack",
+          value: 10,
+          field: "LinuxOS",
+          set_id: 10,
+        },
+        {
+          id: 6,
+          name: "jQuery",
+          type: "framework",
+          img: "jQuery.png",
+          action: "attack",
+          value: 10,
+          field: "",
+          set_id: 10,
+        },
+      ],
+      selectedData: [],
+      message: message,
+    };
+  },
+};
 </script>
 
 <style scoped>
