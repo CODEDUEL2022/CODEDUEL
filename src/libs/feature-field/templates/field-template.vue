@@ -1,10 +1,18 @@
 <template>
   <v-app>
-    <GeneralCutIn :message="message" />
-    <div v-show="showCutIn">
-      <ActionCutIn @closeActionCutIn="$emit('closeActionCutIn')" />
+    <div v-show="showGeneralCutIn">
+      <GeneralCutIn
+        :message="message"
+        @closeGeneralCutIn="$emit('closeGeneralCutIn')"
+      />
     </div>
-    <ActionButton></ActionButton>
+    <div v-show="showActionCutIn">
+      <ActionCutIn
+        :action="action"
+        :value="value"
+        @closeActionCutIn="$emit('closeActionCutIn')"
+      />
+    </div>
     <HpDisplay></HpDisplay>
     <RoundDisplay></RoundDisplay>
     <div class="field">
@@ -46,6 +54,10 @@
         </v-card>
       </div>
     </VueDrag>
+    <ActionButton
+      :isEnableAction="isEnableAction"
+      @handleAction="$emit('handleAction')"
+    ></ActionButton>
   </v-app>
 </template>
 
@@ -67,7 +79,14 @@ export default {
     GeneralCutIn,
     ActionCutIn,
   },
-  props: ["message", "showCutIn"],
+  props: [
+    "message",
+    "showGeneralCutIn",
+    "showActionCutIn",
+    "isEnableAction",
+    "action",
+    "value",
+  ],
   data() {
     return {
       // draganddrop用のデータ
