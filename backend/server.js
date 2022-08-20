@@ -6,6 +6,7 @@ import {
   getTurn,
   HPreload,
   postPlayerData,
+  reload,
 } from "./components/player.js";
 
 import { cardDraw, postCardDraw } from "./components/card.js";
@@ -124,6 +125,13 @@ app.post("/api/controlTurn", (req, res) => {
   controlTrun(req, res);
   res.send();
 });
+
+
+//リロード時の処理
+app.get("api/reload", (req, res) => {
+  res.send(reload(req, res));
+});
+
 
 http.listen(PORT, function () {
   console.log("server listening. Port:" + PORT);

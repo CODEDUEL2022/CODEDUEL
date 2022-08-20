@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "serve:frontend": "vue-cli-service serve",
-    "serve:backend": "nodemon ./server.js",
+    "serve:backend": "nodemon .backend/server.js",
     "build": "vue-cli-service build"
   },
   "repository": {
