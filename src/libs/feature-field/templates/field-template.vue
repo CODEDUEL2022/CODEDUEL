@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <GeneralCutIn :message="message" />
-    <ActionButton></ActionButton>
+    <ActionButton :selectedData="selectedData" :comboData="comboData"></ActionButton>
     <HpDisplay></HpDisplay>
     <RoundDisplay></RoundDisplay>
     <div class="field">
@@ -70,6 +70,7 @@ export default {
                 group: "myGroup",
                 animation: 200,
             },
+            comboData: [],
             myData: [],
             selectedData: [],
             message: message,
@@ -77,6 +78,13 @@ export default {
     },
     created() {
     const searchParams = new URLSearchParams(window.location.search);
+    this.attacksignal = 0;
+    //バックエンドからコンボdbを受け取る処理
+    this.$axios.get("/getComboDb").then((res) => {
+      for (let i = 0; i < res.data.length; i++) {
+        this.comboData.push(res.data[i]);
+      }
+    });
     // カードをドローする処理
     this.$axios
       .post("/cardDraw", {

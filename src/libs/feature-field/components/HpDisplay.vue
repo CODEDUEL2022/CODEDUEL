@@ -7,7 +7,7 @@
 </template>
 
 <script>
-
+// HPの処理はバックエンドに移行するのでまだ書かない
 </script>
 
 <style scoped>
