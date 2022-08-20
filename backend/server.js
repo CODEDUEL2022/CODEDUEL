@@ -1,6 +1,6 @@
-import {playerDB} from "./DB.js";
-import {cardDB} from "./DB.js";
-import {comboDB} from "./DB.js";
+import { playerDB } from "./DB.js";
+import { cardDB } from "./DB.js";
+import { comboDB } from "./DB.js";
 import {
   controlTrun,
   getTurn,
@@ -8,16 +8,19 @@ import {
   postPlayerData,
   reload,
 } from "./components/player.js";
-
 import { cardDraw, postCardDraw } from "./components/card.js";
-
-//const express = require("express");
+import path from 'path';
+import { fileURLToPath } from 'url';
 import express from "express";
-const app = express();
-//const http = require("http").Server(app);
 import importHttp from "http"
+import { Server } from "socket.io";
+import serverStatic from "serve-static";
+import cors from "cors";
+import bodyParser from "body-parser";
+
+const app = express();
 const http = importHttp.Server(app);
-import {Server,Socket} from "socket.io";
+
 const io = new Server(http, {
   cors: {
     origin: "http://localhost:8080",
@@ -25,22 +28,17 @@ const io = new Server(http, {
   },
 });
 const PORT = process.env.PORT || 3000;
-import serverStatic from "serve-static";
 const serveStatic = serverStatic;
-import cors from "cors";
-//const cors = require("cors");
+
 
 let numClients = {};
 let numPlayer = {};
 
 //post時にbodyを参照できるようにする
-//const bodyParser = require("body-parser");
-import bodyParser from "body-parser";
 app.use(bodyParser.urlencoded({ extended: true }));
 
 //post時にjsonファイルを扱えるようにする
 app.use(express.json());
-
 app.use(
   cors({
     origin: true,
@@ -58,8 +56,6 @@ if (process.env.NODE_ENV !== "production") {
   );
 }
 
-import path from 'path';
-import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 app.use(serveStatic(__dirname + "/dist"));
