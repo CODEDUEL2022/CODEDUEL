@@ -1,6 +1,6 @@
-import playerDB from "DB.js";
-import cardDB from "DB.js";
-import comboDB from "DB.js";
+import {playerDB} from "./DB.js";
+import {cardDB} from "./DB.js";
+import {comboDB} from "./DB.js";
 import {
   controlTrun,
   getTurn,
@@ -11,24 +11,32 @@ import {
 
 import { cardDraw, postCardDraw } from "./components/card.js";
 
-const express = require("express");
+//const express = require("express");
+import express from "express";
 const app = express();
-const http = require("http").Server(app);
-const io = require("socket.io")(http, {
+//const http = require("http").Server(app);
+import importHttp from "http"
+const http = importHttp.Server(app);
+import * as socketIIIImport from "socket.io";
+const test = socketIIIImport();
+const io = test(http, {
   cors: {
     origin: "http://localhost:8080",
     methods: ["GET", "POST"],
   },
 });
 const PORT = process.env.PORT || 3000;
-const serveStatic = require("serve-static");
-const cors = require("cors");
+import serverStatic from "serve-static";
+//const serveStatic = require("serve-static");
+import cors from "cors";
+//const cors = require("cors");
 
 let numClients = {};
 let numPlayer = {};
 
 //post時にbodyを参照できるようにする
-const bodyParser = require("body-parser");
+//const bodyParser = require("body-parser");
+import bodyParser from "body-parser";
 app.use(bodyParser.urlencoded({ extended: true }));
 
 //post時にjsonファイルを扱えるようにする
@@ -107,7 +115,7 @@ app.post("/api/HPReload", (req, res) => {
 
 //ログイン時に、playerIdとRoomIdを受け取る。それをplayerDBに格納
 app.post("/api/playerData", (req, res) => {
-  res.json(postPlayerData(req, res));
+  res.json(postPlayerData(req, res, numClients));
 });
 
 //コンボカードリストをフロントに送信

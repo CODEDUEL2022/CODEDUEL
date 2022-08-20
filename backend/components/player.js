@@ -6,11 +6,9 @@
  * controlTrun -> turnFlagを1進める
  */
 
-import playerDB from "../DB.js";
-import numClients from "../server.js";
-import comboDB from "../DB.js";
-import cardDB from "../DB.js";
-import { json } from "body-parser";
+import {playerDB} from "../DB.js";
+import {comboDB} from "../DB.js";
+import {cardDB} from "../DB.js";
 
 export const postHP = function (req, res) {
   let selectId = playerDB.findIndex((e) => e.playerId === req.body.playerId);
@@ -32,7 +30,7 @@ export const HPreload = function (req, res) {
   return HPdata;
 };
 
-export const postPlayerData = function (req, res) {
+export const postPlayerData = function (req, res, numClients) {
   if (numClients[req.body.RoomId] == 1) {
     playerDB.push({
       RoomId: req.body.RoomId,
