@@ -6,12 +6,13 @@
 import playerDB from "../DB.js";
 import comboDB from "../DB.js";
 import cardDB from "../DB.js";
+import { selectDec } from "./selectDec.js";
 
 export const cardDraw = function (selectId) {
   console.log("ドロー関数が発火されました");
   for (let j = playerDB[selectId].cardList.length; j < 6; ) {
     const tmp = Number(Math.floor(Math.random() * 56));
-    playerDB[selectId].cardList.push(cardDB[tmp]);
+    playerDB[selectId].cardList.push(selectDec(playerDB[selectId].decId)[tmp]);
     j++;
   }
 };

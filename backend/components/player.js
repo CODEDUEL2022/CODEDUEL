@@ -33,6 +33,7 @@ export const HPreload = function (req, res) {
 };
 
 export const postPlayerData = function (req, res) {
+  let decId = req.body.decId //フロントエンドからデッキデータを受け取るのはここにしたいな。フロント係の皆様頼んだ
   if (numClients[req.body.RoomId] == 1) {
     playerDB.push({
       RoomId: req.body.RoomId,
@@ -42,6 +43,7 @@ export const postPlayerData = function (req, res) {
       enemyHP: 200,
       cardListNumber: [],
       trunFlag: 1,
+      decId: decId
     });
   } else {
     playerDB.push({
@@ -52,6 +54,7 @@ export const postPlayerData = function (req, res) {
       enemyHP: 200,
       cardListNumber: [],
       trunFlag: 0,
+      decId: decId
     });
   }
   return numClients[req.body.RoomId];
@@ -63,6 +66,7 @@ export const getTurn = function (req, res) {
   );
   return playerDB[selectTrunId].trunFlag;
 };
+
 export const controlTrun = function (req, res) {
   const selectTrunId = playerDB.findIndex(
     (e) => e.playerId === req.body.playerId
