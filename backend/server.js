@@ -6,12 +6,12 @@ import {
   HPreload,
   postPlayerData,
   reload,
-  postCardDraw
+  postCardDraw,
 } from "./components/player.js";
-import path from 'path';
-import { fileURLToPath } from 'url';
+import path from "path";
+import { fileURLToPath } from "url";
 import express from "express";
-import importHttp from "http"
+import importHttp from "http";
 import { Server } from "socket.io";
 import serverStatic from "serve-static";
 import cors from "cors";
@@ -28,7 +28,6 @@ const io = new Server(http, {
 });
 const PORT = process.env.PORT || 3000;
 const serveStatic = serverStatic;
-
 
 let numClients = {};
 let numPlayer = {};
@@ -81,7 +80,7 @@ io.sockets.on("connection", function (socket) {
     }
     //ルーム入室
   });
-  socket.on("room-join", function (RoomID) {
+  socket.on("roomJoin", function (RoomID) {
     socket.join(RoomID);
     if (numPlayer[RoomID] == undefined) {
       numPlayer[RoomID] = 1;
@@ -133,12 +132,10 @@ app.post("/api/controlTurn", (req, res) => {
   res.send();
 });
 
-
 //リロード時の処理
 app.get("api/reload", (req, res) => {
   res.send(reload(req, res));
 });
-
 
 http.listen(PORT, function () {
   console.log("server listening. Port:" + PORT);

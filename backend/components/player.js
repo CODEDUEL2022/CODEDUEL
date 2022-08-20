@@ -51,7 +51,7 @@ export const postHP = function (req, res) {
   let selectId = playerDB.findIndex((e) => e.playerId === req.body.playerId);
   playerDB[selectId].yourHP = req.body.HPs.yours;
   playerDB[selectId].opponentHP = req.body.HPs.opponents;
-  HPdata = {
+  const HPdata = {
     yourHP: playerDB[selectId].yourHP,
     oponentHP: playerDB[selectId].opponentHP,
   };
@@ -60,7 +60,7 @@ export const postHP = function (req, res) {
 
 export const HPreload = function (req, res) {
   let selectId = playerDB.findIndex((e) => e.playerId === req.body.playerId);
-  HPdata = {
+  const HPdata = {
     yourHP: playerDB[selectId].yourHP,
     opponentHP: playerDB[selectId].opponentHP,
   };
