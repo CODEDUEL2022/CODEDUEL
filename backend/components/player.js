@@ -74,7 +74,7 @@ export const controlTrun = function (req, res) {
     }
   });
 
-  const selestId = playerDB.findIndex(
+  const selectId = playerDB.findIndex(
     (e) => e.playerId === thisRoomPlayer[0].playerId
   );
   playerDB[selectId].trunFlag += 1;
