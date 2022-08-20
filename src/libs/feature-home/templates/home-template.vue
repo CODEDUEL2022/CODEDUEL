@@ -15,15 +15,19 @@
           >　<span>相手のIDを入力してください：</span
           ><input v-model="id" placeholder="" /><v-btn
             outlined
-            @click="sendRoomId(id)"
+            @click="$emit('handleSendId', id)"
             class="btn play"
             >このルームで遊ぶ</v-btn
           >
         </div>
-        <div>><v-btn outlined @click="issue" class="btn">IDを発行</v-btn></div>
+        <div>
+          ><v-btn outlined @click="$emit('handleSetIssue')" class="btn"
+            >IDを発行</v-btn
+          >
+        </div>
       </v-col>
       <v-col cols="4" class="start">
-        <v-btn outlined class="btn big" @click="push()">
+        <v-btn outlined class="btn big" @click="$emit('handleStart')">
           <span>start</span></v-btn
         >
       </v-col>
@@ -37,6 +41,11 @@ export default {
   name: "HomeTemplate",
   components: {
     Header,
+  },
+  data() {
+    return {
+      id: "",
+    };
   },
 };
 </script>

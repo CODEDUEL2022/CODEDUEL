@@ -4,7 +4,7 @@
       <!-- <v-toolbar-title color="#E8EAF6">PLbattle</v-toolbar-title>-->
       <span class="title">CODE DUEL</span>
       <v-spacer></v-spacer>
-      <v-btn outlined @click="openModal" class="btn">遊び方</v-btn>
+      <v-btn outlined class="btn">遊び方</v-btn>
     </v-app-bar>
   </header>
 </template>

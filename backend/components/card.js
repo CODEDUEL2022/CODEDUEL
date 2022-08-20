@@ -3,16 +3,18 @@
  * postCardDraw -> フロントにドローしたカードリストを送る関数　帰り値はプレイヤーのカードリスト
  */
 
-import {playerDB} from "../DB.js";
-import {comboDB} from "../DB.js";
-import {cardDB} from "../DB.js";
+import { playerDB } from "../DB.js";
+import { comboDB } from "../DB.js";
+import { cardDB } from "../DB.js";
 import { selectDec } from "./selectDec.js";
 
 
 export const cardDraw = function (selectId) {
   console.log("ドロー関数が発火されました");
   for (let j = playerDB[selectId].cardList.length; j < 6; ) {
-    const tmp = Number(Math.floor(Math.random() * cardDB.length));
+    //tmpには、デッキの中からランダムに1つ数字を選ぶようにしている
+    const tmp = Number(Math.floor(Math.random() * selectDec(playerDB[selectId].decId).length));
+    //選んだIDのものをpushする
     playerDB[selectId].cardList.push(selectDec(playerDB[selectId].decId)[tmp]);
     j++;
   }

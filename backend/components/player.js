@@ -6,9 +6,23 @@
  * controlTrun -> turnFlagを1進める
  */
 
-import {playerDB} from "../DB.js";
-import {comboDB} from "../DB.js";
-import {cardDB} from "../DB.js";
+import { comboDB } from "../DB.js";
+import { cardDB } from "../DB.js";
+
+
+export let playerDB = [
+  //初期化
+  {
+    RoomId: "",
+    playerId: "",
+    cardList: [],
+    myHP: 200,
+    enemyHP: 200,
+    cardListNumber: [],
+    turnFlag: 0,
+    decId: 0 //デッキの種類を選ぶ　初期は0で、ルームに入る際に選択&フロントエンドから送信してもらいたい
+  },
+];
 
 export const postHP = function (req, res) {
   let selectId = playerDB.findIndex((e) => e.playerId === req.body.playerId);
@@ -31,7 +45,7 @@ export const HPreload = function (req, res) {
 };
 
 
-export const postPlayerData = function (req, res) {
+export const postPlayerData = function (req, res, numClients) {
   let decId = req.body.decId //フロントエンドからデッキデータを受け取るのはここにしたいな。フロント係の皆様頼んだ
   if (numClients[req.body.RoomId] == 1) {
     playerDB.push({
