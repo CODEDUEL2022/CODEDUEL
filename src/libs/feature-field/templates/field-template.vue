@@ -5,29 +5,29 @@
     <HpDisplay></HpDisplay>
     <RoundDisplay></RoundDisplay>
     <div class="field">
-      <VueDrag
-        v-model="selectedData"
-        group="myGroup"
-        @start="drag = true"
-        @end="drag = false"
-        :options="options"
-        class="area"
-      >
-        <div
-          v-for="select in selectedData"
-          :key="`first-${select.id}`"
-          class="item"
+        <VueDrag
+          v-model="selectedData"
+          group="myGroup"
+          @start="drag = true"
+          @end="drag = false"
+          :options="options"
+          class="area"
         >
-          <v-card height="242px" max-width="200px" hover class="black">
-            <!-- <v-img
+          <div
+            v-for="select in selectedData"
+            :key="`first-${select.id}`"
+            class="item"
+          >
+            <v-card height="242px" max-width="200px" hover class="black">
+              <v-img
                 aspect-ratio="475/400"
                 height="242px"
-                :src="require(`../assets/cards/${select.img}`)"
-              > -->
-            <!-- </v-img> -->
-          </v-card>
-        </div>
-      </VueDrag>
+                :src="require(`../../ui/assets/cards/${select.img}`)"
+              >
+              </v-img>
+            </v-card>
+          </div>
+        </VueDrag>
     </div>
     <VueDrag
       v-model="myData"
@@ -39,7 +39,7 @@
     >
       <div v-for="mine in myData" :key="`second-${mine.id}`" class="item">
         <v-card hover class="black" height="222px">
-          <!-- <v-img :src="require(`../assets/cards/${mine.img}`)"> </v-img> -->
+          <v-img :src="require(`../../ui/assets/cards/${mine.img}`)"> </v-img>
         </v-card>
       </div>
     </VueDrag>
@@ -52,6 +52,7 @@ import HpDisplay from "../components/HpDisplay.vue";
 import RoundDisplay from "../components/RoundDisplay.vue";
 import VueDrag from "vuedraggable";
 import GeneralCutIn from "../components/GeneralCutIn.vue";
+// import io from "socket.io-client"
 
 export default {
   name: "FieldTemplate",
@@ -61,77 +62,39 @@ export default {
     RoundDisplay,
     VueDrag,
     GeneralCutIn,
-  },
-  props: ["message"],
-  data() {
-    return {
-      myData: [
-        {
-          id: 1,
-          name: "Javascript",
-          type: "language",
-          img: "JavaScript.png",
-          action: "attack",
-          value: 10,
-          field: "",
-          set_id: 0,
-        },
-        {
-          id: 2,
-          name: "HTML",
-          type: "language",
-          img: "HTML.png",
-          action: "attack",
-          value: 10,
-          field: "",
-          set_id: 0,
-        },
-        {
-          id: 3,
-          name: "CSS",
-          type: "language",
-          img: "CSS.png",
-          action: "attack",
-          value: 10,
-          field: "",
-          set_id: 0,
-        },
-        {
-          id: 4,
-          name: "Django",
-          type: "framework",
-          img: "Django.png",
-          action: "attack",
-          value: 20,
-          field: "LinuxOS",
-          set_id: 10,
-        },
-        {
-          id: 5,
-          name: "FastAPI",
-          type: "framework",
-          img: "FastAPI.png",
-          action: "attack",
-          value: 10,
-          field: "LinuxOS",
-          set_id: 10,
-        },
-        {
-          id: 6,
-          name: "jQuery",
-          type: "framework",
-          img: "jQuery.png",
-          action: "attack",
-          value: 10,
-          field: "",
-          set_id: 10,
-        },
-      ],
-      selectedData: [],
-      message: message,
-    };
-  },
-};
+    },
+    data() {
+        return {
+            // draganddrop用のデータ
+            options: {
+                group: "myGroup",
+                animation: 200,
+            },
+            myData: [],
+            selectedData: [],
+            message: message,
+        };
+    },
+    created() {
+    this.myData = []
+    const searchParams = new URLSearchParams(window.location.search);
+    console.log(this.myData)
+    // カードをドローする処理
+    this.$axios
+      .post("/cardDraw", {
+        cardData: this.myData,
+        playerId: searchParams.get("id"),
+      })
+      .then((res) => {
+        console.log(res.data);
+        for (let i = 0; i < res.data.length; i++) {
+          this.myData.push(res.data[i]);
+        }
+        console.log(this.myData);
+        console.log("hogehoge");
+      });
+    }
+}
 </script>
 
 <style scoped>

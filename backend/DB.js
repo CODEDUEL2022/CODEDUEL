@@ -966,16 +966,3 @@ export const Dec2 = [4, 4, 5, 5, 8, 10, 10, 10, 10, 16, 20, 23, 26, 27, 28, 37, 
 
 export const Dec3 = [7, 9, 11, 13, 17, 21, 22, 24, 29, 30, 31, 32, 33, 35, 38, 39, 40, 41, 41, 42, 44, 45, 46, 49, 55]
 
-export let playerDB = [
-    //初期化
-    {
-      RoomId: "",
-      playerId: "",
-      cardList: [],
-      myHP: 200,
-      enemyHP: 200,
-      cardListNumber: [],
-      turnFlag: 0,
-      decId: 0 //デッキの種類を選ぶ　初期は0で、ルームに入る際に選択&フロントエンドから送信してもらいたい
-    },
-  ];

@@ -1,4 +1,3 @@
-import { playerDB } from "./DB.js";
 import { cardDB } from "./DB.js";
 import { comboDB } from "./DB.js";
 import {
@@ -7,8 +6,8 @@ import {
   HPreload,
   postPlayerData,
   reload,
+  postCardDraw
 } from "./components/player.js";
-import { cardDraw, postCardDraw } from "./components/card.js";
 import path from 'path';
 import { fileURLToPath } from 'url';
 import express from "express";
