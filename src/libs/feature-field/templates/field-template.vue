@@ -1,7 +1,9 @@
 <template>
   <v-app>
     <GeneralCutIn :message="message" />
-    <ActionCutIn @closeActionCutIn="$emit('closeActionCutIn')" />
+    <div v-show="showCutIn">
+      <ActionCutIn @closeActionCutIn="$emit('closeActionCutIn')" />
+    </div>
     <ActionButton></ActionButton>
     <HpDisplay></HpDisplay>
     <RoundDisplay></RoundDisplay>
@@ -65,7 +67,7 @@ export default {
     GeneralCutIn,
     ActionCutIn,
   },
-  props: ["message"],
+  props: ["message", "showCutIn"],
   data() {
     return {
       myData: [

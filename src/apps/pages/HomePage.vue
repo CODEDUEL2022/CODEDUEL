@@ -25,9 +25,7 @@ export default {
     };
   },
   mounted() {
-    this.socket.on("logined", function (userId) {
-      console.log(userId);
-    });
+    this.socket.on("logined");
   },
   methods: {
     onSetId: function () {
@@ -47,7 +45,6 @@ export default {
         .then((res) => {
           //res.dataがRoomにいる人数ここで場合分けすればOK
         });
-      console.log(roomId);
     },
     //ページ遷移機能
     onPush: function () {
