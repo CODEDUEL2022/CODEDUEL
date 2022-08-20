@@ -10,7 +10,7 @@ import cardDB from "../DB.js";
 export const cardDraw = function (selectId) {
   console.log("ドロー関数が発火されました");
   for (let j = playerDB[selectId].cardList.length; j < 6; ) {
-    const tmp = Number(Math.floor(Math.random() * 56));
+    const tmp = Number(Math.floor(Math.random() * cardDB.length));
     playerDB[selectId].cardList.push(cardDB[tmp]);
     j++;
   }
