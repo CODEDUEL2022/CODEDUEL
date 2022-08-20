@@ -1,22 +1,18 @@
 <template>
-    <div v-show="showOponent" class="overlay" @click="$emit('closeOponent')">
-        <div>
-          <v-card height="475px" width="400px" class="black">
-            <v-img src="../../ui/assets/cards/Angular.png"></v-img>
-          </v-card>
-        </div>
-        <div class="dalayEffect">
-          {{ effect }} {{ value }} pt
-        </div>
+  <div class="overlay" @click="$emit('closeActionCutIn')">
+    <div>
+      <v-card height="475px" width="400px" class="black">
+        <v-img src="../../ui/assets/cards/Angular.png"></v-img>
+      </v-card>
     </div>
+    <div class="dalayEffect">{{ action }} {{ value }} pt</div>
+  </div>
 </template>
 <script>
 export default {
-    name: "ActionCutIn",
-    data(){
-        return {}
-    }
-}
+  name: "ActionCutIn",
+  props: ["action", "value"],
+};
 </script>
 <style scoped>
 .overlay {
@@ -36,5 +32,4 @@ export default {
   align-items: center;
   justify-content: center;
 }
-
 </style>

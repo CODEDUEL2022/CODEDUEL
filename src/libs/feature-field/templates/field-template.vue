@@ -1,6 +1,7 @@
 <template>
   <v-app>
     <GeneralCutIn :message="message" />
+    <ActionCutIn @closeActionCutIn="$emit('closeActionCutIn')" />
     <ActionButton></ActionButton>
     <HpDisplay></HpDisplay>
     <RoundDisplay></RoundDisplay>
@@ -52,6 +53,7 @@ import HpDisplay from "../components/HpDisplay.vue";
 import RoundDisplay from "../components/RoundDisplay.vue";
 import VueDrag from "vuedraggable";
 import GeneralCutIn from "../components/GeneralCutIn.vue";
+import ActionCutIn from "../components/ActionCutIn.vue";
 
 export default {
   name: "FieldTemplate",
@@ -61,6 +63,7 @@ export default {
     RoundDisplay,
     VueDrag,
     GeneralCutIn,
+    ActionCutIn,
   },
   props: ["message"],
   data() {
