@@ -17,9 +17,8 @@ const app = express();
 //const http = require("http").Server(app);
 import importHttp from "http"
 const http = importHttp.Server(app);
-import * as socketIIIImport from "socket.io";
-const test = socketIIIImport();
-const io = test(http, {
+import {Server,Socket} from "socket.io";
+const io = new Server(http, {
   cors: {
     origin: "http://localhost:8080",
     methods: ["GET", "POST"],
@@ -27,7 +26,7 @@ const io = test(http, {
 });
 const PORT = process.env.PORT || 3000;
 import serverStatic from "serve-static";
-//const serveStatic = require("serve-static");
+const serveStatic = serverStatic;
 import cors from "cors";
 //const cors = require("cors");
 
@@ -58,6 +57,11 @@ if (process.env.NODE_ENV !== "production") {
     })
   );
 }
+
+import path from 'path';
+import { fileURLToPath } from 'url';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 app.use(serveStatic(__dirname + "/dist"));
 
 //WebSocket周りの処理
