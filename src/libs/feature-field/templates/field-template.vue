@@ -70,71 +70,34 @@ export default {
   props: ["message", "showCutIn"],
   data() {
     return {
-      myData: [
-        {
-          id: 1,
-          name: "Javascript",
-          type: "language",
-          img: "JavaScript.png",
-          action: "attack",
-          value: 10,
-          field: "",
-          set_id: 0,
-        },
-        {
-          id: 2,
-          name: "HTML",
-          type: "language",
-          img: "HTML.png",
-          action: "attack",
-          value: 10,
-          field: "",
-          set_id: 0,
-        },
-        {
-          id: 3,
-          name: "CSS",
-          type: "language",
-          img: "CSS.png",
-          action: "attack",
-          value: 10,
-          field: "",
-          set_id: 0,
-        },
-        {
-          id: 4,
-          name: "Django",
-          type: "framework",
-          img: "Django.png",
-          action: "attack",
-          value: 20,
-          field: "LinuxOS",
-          set_id: 10,
-        },
-        {
-          id: 5,
-          name: "FastAPI",
-          type: "framework",
-          img: "FastAPI.png",
-          action: "attack",
-          value: 10,
-          field: "LinuxOS",
-          set_id: 10,
-        },
-        {
-          id: 6,
-          name: "jQuery",
-          type: "framework",
-          img: "jQuery.png",
-          action: "attack",
-          value: 10,
-          field: "",
-          set_id: 10,
-        },
-      ],
+      // draganddrop用のデータ
+      options: {
+        group: "myGroup",
+        animation: 200,
+      },
+      myData: [],
       selectedData: [],
       message: message,
     };
+  },
+  created() {
+    this.myData = [];
+    const searchParams = new URLSearchParams(window.location.search);
+    console.log(this.myData);
+    // カードをドローする処理
+    this.$axios
+      .post("/cardDraw", {
+        cardData: this.myData,
+        playerId: searchParams.get("id"),
+      })
+      .then((res) => {
+        console.log(res.data);
+        for (let i = 0; i < res.data.length; i++) {
+          this.myData.push(res.data[i]);
+        }
+        console.log(this.myData);
+        console.log("hogehoge");
+      });
   },
 };
 </script>
