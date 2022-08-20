@@ -3,9 +3,9 @@
  * postCardDraw -> フロントにドローしたカードリストを送る関数　帰り値はプレイヤーのカードリスト
  */
 
-import playerDB from "../DB.js";
-import comboDB from "../DB.js";
-import cardDB from "../DB.js";
+import {playerDB} from "../DB.js";
+import {comboDB} from "../DB.js";
+import {cardDB} from "../DB.js";
 
 export const cardDraw = function (selectId) {
   console.log("ドロー関数が発火されました");
