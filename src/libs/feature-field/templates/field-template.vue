@@ -13,8 +13,8 @@
         @closeActionCutIn="$emit('closeActionCutIn')"
       />
     </div>
-    <HpDisplay></HpDisplay>
-    <RoundDisplay></RoundDisplay>
+    <HpDisplay :yourHp="yourHp" :opponentHp="opponentHp"></HpDisplay>
+    <RoundDisplay :roundCount="roundCount"></RoundDisplay>
     <div class="field">
       <VueDrag
         v-model="selectedData"
@@ -86,6 +86,9 @@ export default {
     "isEnableAction",
     "action",
     "value",
+    "yourHp",
+    "opponentHp",
+    "roundCount",
   ],
   data() {
     return {

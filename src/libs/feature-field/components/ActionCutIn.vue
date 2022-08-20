@@ -48,7 +48,7 @@ export default {
   opacity: 0;
   animation: SlideIn 0.4s;
   /* 0.8秒遅らせる */
-  animation-delay: 0.8s;
+  animation-delay: 0.6s;
   /* opacityが戻らないようにする */
   animation-fill-mode: forwards;
 }

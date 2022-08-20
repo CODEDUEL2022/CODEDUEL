@@ -6,6 +6,9 @@
     :isEnableAction="isEnableAction"
     :action="action"
     :value="value"
+    :yourHp="yourHp"
+    :opponentHp="opponentHp"
+    :roundCount="roundCount"
     @closeGeneralCutIn="closeGeneralCutIn()"
     @closeActionCutIn="closeActionCutIn()"
     @handleAction="handleAction()"
@@ -27,6 +30,9 @@ export default {
       isEnableAction: true,
       action: "attack",
       value: 20,
+      yourHp: 150,
+      opponentHp: 180,
+      roundCount: 1,
     };
   },
   methods: {
@@ -35,6 +41,7 @@ export default {
     },
     closeActionCutIn: function () {
       this.showActionCutIn = false;
+      this.roundCount += 1;
     },
     handleAction: function () {
       this.showActionCutIn = true;
