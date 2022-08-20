@@ -17,7 +17,7 @@
     <RoundDisplay :roundCount="roundCount"></RoundDisplay>
     <div class="field">
       <VueDrag
-        v-model="selectedData"
+        v-model="selectedCardsData"
         group="yourGroup"
         @start="drag = true"
         @end="drag = false"
@@ -25,7 +25,7 @@
         class="area"
       >
         <div
-          v-for="select in selectedData"
+          v-for="select in selectedCardsData"
           :key="`first-${select.id}`"
           class="item"
         >
@@ -40,20 +40,27 @@
         </div>
       </VueDrag>
     </div>
-    <VueDrag
-      v-model="yourData"
-      group="yourGroup"
-      @start="drag = true"
-      @end="drag = false"
-      :options="options"
-      class="area"
-    >
-      <div v-for="yours in yourData" :key="`second-${yours.id}`" class="item">
-        <v-card hover class="black" height="222px">
-          <v-img :src="require(`../../ui/assets/cards/${yours.img}`)"> </v-img>
-        </v-card>
-      </div>
-    </VueDrag>
+    <div>
+      <VueDrag
+        v-model="handleSelectCards"
+        group="yourGroup"
+        @start="drag = true"
+        @end="drag = false"
+        :options="options"
+        class="area"
+      >
+        <div
+          v-for="yours in yourCardsData"
+          :key="`second-${yours.id}`"
+          class="item"
+        >
+          <v-card hover class="black" height="222px">
+            <v-img :src="require(`../../ui/assets/cards/${yours.img}`)">
+            </v-img>
+          </v-card>
+        </div>
+      </VueDrag>
+    </div>
     <ActionButton
       :isEnableAction="isEnableAction"
       @handleAction="$emit('handleAction')"
@@ -89,37 +96,31 @@ export default {
     "yourHp",
     "opponentHp",
     "roundCount",
+    "yourCardsData",
+    "selectedCardsData",
+    "yourGroup",
+    "yourId",
+    "yourImg",
+    "selectedId",
+    "selectedImg",
   ],
   data() {
     return {
-      // draganddrop用のデータ
       options: {
         group: "yourGroup",
         animation: 200,
       },
-      yourData: [],
-      selectedData: [],
-      message: message,
     };
   },
-  created() {
-    this.yourData = [];
-    const searchParams = new URLSearchParams(window.location.search);
-    console.log(this.yourData);
-    // カードをドローする処理
-    this.$axios
-      .post("/cardDraw", {
-        cardData: this.yourData,
-        playerId: searchParams.get("id"),
-      })
-      .then((res) => {
-        console.log(res.data);
-        for (let i = 0; i < res.data.length; i++) {
-          this.yourData.push(res.data[i]);
-        }
-        console.log(this.yourData);
-        console.log("hogehoge");
-      });
+  computed: {
+    handleSelectCards: {
+      get() {
+        return this.yourCardsData;
+      },
+      set(newVal) {
+        this.$emit("handleSelectCards", newVal);
+      },
+    },
   },
 };
 </script>
