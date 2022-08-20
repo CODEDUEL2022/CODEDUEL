@@ -125,6 +125,11 @@ app.post("/api/controlTurn", (req, res) => {
   res.send();
 });
 
+//リロード時にローカルストレージからデータを受け取る
+app.get("/api/getPlayerData",(req,res) => {
+    res.json();
+})
+
 http.listen(PORT, function () {
   console.log("server listening. Port:" + PORT);
 });
