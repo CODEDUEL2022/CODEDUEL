@@ -8,21 +8,10 @@
 
 import { comboDB } from "../DB.js";
 import { cardDB } from "../DB.js";
+import { playerDB } from "../DB.js";
 
 
-export let playerDB = [
-  //初期化
-  {
-    RoomId: "",
-    playerId: "",
-    cardList: [],
-    myHP: 200,
-    enemyHP: 200,
-    cardListNumber: [],
-    turnFlag: 0,
-    decId: 0 //デッキの種類を選ぶ　初期は0で、ルームに入る際に選択&フロントエンドから送信してもらいたい
-  },
-];
+
 
 export const postHP = function (req, res) {
   let selectId = playerDB.findIndex((e) => e.playerId === req.body.playerId);
