@@ -5,8 +5,8 @@
     :showActionCutIn="showActionCutIn"
     :action="action"
     :value="value"
-    :yourHp="yourHp"
-    :opponentHp="opponentHp"
+    :yourHP="yourHP"
+    :opponentHP="opponentHP"
     :roundCount="roundCount"
     :yourCardsData.sync="yourCardsData"
     :selectedCardsData.sync="selectedCardsData"
@@ -37,23 +37,22 @@ export default {
       showActionCutIn: false,
       action: "attack",
       value: 20,
-      yourHp: 150,
-      opponentHp: 180,
+      yourHP: 150,
+      opponentHP: 180,
       roundCount: 1,
       yourCardsData: [],
       selectedCardsData: [],
       comboData: [],
       yourId: "",
+      roomId: "",
       yourImg: "",
       selectedId: "",
       selectedImg: "",
       attackSignal: 0,
       comboData: [],
-      sampleHp: {
-        yours: 200,
-        opponent: 200,
-      },
       opponentTrun: false,
+      isAlone: false,
+      usedCardIdList: [], //攻撃された、攻撃したカードのIDのリスト
     };
   },
   created() {
@@ -72,8 +71,8 @@ export default {
       })
       .then((res) => {
         console.log(res.data);
-        this.sampleHp.yours = res.data.yourHP;
-        this.sampleHp.opponent = res.data.opponentHP;
+        this.yourHP = res.data.yourHP;
+        this.opponentHP = res.data.opponentHP;
       });
     // カードをドローする処理
     this.$axios
@@ -92,8 +91,8 @@ export default {
 
     //joinするための送信
     this.yourId = searchParams.get("id");
-    let RoomID = searchParams.get("room");
-    this.socket.emit("roomJoin", RoomID, this.yourId);
+    this.roomID = searchParams.get("room");
+    this.socket.emit("roomJoin", this.roomID, this.yourId);
     //turn_flagに応じて、showAttackなどの表示、非表示を決定する。
     //偶数の時は自分の番
     this.$axios
@@ -149,20 +148,20 @@ export default {
         return true;
       } else {
         let ableCombo = this.comboData.filter((comboData) => {
-        return isIncludes(updatedData, comboData.idList);
+          return isIncludes(updatedData, comboData.idList);
         });
         // 完全一致した攻撃だけを返す
         for (let i = 0, n = updatedData.length; i < n; ++i) {
-        if (ableCombo.length == 0) {
-          return false;
-        } else if (
-          updatedData[i] == ableCombo[0].idList[i] &&
-          updatedData.length == ableCombo[0].idList.length
-        ) {
-          return true;
-        } else {
-          return false;
-        }
+          if (ableCombo.length == 0) {
+            return false;
+          } else if (
+            updatedData[i] == ableCombo[0].idList[i] &&
+            updatedData.length == ableCombo[0].idList.length
+          ) {
+            return true;
+          } else {
+            return false;
+          }
         }
       }
     },
@@ -177,6 +176,32 @@ export default {
       this.showActionCutIn = true;
       this.selectedCardsData.splice(this.index, this.selectedCardsData.length);
     },
+  },
+  mounted() {
+    let anotherThis = this;
+    this.socket.on("numPlayer", function (numPlayer) {
+      if (numPlayer == 1) {
+        anotherThis.isAlone = true;
+      } else {
+        anotherThis.isAlone = false;
+      }
+    });
+
+    this.socket.on("HPinfo", function (HPinfo) {
+      anotherThis.action = HPinfo.action; //攻撃の種類
+      anotherThis.usedCardIdList = HPinfo.usedCardIdList; //カードのIDのリスト
+      if (HPinfo.attackedPlayerID == anotherThis.playerId) {
+        //攻撃した時の処理
+        anotherThis.yourHP = HPinfo.attackedPlayerHP;
+        anotherThis.opponentHP = HPinfo.damagedPlayerHP;
+        anotherThis.opponentTrun = true;
+      } else if (HPinfo.damagedPlayerID == anotherThis.playerId) {
+        //攻撃された時の処理
+        anotherThis.yourHP = HPinfo.damagedPlayerHP;
+        anotherThis.opponentHP = HPinfo.attackedPlayerHP;
+        anotherThis.opponentTrun = false;
+      }
+    });
   },
 };
 </script>
