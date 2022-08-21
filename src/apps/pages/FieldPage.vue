@@ -142,6 +142,7 @@ export default {
       // 一致してるものがあるかを判定
       const isIncludes = (arr, target) =>
         arr.every((el) => target.includes(el));
+  
       if (updatedData.length === 0) {
         return false;
       } else if (updatedData.length === 1) {
@@ -159,6 +160,8 @@ export default {
           updatedData[i] == ableCombo[0].idList[i] &&
           updatedData.length == ableCombo[0].idList.length
         ) {
+          console.log("updatedData[i]"+updatedData[i])
+          console.log("ablecombo"+ableCombo[0].idList)
           return true;
         } else {
           return false;
