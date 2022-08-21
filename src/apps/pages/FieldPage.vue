@@ -42,7 +42,6 @@ export default {
       roundCount: 1,
       yourCardsData: [],
       selectedCardsData: [],
-      comboData: [],
       yourId: "",
       roomId: "",
       yourImg: "",
