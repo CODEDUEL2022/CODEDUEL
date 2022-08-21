@@ -7,6 +7,7 @@
 </template>
 
 <script>
+// HPの処理はバックエンドに移行するのでまだ書かない
 export default {
   name: "HpDisplay",
   props: ["yourHp", "opponentHp"],

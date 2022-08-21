@@ -15,34 +15,43 @@
     </div>
     <HpDisplay :yourHp="yourHp" :opponentHp="opponentHp"></HpDisplay>
     <RoundDisplay :roundCount="roundCount"></RoundDisplay>
-    <div class="field">
-      <VueDrag
-        v-model="selectedCardsData"
-        group="yourGroup"
-        @start="drag = true"
-        @end="drag = false"
-        :options="options"
-        class="area"
-      >
-        <div
-          v-for="select in selectedCardsData"
-          :key="`first-${select.id}`"
-          class="item"
-        >
-          <v-card height="242px" max-width="200px" hover class="black">
-            <v-img
-              aspect-ratio="475/400"
-              height="242px"
-              :src="require(`../../ui/assets/cards/${select.img}`)"
+    <v-row>
+      <v-col cols="3">
+        <TerminalUI :attackOptions="attackOptions"></TerminalUI>
+      </v-col>
+      <v-col cols="9">
+        <div class="field">
+          <VueDrag
+            :list="selectedCardsData"
+            @input="$emit('update:selectedCardsData', $event.target.list)"
+            group="yourGroup"
+            @start="drag = true"
+            @end="drag = false"
+            :options="options"
+            class="area"
+          >
+            <div
+              v-for="select in selectedCardsData"
+              :key="`first-${select.id}`"
+              class="item"
             >
-            </v-img>
-          </v-card>
+              <v-card height="242px" max-width="200px" hover class="black">
+                <v-img
+                  aspect-ratio="475/400"
+                  height="242px"
+                  :src="require(`../../ui/assets/cards/${select.img}`)"
+                >
+                </v-img>
+              </v-card>
+            </div>
+          </VueDrag>
         </div>
-      </VueDrag>
-    </div>
+      </v-col>
+    </v-row>
     <div>
       <VueDrag
-        v-model="handleSelectCards"
+        :list="yourCardsData"
+        @input="$emit('update:yourCardsData', $event.target.list)"
         group="yourGroup"
         @start="drag = true"
         @end="drag = false"
@@ -75,6 +84,8 @@ import RoundDisplay from "../components/RoundDisplay.vue";
 import VueDrag from "vuedraggable";
 import GeneralCutIn from "../components/GeneralCutIn.vue";
 import ActionCutIn from "../components/ActionCutIn.vue";
+import TerMinalUI from "../components/TerminalUI.vue"
+import TerminalUI from "../components/TerminalUI.vue";
 
 export default {
   name: "FieldTemplate",
@@ -85,12 +96,13 @@ export default {
     VueDrag,
     GeneralCutIn,
     ActionCutIn,
-  },
+    TerMinalUI,
+    TerminalUI
+},
   props: [
     "message",
     "showGeneralCutIn",
     "showActionCutIn",
-    "isEnableAction",
     "action",
     "value",
     "yourHp",
@@ -103,26 +115,20 @@ export default {
     "yourImg",
     "selectedId",
     "selectedImg",
+    "comboData",
+    "isEnableAction",
+    "attackOptions"
   ],
   data() {
     return {
-      options: {
-        group: "yourGroup",
-        animation: 200,
-      },
+        // drag&drop用のデータ
+        options: {
+            group: "yourGroup",
+            animation: 200,
+        },
     };
   },
-  computed: {
-    handleSelectCards: {
-      get() {
-        return this.yourCardsData;
-      },
-      set(newVal) {
-        this.$emit("handleSelectCards", newVal);
-      },
-    },
-  },
-};
+}
 </script>
 
 <style scoped>
