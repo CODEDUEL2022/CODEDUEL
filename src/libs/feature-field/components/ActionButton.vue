@@ -1,39 +1,14 @@
 <template>
   <div class="container">
-    <div class="wrapper">
-      <div class="bg-square"></div>
-      <div
-        data-augmented-ui="tl-2-rect tr-2-rect bl-2-rect br-2-rect none"
-        class="btn shadow"
-        @click="$emit('handleAction')"
-        v-if="isEnableAction"
-      >
-        <link
-          rel="stylesheet"
-          type="text/css"
-          href="https://unpkg.com/augmented-ui@2/augmented-ui.min.css"
-        />
-        <span>発動</span>
-      </div>
-      <p v-else>発動可能なカードを選択してください</p>
+    <div class="action-button disable" v-if="isEnableAction">
+      <span>発動</span>
     </div>
-
-    <div class="wrapper">
-      <div class="bg-square"></div>
-      <div
-        data-augmented-ui="tl-2-rect tr-2-rect bl-2-rect br-2-rect none"
-        class="btn shadow"
-        @click="$emit('handleAction')"
-        v-if="isEnableAction"
-      >
-        <link
-          rel="stylesheet"
-          type="text/css"
-          href="https://unpkg.com/augmented-ui@2/augmented-ui.min.css"
-        />
-        <span>発動</span>
-      </div>
-      <p v-else>発動可能なカードを選択してください</p>
+    <div
+      @click="$emit('handleAction')"
+      class="action-button able"
+      v-if="isEnableAction"
+    >
+      <span>発動</span>
     </div>
   </div>
 </template>
@@ -46,33 +21,88 @@ export default {
 </script>
 
 <style scoped>
-.container {
-  display: flex;
-}
-.wrapper {
-  bottom: 1rem;
-  right: 1rem;
-}
-.bd-square {
-  box-shadow: 0px 0px 50px #d3fffd;
-}
-
-.btn {
+.action-button {
+  margin: 2rem;
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 2rem;
-  width: 10em;
-  height: 10em;
-  background-color: #144f61;
+  text-align: center;
+  width: fit-content;
+  height: fit-content;
+  padding: 2rem;
+  position: relative;
+  border: 4px solid #d3fffd;
+  background-color: transparent;
+  box-shadow: 0px 0px 20px #d3fffd;
 }
 
-.btn:hover {
-  background-color: #41bfb9;
+.action-button::before,
+.action-button::after {
+  position: absolute;
+  content: "";
+  display: block;
 }
 
-.btn span {
+.action-button::before {
+  top: -3px;
+  bottom: -3px;
+  left: 10px;
+  right: 10px;
+}
+
+.action-button::after {
+  top: 10px;
+  bottom: 10px;
+  left: -3px;
+  right: -3px;
+}
+
+.css-button span {
+  position: relative;
   z-index: 1;
-  color: #d3fffd;
+  color: #e8e8e8;
+  font-size: 24px;
+}
+
+.action-button.able span {
+  animation: neon_blink_text 1.5s infinite alternate;
+}
+
+.action-button.disable,
+.action-button.disable::before,
+.action-button.disable::after {
+  background-color: #0e3d4c;
+  cursor: not-allowed;
+}
+
+.action-button.able,
+.action-button.able::before,
+.action-button.able::after {
+  animation: neon_blink 1.5s infinite alternate;
+  cursor: pointer;
+}
+
+@keyframes neon_blink_text {
+  0% {
+    color: #d3fffd;
+  }
+  100% {
+    color: #d3fffd;
+  }
+}
+
+@keyframes neon_blink {
+  0% {
+    background-color: #186883;
+  }
+  100% {
+    background-color: #2d909e;
+  }
+}
+
+.action-button.able:hover,
+.action-button.able:hover:before,
+.action-button.able:hover:after {
+  background-color: #39b8bb !important;
 }
 </style>
