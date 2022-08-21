@@ -17,7 +17,8 @@
     <RoundDisplay :roundCount="roundCount"></RoundDisplay>
     <div class="field">
       <VueDrag
-        v-model="selectedCardsData"
+        :list="selectedCardsData"
+        @input="$emit('update:selectedCardsData', $event.target.list)"
         group="yourGroup"
         @start="drag = true"
         @end="drag = false"
@@ -42,7 +43,8 @@
     </div>
     <div>
       <VueDrag
-        v-model="handleSelectCards"
+        :list="yourCardsData"
+        @input="$emit('update:yourCardsData', $event.target.list)"
         group="yourGroup"
         @start="drag = true"
         @end="drag = false"
@@ -106,23 +108,14 @@ export default {
   ],
   data() {
     return {
-      options: {
-        group: "yourGroup",
-        animation: 200,
-      },
+        // drag&drop用のデータ
+        options: {
+            group: "yourGroup",
+            animation: 200,
+        },
     };
   },
-  computed: {
-    handleSelectCards: {
-      get() {
-        return this.yourCardsData;
-      },
-      set(newVal) {
-        this.$emit("handleSelectCards", newVal);
-      },
-    },
-  },
-};
+}
 </script>
 
 <style scoped>

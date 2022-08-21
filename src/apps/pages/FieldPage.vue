@@ -9,8 +9,8 @@
     :yourHp="yourHp"
     :opponentHp="opponentHp"
     :roundCount="roundCount"
-    :yourCardsData="yourCardsData"
-    :selectedCardsData="selectedCardsData"
+    :yourCardsData.sync="yourCardsData"
+    :selectedCardsData.sync="selectedCardsData"
     :selectedId="selectedId"
     :selectedImg="selectedImg"
     :yourId="yourId"
@@ -52,6 +52,13 @@ export default {
     this.yourCardsData = [];
     const searchParams = new URLSearchParams(window.location.search);
     console.log(this.yourCardsData);
+    // this.attacksignal = 0;
+    //バックエンドからコンボdbを受け取る処理
+    // this.$axios.get("/getComboDb").then((res) => {
+    //   for (let i = 0; i < res.data.length; i++) {
+    //     this.comboData.push(res.data[i]);
+    //   }
+    // });
     // カードをドローする処理
     this.$axios
       .post("/cardDraw", {
