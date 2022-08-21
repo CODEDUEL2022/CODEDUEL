@@ -23,16 +23,6 @@ let playerDB = [
   },
 ];
 
-//今のプレイヤーの情報を取得して、localStorageに返す関数をreturnしている。
-//現在の状況だと、"localstorage not define"的なエラーが返るから、frontendでしか保存が出来ないんじゃないか？と予想
-export const saveLocalStorage = function(req){
-  const selectId = playerDB.findIndex((e) => e.playerId === req.body.playerId);
-  const APP_KEY = "playerData"
-  thisPlayerData = playerDB[selectId]
-  console.log("セーブが呼ばれた")
-  return localStorage.setItem( APP_KEY, JSON.stringify(thisPlayerData))
-}
-
 export const cardDraw = function (selectId) {
   console.log("ドロー関数が発火されました");
   console.log(playerDB[selectId]);
@@ -46,7 +36,6 @@ export const cardDraw = function (selectId) {
 
     j++;
   }
-  
 };
 
 export const postCardDraw = function (req, res) {
@@ -55,7 +44,6 @@ export const postCardDraw = function (req, res) {
     playerDB[selectId].cardList = req.body.cardData;
   }
   cardDraw(selectId);
-  saveLocalStorage(req)
   return playerDB[selectId].cardList;
 };
 
@@ -132,15 +120,15 @@ export const controlTrun = function (req, res) {
   playerDB[selectTrunId].trunFlag += 1;
 };
 
-export const reload = function (req, res) {
-  let playerDBFromLocalStorage = {
-    RoomId: localStorage.getItem("RoomId"),
-    playerId: localStorage.getItem("playerId"),
-    cardList: localStorage.getItem("cardList"),
-    yourHP: localStorage.getItem("yourHP"),
-    opponentHP: localStorage.getItem("opponentHP"),
-    cardListNumber: localStorage.getItem("cardListNumber"),
-    trunFlag: localStorage.getItem("trunFlag"),
-  };
-  return playerDBFromLocalStorage;
-};
+// export const reload = function (req, res) {
+//   let playerDBFromLocalStorage = {
+//     RoomId: localStorage.getItem("RoomId"),
+//     playerId: localStorage.getItem("playerId"),
+//     cardList: localStorage.getItem("cardList"),
+//     yourHP: localStorage.getItem("yourHP"),
+//     opponentHP: localStorage.getItem("opponentHP"),
+//     cardListNumber: localStorage.getItem("cardListNumber"),
+//     trunFlag: localStorage.getItem("trunFlag"),
+//   };
+//   return playerDBFromLocalStorage;
+// };
