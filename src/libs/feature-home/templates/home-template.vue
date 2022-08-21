@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <div>
     <Header />
     <v-row class="home-container">
       <v-col cols="8">
@@ -24,6 +24,11 @@
             >ルームIDを発行</v-btn
           >
         </div>
+        <div>
+          <v-btn outlined class="btn big" @click="$emit('handleMoveCPUPage')"
+            ><span>CPU</span></v-btn
+          >
+        </div>
       </v-col>
       <v-col cols="4" class="start">
         <v-btn outlined class="btn big" @click="$emit('handleStart')">
@@ -31,7 +36,7 @@
         >
       </v-col>
     </v-row>
-  </v-container>
+  </div>
 </template>
 <script>
 import Header from "/src/libs/layout/Header.vue";
@@ -46,6 +51,7 @@ export default {
 </script>
 <style scoped>
 .home-container {
+  margin: 2rem;
   padding-top: 10rem;
 }
 .typing span {
