@@ -1,8 +1,10 @@
-const { defineConfig } = require("@vue/cli-service");
-const GoogleFontsPlugin = require("google-fonts-webpack-plugin");
-module.exports = defineConfig({
+//const { defineConfig } = require("@vue/cli-service");
+import {defineConfig} from "@vue/cli-service"
+//const GoogleFontsPlugin = require("google-fonts-webpack-plugin");
+import GoogleFontsPlugin from "google-fonts-webpack-plugin"
+defineConfig ({
   devServer: {
-    proxy: "https://code--duel.herokuapp.com/",
+    proxy: "https://localhost:8080/",
     clientLogLevel: "info",
   },
   transpileDependencies: ["vuetify"],
@@ -23,4 +25,4 @@ module.exports = defineConfig({
   },
 });
 
-module.exports = {};
+//export default defineConfig
