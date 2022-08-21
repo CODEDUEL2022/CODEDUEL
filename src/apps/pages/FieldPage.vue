@@ -15,6 +15,7 @@
     :comboData="comboData"
     :yourId="yourId"
     :yourImg="yourImg"
+    :attackOptions="attackOptions()"
     :isEnableAction="isEnableAction()"
     @closeGeneralCutIn="closeGeneralCutIn()"
     @closeActionCutIn="closeActionCutIn()"
@@ -74,6 +75,22 @@ export default {
       });
   },
   methods: {
+    // 可能なコンボを取得
+    attackOptions: function () {
+      let updatedData = this.selectedCardsData.map((obj) => obj.id);
+      let ableAttackData = updatedData.sort((a, b) => (a < b ? -1 : 1));
+      // 一致してるものがあるかを判定
+      const isIncludes = (arr, target) =>
+        arr.every((el) => target.includes(el));
+      if (ableAttackData.length === 0) {
+        return [];
+      } else {
+        // updateddataにあるのと一致した攻撃だけを返す
+        return this.comboData.filter((comboData) => {
+          return isIncludes(ableAttackData, comboData.idList);
+        });
+      }
+    },
     //発動できるかどうかを判定する
     isEnableAction: function () {
       let updatedData = this.selectedCardsData.map((obj) => obj.id);
@@ -122,6 +139,7 @@ export default {
     },
     handleAction: function () {
       this.showActionCutIn = true;
+      this.selectedCardsData.splice(this.index, this.selectedCardsData.length);
     },
   },
 };

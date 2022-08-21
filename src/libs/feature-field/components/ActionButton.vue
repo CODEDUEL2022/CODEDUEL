@@ -8,9 +8,7 @@
 <script>
 export default {
     name: "ActionButton",
-    props: [
-        "isEnableAction"
-    ],
+    props: ["isEnableAction"],
 }
 </script>
 
