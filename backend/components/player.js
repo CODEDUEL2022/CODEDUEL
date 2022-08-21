@@ -15,18 +15,17 @@ let playerDB = [
     RoomId: "",
     playerId: "",
     cardList: [],
-    myHP: 200,
-    enemyHP: 200,
+    yourHP: 200,
+    opponentHP: 200,
     cardListNumber: [],
     turnFlag: 0,
-    decId: 0 //デッキの種類を選ぶ　初期は0で、ルームに入る際に選択&フロントエンドから送信してもらいたい
+    decId: 0, //デッキの種類を選ぶ　初期は0で、ルームに入る際に選択&フロントエンドから送信してもらいたい
   },
 ];
 
-
 export const cardDraw = function (selectId) {
   console.log("ドロー関数が発火されました");
-  console.log(playerDB[selectId])
+  console.log(playerDB[selectId]);
   for (let j = playerDB[selectId].cardList.length; j < 6; ) {
     //tmpには、デッキの中からランダムに1つ数字を選ぶようにしている
     //const tmp = Number(Math.floor(Math.random() * selectDec(playerDB[selectId].decId).length));
@@ -34,7 +33,7 @@ export const cardDraw = function (selectId) {
     //選んだIDのものをpushする
     //playerDB[selectId].cardList.push(selectDec(playerDB[selectId].decId)[tmp]);
     playerDB[selectId].cardList.push(cardDB[tmp]);
-    
+
     j++;
   }
 };
@@ -48,52 +47,49 @@ export const postCardDraw = function (req, res) {
   return playerDB[selectId].cardList;
 };
 
-
-
 export const postHP = function (req, res) {
   let selectId = playerDB.findIndex((e) => e.playerId === req.body.playerId);
-  playerDB[selectId].myHP = req.body.HPs.mine;
-  playerDB[selectId].enemyHP = req.body.HPs.yours;
-  HPdata = {
-    myHP: playerDB[selectId].myHP,
-    enemyHP: playerDB[selectId].enemyHP,
+  playerDB[selectId].yourHP = req.body.HPs.yours;
+  playerDB[selectId].opponentHP = req.body.HPs.opponents;
+  const HPdata = {
+    yourHP: playerDB[selectId].yourHP,
+    oponentHP: playerDB[selectId].opponentHP,
   };
   return HPdata;
 };
 
 export const HPreload = function (req, res) {
   let selectId = playerDB.findIndex((e) => e.playerId === req.body.playerId);
-  HPdata = {
-    myHP: playerDB[selectId].myHP,
-    enemyHP: playerDB[selectId].enemyHP,
+  const HPdata = {
+    yourHP: playerDB[selectId].yourHP,
+    opponentHP: playerDB[selectId].opponentHP,
   };
   return HPdata;
 };
 
-
 export const postPlayerData = function (req, res, numClients) {
-  let decId = req.body.decId //フロントエンドからデッキデータを受け取るのはここにしたいな。フロント係の皆様頼んだ
+  let decId = req.body.decId; //フロントエンドからデッキデータを受け取るのはここにしたいな。フロント係の皆様頼んだ
   if (numClients[req.body.RoomId] == 1) {
     playerDB.push({
       RoomId: req.body.RoomId,
       playerId: req.body.playerId,
       cardList: [],
-      myHP: 200,
-      enemyHP: 200,
+      yourHP: 200,
+      opponentHP: 200,
       cardListNumber: [],
       trunFlag: 1,
-      decId: decId
+      decId: decId,
     });
   } else {
     playerDB.push({
       RoomId: req.body.RoomId,
       playerId: req.body.playerId,
       cardList: [],
-      myHP: 200,
-      enemyHP: 200,
+      yourHP: 200,
+      opponentHP: 200,
       cardListNumber: [],
       trunFlag: 0,
-      decId: decId
+      decId: decId,
     });
   }
   return numClients[req.body.RoomId];
@@ -129,8 +125,8 @@ export const reload = function (req, res) {
     RoomId: localStorage.getItem("RoomId"),
     playerId: localStorage.getItem("playerId"),
     cardList: localStorage.getItem("cardList"),
-    myHP: localStorage.getItem("myHP"),
-    enemyHP: localStorage.getItem("enemyHP"),
+    yourHP: localStorage.getItem("yourHP"),
+    opponentHP: localStorage.getItem("opponentHP"),
     cardListNumber: localStorage.getItem("cardListNumber"),
     trunFlag: localStorage.getItem("trunFlag"),
   };

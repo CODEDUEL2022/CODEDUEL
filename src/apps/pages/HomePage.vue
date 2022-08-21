@@ -36,15 +36,16 @@ export default {
     onSendRoomId: function (roomId) {
       this.playerId = Math.random().toString(32).substring(2);
       this.roomId = roomId;
-      this.socket.emit("login", roomId);
+      this.socket.emit("login", this.roomId);
       this.$axios
         .post("/playerData", {
-          RoomId: roomId,
+          RoomId: this.roomId,
           playerId: this.playerId,
-          decId: 0 //仮においている。本来はデッキ選択用
+          decId: 0, //仮においている。本来はデッキ選択用
         })
         .then((res) => {
           //res.dataがRoomにいる人数ここで場合分けすればOK
+          console.log(res.data);
         });
     },
     //ページ遷移機能
