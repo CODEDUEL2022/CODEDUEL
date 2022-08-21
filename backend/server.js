@@ -98,7 +98,7 @@ io.sockets.on("connection", function (socket) {
   });
   socket.on("cardValue", function (cardValue, playerId) {
     socket.join(cardValue.roomId);
-    io.to(cardValue.roomId).emit("cardValue", culculateHP(cardValue, playerId));
+    io.to(cardValue.roomId).emit("HPinfo", culculateHP(cardValue, playerId));
     console.log("カードの使用が認められました");
   });
 });
