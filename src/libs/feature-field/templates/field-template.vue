@@ -1,5 +1,6 @@
 <template>
-  <v-app>
+  <div>
+    <Header />
     <div v-show="showGeneralCutIn">
       <GeneralCutIn
         :message="message"
@@ -13,7 +14,12 @@
         @closeActionCutIn="$emit('closeActionCutIn')"
       />
     </div>
-    <HpDisplay :yourHp="yourHp" :opponentHp="opponentHp"></HpDisplay>
+    <HpDisplay
+      :yourName="yourName"
+      :yourHp="yourHp"
+      :opponentName="opponentName"
+      :opponentHp="opponentHp"
+    ></HpDisplay>
     <RoundDisplay :roundCount="roundCount"></RoundDisplay>
     <div class="field">
       <VueDrag
@@ -65,7 +71,7 @@
       :isEnableAction="isEnableAction"
       @handleAction="$emit('handleAction')"
     ></ActionButton>
-  </v-app>
+  </div>
 </template>
 
 <script>
@@ -75,6 +81,7 @@ import RoundDisplay from "../components/RoundDisplay.vue";
 import VueDrag from "vuedraggable";
 import GeneralCutIn from "../components/GeneralCutIn.vue";
 import ActionCutIn from "../components/ActionCutIn.vue";
+import Header from "@/libs/layout/Header.vue";
 
 export default {
   name: "FieldTemplate",
@@ -85,6 +92,7 @@ export default {
     VueDrag,
     GeneralCutIn,
     ActionCutIn,
+    Header,
   },
   props: [
     "message",
@@ -93,7 +101,10 @@ export default {
     "isEnableAction",
     "action",
     "value",
+    "yourName",
     "yourHp",
+    "yourName",
+    "opponentName",
     "opponentHp",
     "roundCount",
     "yourCardsData",

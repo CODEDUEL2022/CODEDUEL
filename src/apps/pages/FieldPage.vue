@@ -6,7 +6,9 @@
     :isEnableAction="isEnableAction"
     :action="action"
     :value="value"
+    :yourName="yourName"
     :yourHp="yourHp"
+    :opponentName="opponentName"
     :opponentHp="opponentHp"
     :roundCount="roundCount"
     :yourCardsData="yourCardsData"
@@ -37,7 +39,9 @@ export default {
       isEnableAction: true,
       action: "attack",
       value: 20,
+      yourName: "you",
       yourHp: 150,
+      opponentName: "opponent",
       opponentHp: 180,
       roundCount: 1,
       yourCardsData: [],
