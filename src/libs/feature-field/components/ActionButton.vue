@@ -1,14 +1,14 @@
 <template>
   <div class="container">
-    <div class="action-button disable" v-if="isEnableAction">
-      <span>発動</span>
-    </div>
     <div
+      v-if="isEnableAction"
       @click="$emit('handleAction')"
       class="action-button able"
-      v-if="isEnableAction"
     >
       <span>発動</span>
+    </div>
+    <div v-else class="action-button disable">
+      <span>発動可能なカードを選択してください</span>
     </div>
   </div>
 </template>
@@ -27,12 +27,17 @@ export default {
   justify-content: center;
   align-items: center;
   text-align: center;
-  width: fit-content;
-  height: fit-content;
+  width: 180px;
+  height: 200px;
   padding: 2rem;
   position: relative;
-  border: 4px solid #d3fffd;
+  border: 4px solid #ff0000cb;
   background-color: transparent;
+  box-shadow: 0px 0px 20px rgba(255, 0, 0, 0.798);
+}
+
+.action-button.able {
+  border: 4px solid #d3fffd;
   box-shadow: 0px 0px 20px #d3fffd;
 }
 
@@ -60,18 +65,19 @@ export default {
 .action-button span {
   position: relative;
   z-index: 1;
-  color: #e8e8e8;
-  font-size: 24px;
+  color: #ff0000;
+  font-size: 20px;
 }
 
 .action-button.able span {
   animation: neon_blink_text 1.5s infinite alternate;
+  font-size: 32px;
 }
 
 .action-button.disable,
 .action-button.disable::before,
 .action-button.disable::after {
-  background-color: #0e3d4c;
+  background-color: #0e3145;
   cursor: not-allowed;
 }
 
