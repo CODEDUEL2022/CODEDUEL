@@ -57,7 +57,7 @@ export default {
   right: -3px;
 }
 
-.css-button span {
+.action-button span {
   position: relative;
   z-index: 1;
   color: #e8e8e8;
