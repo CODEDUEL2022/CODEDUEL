@@ -132,3 +132,77 @@ export const reload = function (req, res) {
   };
   return playerDBFromLocalStorage;
 };
+
+export const culculateHP = function (cardValue, playerId) {
+  const indexAttacked = playerDB.findIndex((e) => e.playerId === playerId);
+  const thisRoomPlayer = playerDB.filter((e) => {
+    if (e.RoomId === cardValue.roomId && e.playerId != playerId) {
+      return true;
+    }
+  });
+  const indexDamaged = playerDB.findIndex(
+    (e) => e.playerId === thisRoomPlayer[0].playerId
+  );
+  let effect = "";
+  if (cardValue.selectedData.length == 1) {
+    let damageValue = cardValue.selectedData[0].value;
+    if (cardValue.selectedData[0].action == "enhancement") {
+      //回復の処理
+      effect += "enhancement";
+      playerDB[indexAttacked].yourHP += damageValue;
+      playerDB[indexDamaged].opponentHP += damageValue;
+    } else if (cardValue.selectedData[0].action == "steal") {
+      //ハッカーカードの処理
+      effect += "steal";
+      playerDB[indexAttacked].yourHP += damageValue;
+      playerDB[indexDamaged].opponentHP += damageValue;
+      playerDB[indexAttacked].opponentHP -= damageValue;
+      playerDB[indexDamaged].yourHP -= damageValue;
+    } else {
+      //攻撃の処理
+      effect += "attack";
+      playerDB[indexAttacked].opponentHP -= damageValue;
+      playerDB[indexDamaged].yourHP -= damageValue;
+    }
+  } else {
+    effect += ableAttacks(selectedData)[0].nameEn;
+    const isIncludes = (arr, target) => arr.every((el) => target.includes(el));
+    let updatedData = cardValue.selectedData.map((obj) => obj.id);
+    comboDB.filter((comboDB) => {
+      if (isIncludes(updatedData, comboDB.idList)) {
+        if (updatedData.length == comboDB.idList.length) {
+          let damageValue = comboDB.actionValue;
+          playerDB[indexAttacked].opponentHP -= damageValue;
+          playerDB[indexDamaged].yourHP -= damageValue;
+        }
+      }
+    });
+  }
+  const HPinfo = {
+    effect: effect,
+    attackedPlayerID: playerDB[indexAttacked].playerId,
+    damagedPlayerID: playerDB[indexDamaged].playerId,
+    attackedPlayerHP: playerDB[indexAttacked].yourHP,
+    damagedPlayerHP: playerDB[indexDamaged].yourHP,
+  };
+  return HPinfo;
+};
+
+const ableAttacks = function (selectedData) {
+  // selecteddataのidだけを集めた
+  let updatedData = selectedData.map((obj) => obj.id);
+  let canAttackData = updatedData.sort((a, b) => (a < b ? -1 : 1));
+
+  // 一致してるものがあるかを判定
+  const isIncludes = (arr, target) => arr.every((el) => target.includes(el));
+  //recent_selectdataに、idに対応するカードの名前を入れたい
+  if (canAttackData.length === 0) {
+    // 何も選択されていないとき空の配列を返す
+    return [];
+  } else {
+    // updateddataにあるのと一致した攻撃だけを返す
+    return this.comboDB.filter((comboDB) => {
+      return isIncludes(canAttackData, comboDB.idList);
+    });
+  }
+};
