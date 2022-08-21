@@ -30,20 +30,11 @@
             :options="options"
             class="area"
           >
-            <div
-              v-for="select in selectedCardsData"
-              :key="`first-${select.id}`"
-              class="item"
-            >
-              <v-card height="242px" max-width="200px" hover class="black">
-                <v-img
-                  aspect-ratio="475/400"
-                  height="242px"
-                  :src="require(`../../ui/assets/cards/${select.img}`)"
-                >
-                </v-img>
-              </v-card>
-            </div>
+            <SimpleCard
+              v-for="card in selectedCardsData"
+              :focusedCard="card"
+              :key="`first-${card.id}`"
+            ></SimpleCard>
           </VueDrag>
         </div>
       </v-col>
@@ -58,16 +49,11 @@
         :options="options"
         class="area"
       >
-        <div
+        <SimpleCard
           v-for="yours in yourCardsData"
+          :focusedCard="yours"
           :key="`second-${yours.id}`"
-          class="item"
-        >
-          <v-card hover class="black" height="222px">
-            <v-img :src="require(`../../ui/assets/cards/${yours.img}`)">
-            </v-img>
-          </v-card>
-        </div>
+        ></SimpleCard>
       </VueDrag>
     </div>
     <ActionButton
@@ -84,8 +70,8 @@ import RoundDisplay from "../components/RoundDisplay.vue";
 import VueDrag from "vuedraggable";
 import GeneralCutIn from "../components/GeneralCutIn.vue";
 import ActionCutIn from "../components/ActionCutIn.vue";
-import TerMinalUI from "../components/TerminalUI.vue"
 import TerminalUI from "../components/TerminalUI.vue";
+import SimpleCard from "../components/SimpleCard.vue";
 
 export default {
   name: "FieldTemplate",
@@ -96,8 +82,8 @@ export default {
     VueDrag,
     GeneralCutIn,
     ActionCutIn,
-    TerMinalUI,
-    TerminalUI
+    TerminalUI,
+    SimpleCard,
 },
   props: [
     "message",
@@ -117,7 +103,8 @@ export default {
     "selectedImg",
     "comboData",
     "isEnableAction",
-    "attackOptions"
+    "attackOptions",
+    "focusedCard"
   ],
   data() {
     return {
@@ -145,10 +132,5 @@ export default {
   justify-content: stretch;
   width: 1500px;
   height: 300px;
-}
-
-.item {
-  margin: 10px;
-  width: 12%;
 }
 </style>
