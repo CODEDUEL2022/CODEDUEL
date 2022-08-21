@@ -92,7 +92,6 @@ export default {
     "message",
     "showGeneralCutIn",
     "showActionCutIn",
-    "isEnableAction",
     "action",
     "value",
     "yourHp",
@@ -105,6 +104,8 @@ export default {
     "yourImg",
     "selectedId",
     "selectedImg",
+    "comboData",
+    "isEnableAction"
   ],
   data() {
     return {
