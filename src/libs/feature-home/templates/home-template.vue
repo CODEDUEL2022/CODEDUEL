@@ -10,19 +10,18 @@
         <div>></div>
         <div>></div>
         <div>></div>
-        <!--<div class="typing">-->
         <div class="input">
-          >　<span>相手のIDを入力してください：</span
-          ><input v-model="id" placeholder="" /><v-btn
+          >　<span>ルームIDを入力してください：</span
+          ><input v-model="roomId" placeholder="" /><v-btn
             outlined
-            @click="$emit('handleSendId', id)"
+            @click="$emit('handleSendId', roomId)"
             class="btn play"
             >このルームで遊ぶ</v-btn
           >
         </div>
         <div>
           ><v-btn outlined @click="$emit('handleSetIssue')" class="btn"
-            >IDを発行</v-btn
+            >ルームIDを発行</v-btn
           >
         </div>
       </v-col>
@@ -42,11 +41,7 @@ export default {
   components: {
     Header,
   },
-  data() {
-    return {
-      id: "",
-    };
-  },
+  props: ["roomId"],
 };
 </script>
 <style scoped>
