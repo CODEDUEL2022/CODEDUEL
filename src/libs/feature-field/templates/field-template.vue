@@ -33,7 +33,7 @@
             <SimpleCard
               v-for="card in selectedCardsData"
               :focusedCard="card"
-              :key="`first-${card.id}`"
+              :key="`${Math.random().toString(32).substring(2)}-first-${card.id}`"
             ></SimpleCard>
           </VueDrag>
         </div>
@@ -52,7 +52,7 @@
         <SimpleCard
           v-for="yours in yourCardsData"
           :focusedCard="yours"
-          :key="`second-${yours.id}`"
+          :key="`${Math.random().toString(32).substring(2)}-second-${yours.id}`"
         ></SimpleCard>
       </VueDrag>
     </div>
