@@ -42,7 +42,6 @@ export default {
       roundCount: 1,
       yourCardsData: [],
       selectedCardsData: [],
-      comboData: [],
       yourId: "",
       yourImg: "",
       selectedId: "",
@@ -148,7 +147,7 @@ export default {
         // this.cardValue.value = this.selectedCardsData[0].value;
         return true;
       } else {
-        let ableCombo = this.comboData.filter((comboData) => {
+        let ableCombo = this.c.filter((comboData) => {
         return isIncludes(updatedData, comboData.idList);
         });
         // 完全一致した攻撃だけを返す
