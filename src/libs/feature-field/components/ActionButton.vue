@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div>
     <div
       v-if="isEnableAction"
       @click="$emit('handleAction')"
