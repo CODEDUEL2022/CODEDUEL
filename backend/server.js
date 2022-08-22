@@ -12,7 +12,8 @@ import {
   cpuHPReload,
   cpuCulculateHP,
   cpuPostCardDraw,
-  cpuGetTurn
+  cpuGetTurn,
+  cpuContorlTrun
 } from "./components/cpu.js"
 import path from "path";
 import { fileURLToPath } from "url";
@@ -167,6 +168,15 @@ app.post("api/cpuGetTurn",(req,res) => {
 app.post("/api/cpuCardDraw", (req, res) => {
   res.send(cpuPostCardDraw(req, res));
 });
+
+app.post("api/cpuControlTurn",(req,res) => {
+  cpuContorlTrun(req,res);
+  res.send();
+});
+
+app.post("api/cpuAction",(req,res) => {
+  
+})
 
 http.listen(PORT, function () {
   console.log("server listening. Port:" + PORT);

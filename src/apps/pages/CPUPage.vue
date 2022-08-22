@@ -1,5 +1,6 @@
 <template>
   <FieldTemplate
+    :message="message"
     :showGeneralCutIn="showGeneralCutIn"
     :showActionCutIn="showActionCutIn"
     :action="action"
@@ -31,6 +32,7 @@ export default {
   },
   data() {
     return {
+      message: "準備が整うまでしばらくお待ちください",
       showGeneralCutIn: true,
       showActionCutIn: false,
       action: "attack",
@@ -96,12 +98,9 @@ export default {
       .then((res) => {
         if (res.data % 2 == 0) {
           this.oponentTurn = false;
-        } else if (res.data == 1) {
-          this.oponentTurn = true;
-          // this.message = "相手が入室するまでしばらくお待ちください";
         } else {
           this.oponentTurn = true;
-          // this.message = "相手のターンです";
+          this.message = "相手のターンです";
         }
       });
   },
@@ -169,36 +168,70 @@ export default {
       this.showActionCutIn = false;
       this.roundCount += 1;
     },
+    //カード使用時のアクション
     handleAction: function () {
+      //懇切丁寧に記述しているけど、絶対もっと効率よく書ける。動作確認後ブラッシュアップ
+      //カード発動演出
       this.showActionCutIn = true;
       this.selectedCardsData.splice(this.index, this.selectedCardsData.length);
+      const searchParams = new URLSearchParams(window.location.search);
+      //ここに、playerのturnFlagを+1する処理を書く。
+      this.$axios.post("/cpuControlTurn", { playerId: searchParams.get("id") });
+
+      //cpuの行動を記述(この間、画面は操作出来ないことを想定)
+      let cardValue = {
+        userId: searchParams.get("id"),
+        selectedCardsData: this.selectedCardsData
+      }
+      this.$axios.post("/cpuAction", { cardValue })
+      .then((res) => {
+        
+      });
+
+      //cpuのターンが終了
+
+      //playerのturnFlag(バックエンド側)を+1
+      this.$axios.post("/cpuControlTurn", { player_Id: searchParams.get("id") });
+
+      //playerのターンに移行
+      //カード操作をアクティベート
+      this.$axios.post("/cpuGetTurn", { player_Id: searchParams.get("id") })
+      .then((res) => {
+        if (res.data % 2 == 0) {
+          this.oponentTurn = false;
+        } else {
+          this.oponentTurn = true;
+          this.message = "相手のターンです";
+        }
+      });;
+      
     },
   },
   mounted() {
-    let anotherThis = this;
-    this.socket.on("numPlayer", function (numPlayer) {
-      if (numPlayer == 1) {
-        anotherThis.isAlone = true;
-      } else {
-        anotherThis.isAlone = false;
-      }
-    });
+    // let anotherThis = this;
+    // this.socket.on("numPlayer", function (numPlayer) {
+    //   if (numPlayer == 1) {
+    //     anotherThis.isAlone = true;
+    //   } else {
+    //     anotherThis.isAlone = false;
+    //   }
+    // });
 
-    this.socket.on("HPinfo", function (HPinfo) {
-      anotherThis.action = HPinfo.action; //攻撃の種類
-      anotherThis.usedCardIdList = HPinfo.usedCardIdList; //カードのIDのリスト
-      if (HPinfo.attackedPlayerID == anotherThis.playerId) {
-        //攻撃した時の処理
-        anotherThis.yourHP = HPinfo.attackedPlayerHP;
-        anotherThis.opponentHP = HPinfo.damagedPlayerHP;
-        anotherThis.opponentTrun = true;
-      } else if (HPinfo.damagedPlayerID == anotherThis.playerId) {
-        //攻撃された時の処理
-        anotherThis.yourHP = HPinfo.damagedPlayerHP;
-        anotherThis.opponentHP = HPinfo.attackedPlayerHP;
-        anotherThis.opponentTrun = false;
-      }
-    });
+    // this.socket.on("HPinfo", function (HPinfo) {
+    //   anotherThis.action = HPinfo.action; //攻撃の種類
+    //   anotherThis.usedCardIdList = HPinfo.usedCardIdList; //カードのIDのリスト
+    //   if (HPinfo.attackedPlayerID == anotherThis.playerId) {
+    //     //攻撃した時の処理
+    //     anotherThis.yourHP = HPinfo.attackedPlayerHP;
+    //     anotherThis.opponentHP = HPinfo.damagedPlayerHP;
+    //     anotherThis.opponentTrun = true;
+    //   } else if (HPinfo.damagedPlayerID == anotherThis.playerId) {
+    //     //攻撃された時の処理
+    //     anotherThis.yourHP = HPinfo.damagedPlayerHP;
+    //     anotherThis.opponentHP = HPinfo.attackedPlayerHP;
+    //     anotherThis.opponentTrun = false;
+    //   }
+    // });
   },
 };
 </script>

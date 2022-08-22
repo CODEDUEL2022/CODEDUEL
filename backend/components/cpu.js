@@ -31,13 +31,18 @@ export const cpuAttack = function () {
   }
 };
 
-//CPUのDBを作ってる。フロントエンドに渡すよう
+//CPUの使用したカード(あるいはカード一覧)を返す
+export const cpuCard = function(){
 
+}
+
+//CPUのDB フロントエンドに渡すよう
 export let cpuDB = [{
   yourHP: cpuHP,
   turnFlag: 0
 }];
 
+//CPU戦の際のplayerDB
 export let cpuPlayerDB = [
     {
         yourHP: 200,
@@ -90,7 +95,7 @@ export const cpuCulculateHP = function (cardValue, playerId) {
     };
     return HPinfo;
   };
-  
+
   const ableAttacks = function (selectedData) {
     // selecteddataのidだけを集めた
     let updatedData = selectedData.map((obj) => obj.id);
@@ -135,17 +140,22 @@ export const cardDraw = function (selectId) {
     }
   };
   
-  export const cpuPostCardDraw = function (req, res) {
+export const cpuPostCardDraw = function (req, res) {
     let selectId = cpuPlayerDB.findIndex((e) => e.playerId === req.body.playerId);
     if (req.body.cardData.length != 0) {
       cpuPlayerDB.cardList = req.body.cardData;
     }
     cardDraw(selectId);
     return cpuPlayerDB[selectId].cardList;
-  };
+};
 
 export const cpuGetTurn = function(req,res){
     let selectId = cpuPlayerDB.findIndex((e) => e.playerId === req.body.playerId);
     return cpuPlayerDB[selectId].turnFlag
+}
+
+export const cpuContorlTrun = function(req,res){
+    let selectId = cpuPlayerDB.findIndex((e) => e.playerId === req.body.playerId);
+    cpuPlayerDB[selectId].turnFlag += 1
 }
 
