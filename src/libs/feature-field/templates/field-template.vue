@@ -8,6 +8,7 @@
     </div>
     <div v-show="showActionCutIn">
       <ActionCutIn
+        :givenCards="givenCards"
         :action="action"
         :value="value"
         @closeActionCutIn="$emit('closeActionCutIn')"
@@ -104,7 +105,7 @@ export default {
     "comboData",
     "isEnableAction",
     "attackOptions",
-    "focusedCard"
+    "givenCards"
   ],
   data() {
     return {

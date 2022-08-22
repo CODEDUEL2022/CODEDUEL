@@ -1,17 +1,24 @@
 <template>
   <div class="overlay" @click="$emit('closeActionCutIn')">
     <div>
-      <v-card height="475px" width="400px" class="black">
-        <v-img src="../../ui/assets/cards/Angular.png" />
-      </v-card>
+      <SimpleCard
+        v-for="given in givenCards"
+        :focusedCard="given"
+        :key="given.id"
+      ></SimpleCard>
     </div>
     <div class="dalayEffect">{{ action }} {{ value }} pt</div>
   </div>
 </template>
 <script>
+import SimpleCard from "./SimpleCard.vue";
+
 export default {
   name: "ActionCutIn",
-  props: ["action", "value"],
+  props: ["givenCards", "action", "value"],
+  components: {
+    SimpleCard,
+}
 };
 </script>
 <style scoped>
