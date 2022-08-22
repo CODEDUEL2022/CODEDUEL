@@ -145,8 +145,18 @@ export const culculateHP = function (cardValue, playerId) {
   );
   let effect = "";
   let updatedData = cardValue.selectedCardData.map((obj) => obj.id);
+  let thisTrunField = playerDB[indexAttacked].field;
+  chengeField(indexAttacked);
+  chengeField(indexDamaged);
+  let nextTrunField = playerDB[indexAttacked].field;
+  let fieldBonus = 1;
+  let fieldBonusFlag = "false";
   if (cardValue.selectedCardData.length == 1) {
-    let damageValue = cardValue.selectedCardData[0].value;
+    if (cardValue.selectedCardData[0].field == thisTrunField) {
+      fieldBonus = 1.3;
+      fieldBonusFlag = "true";
+    }
+    let damageValue = cardValue.selectedCardData[0].value * fieldBonus;
     if (cardValue.selectedCardData[0].action == "enhancement") {
       //回復の処理
       effect += "enhancement";
@@ -185,6 +195,8 @@ export const culculateHP = function (cardValue, playerId) {
     attackedPlayerHP: playerDB[indexAttacked].yourHP,
     damagedPlayerHP: playerDB[indexDamaged].yourHP,
     usedCardIdList: updatedData,
+    nextTrunField: nextTrunField,
+    fieldBonusFlag: fieldBonusFlag,
   };
   return HPinfo;
 };
@@ -206,4 +218,8 @@ const ableAttacks = function (selectedData) {
       return isIncludes(canAttackData, comboDB.idList);
     });
   }
+};
+
+const chengeField = function (playerId) {
+  playerDB[playerId].field = (playerDB[playerId].field + 1) % 5;
 };

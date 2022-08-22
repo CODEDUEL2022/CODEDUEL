@@ -1,1 +1,5 @@
-/**creat a new function */
+import playerDB from "backend/player.js";
+
+export const chengeField = function (playerId) {
+  playerDB[playerId].field = (playerDB[playerId].field + 1) % 5;
+};
