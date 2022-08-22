@@ -1,5 +1,6 @@
 <template>
-  <v-app>
+  <div>
+    <Header />
     <div v-show="showGeneralCutIn">
       <GeneralCutIn
         :message="message"
@@ -13,7 +14,7 @@
         @closeActionCutIn="$emit('closeActionCutIn')"
       />
     </div>
-    <HpDisplay :yourHp="yourHp" :opponentHp="opponentHp"></HpDisplay>
+    <HPDisplay :yourHP="yourHP" :opponentHP="opponentHP"></HPDisplay>
     <RoundDisplay :roundCount="roundCount"></RoundDisplay>
     <v-row>
       <v-col cols="3">
@@ -60,12 +61,12 @@
       :isEnableAction="isEnableAction"
       @handleAction="$emit('handleAction')"
     ></ActionButton>
-  </v-app>
+  </div>
 </template>
 
 <script>
 import ActionButton from "../components/ActionButton.vue";
-import HpDisplay from "../components/HpDisplay.vue";
+import HPDisplay from "../components/HPDisplay.vue";
 import RoundDisplay from "../components/RoundDisplay.vue";
 import VueDrag from "vuedraggable";
 import GeneralCutIn from "../components/GeneralCutIn.vue";
@@ -77,22 +78,22 @@ export default {
   name: "FieldTemplate",
   components: {
     ActionButton,
-    HpDisplay,
+    HPDisplay,
     RoundDisplay,
     VueDrag,
     GeneralCutIn,
     ActionCutIn,
     TerminalUI,
     SimpleCard,
-},
+  },
   props: [
     "message",
     "showGeneralCutIn",
     "showActionCutIn",
     "action",
     "value",
-    "yourHp",
-    "opponentHp",
+    "yourHP",
+    "opponentHP",
     "roundCount",
     "yourCardsData",
     "selectedCardsData",
@@ -104,18 +105,18 @@ export default {
     "comboData",
     "isEnableAction",
     "attackOptions",
-    "focusedCard"
+    "focusedCard",
   ],
   data() {
     return {
-        // drag&drop用のデータ
-        options: {
-            group: "yourGroup",
-            animation: 200,
-        },
+      // drag&drop用のデータ
+      options: {
+        group: "yourGroup",
+        animation: 200,
+      },
     };
   },
-}
+};
 </script>
 
 <style scoped>

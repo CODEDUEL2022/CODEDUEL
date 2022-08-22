@@ -2,8 +2,9 @@
   <HomeTemplate
     :roomId="roomId"
     @handleSendId="onSendRoomId(roomId)"
-    @handleStart="onPush()"
+    @handleStart="onPushField()"
     @handleSetIssue="onSetId()"
+    @handleMoveCPUPage="onPushCPU()"
   />
 </template>
 <script>
@@ -49,10 +50,17 @@ export default {
         });
     },
     //ページ遷移機能
-    onPush: function () {
+    onPushField: function () {
       alert("start!");
       this.$router.push({
         name: "field",
+        query: { room: this.roomId, id: this.playerId },
+      });
+    },
+    onPushCPU: function () {
+      alert("CPU戦だよ！よろしくね！");
+      this.$router.push({
+        name: "cpu",
         query: { room: this.roomId, id: this.playerId },
       });
     },

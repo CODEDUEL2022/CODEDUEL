@@ -16,6 +16,7 @@ import { Server } from "socket.io";
 import serverStatic from "serve-static";
 import cors from "cors";
 import bodyParser from "body-parser";
+import history from "connect-history-api-fallback";
 
 const app = express();
 const http = importHttp.Server(app);
@@ -58,6 +59,12 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 app.use(serveStatic(__dirname + "/dist"));
 
+//historyモードを追加(deploy後のreload対策になるらしい)
+app.use(history({
+  disableDotRule: true,
+  verbose: true
+}));
+
 //WebSocket周りの処理
 io.sockets.on("connection", function (socket) {
   console.log("connected");
@@ -91,7 +98,7 @@ io.sockets.on("connection", function (socket) {
   });
   socket.on("cardValue", function (cardValue, playerId) {
     socket.join(cardValue.roomId);
-    io.to(cardValue.roomId).emit("card-value", cardValue);
+    io.to(cardValue.roomId).emit("HPinfo", culculateHP(cardValue, playerId));
     console.log("カードの使用が認められました");
   });
 });
