@@ -61,7 +61,7 @@ export default {
       alert("CPU戦だよ！よろしくね！");
       this.$router.push({
         name: "cpu",
-        query: { room: this.roomId, id: this.playerId },
+        query: { id: this.playerId },
       });
     },
   },
