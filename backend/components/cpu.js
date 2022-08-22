@@ -32,7 +32,120 @@ export const cpuAttack = function () {
 };
 
 //CPUのDBを作ってる。フロントエンドに渡すよう
-export const CPUDB = [{
-  myHP: cpuHP,
+
+export let cpuDB = [{
+  yourHP: cpuHP,
   turnFlag: 0
 }];
+
+export let cpuPlayerDB = [
+    {
+        yourHP: 200,
+        playerId: "",
+        turnFlag: 0,
+        cardList: []
+    }
+]
+
+
+//CPU戦用のHP計算
+export const cpuCulculateHP = function (cardValue, playerId) {
+    const indexAttacked = cpuPlayerDB.findIndex((e) => e.playerId === playerId);
+    let effect = "";
+    let updatedData = cardValue.selectedCardData.map((obj) => obj.id);
+
+    if (cardValue.selectedCardData.length == 1) {
+      let damageValue = cardValue.selectedCardData[0].value;
+      if (cardValue.selectedCardData[0].action == "enhancement") {
+        //回復の処理
+        effect += "enhancement";
+        cpuPlayerDB[indexAttacked].yourHP += damageValue;
+      } else if (cardValue.selectedCardData[0].action == "steal") {
+        //ハッカーカードの処理
+        effect += "steal";
+        cpuPlayerDB[indexAttacked].yourHP += damageValue;
+        cpuDB.yourHP -= damageValue;
+      } else {
+        //攻撃の処理
+        effect += "attack";
+        cpuDB.yourHP -= damageValue;
+      }
+    } else {
+      effect += ableAttacks(selectedCardData)[0].nameEn;
+      const isIncludes = (arr, target) => arr.every((el) => target.includes(el));
+      comboDB.filter((comboDB) => {
+        if (isIncludes(updatedData, comboDB.idList)) {
+          if (updatedData.length == comboDB.idList.length) {
+            let damageValue = comboDB.actionValue;
+            cpuDB.yourHP -= damageValue;
+          }
+        }
+      });
+    }
+    let HPinfo = {
+      action: effect,
+      playerHP: cpuPlayerDB[indexAttacked].yourHP,
+      cpuHP: cpuDB.yourHP,
+      usedCardIdList: updatedData,
+    };
+    return HPinfo;
+  };
+  
+  const ableAttacks = function (selectedData) {
+    // selecteddataのidだけを集めた
+    let updatedData = selectedData.map((obj) => obj.id);
+    let canAttackData = updatedData.sort((a, b) => (a < b ? -1 : 1));
+  
+    // 一致してるものがあるかを判定
+    const isIncludes = (arr, target) => arr.every((el) => target.includes(el));
+    //recent_selectdataに、idに対応するカードの名前を入れたい
+    if (canAttackData.length === 0) {
+      // 何も選択されていないとき空の配列を返す
+      return [];
+    } else {
+      // updateddataにあるのと一致した攻撃だけを返す
+      return this.comboDB.filter((comboDB) => {
+        return isIncludes(canAttackData, comboDB.idList);
+      });
+    }
+  };
+  
+export const cpuHPReload = function(req,res){
+    let selectId = cpuPlayerDB.findIndex((e) => e.playerId === req.body.playerId);
+    const HPdata = {
+        yourHP: cpuPlayerDB[selectId].yourHP,
+        opponentHP: cpuDB.yourHP,
+      };
+    return HPdata
+}
+
+
+
+export const cardDraw = function (selectId) {
+    console.log("ドロー関数が発火されました");
+    for (let j = cpuPlayerDB[selectId].cardList.length; j < 6; ) {
+      //tmpには、デッキの中からランダムに1つ数字を選ぶようにしている
+      //const tmp = Number(Math.floor(Math.random() * selectDec(playerDB[selectId].decId).length));
+      const tmp = Number(Math.floor(Math.random() * 56));
+      //選んだIDのものをpushする
+      //playerDB[selectId].cardList.push(selectDec(playerDB[selectId].decId)[tmp]);
+      cpuPlayerDB[selectId].cardList.push(cardDB[tmp]);
+  
+      j++;
+    }
+  };
+  
+  export const cpuPostCardDraw = function (req, res) {
+    let selectId = cpuPlayerDB.findIndex((e) => e.playerId === req.body.playerId);
+    if (req.body.cardData.length != 0) {
+      cpuPlayerDB.cardList = req.body.cardData;
+    }
+    cardDraw(selectId);
+    return cpuPlayerDB[selectId].cardList;
+  };
+
+export const cpuGetTurn = function(req,res){
+    let selectId = cpuPlayerDB.findIndex((e) => e.playerId === req.body.playerId);
+    return cpuPlayerDB[selectId].turnFlag
+}
+

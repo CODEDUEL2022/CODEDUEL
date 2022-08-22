@@ -1,6 +1,5 @@
 <template>
   <FieldTemplate
-    :message="message"
     :showGeneralCutIn="showGeneralCutIn"
     :showActionCutIn="showActionCutIn"
     :action="action"
@@ -26,13 +25,12 @@
 import FieldTemplate from "/src/libs/feature-field/templates/field-template.vue";
 
 export default {
-  name: "field",
+  name: "cpu",
   components: {
     FieldTemplate,
   },
   data() {
     return {
-      message: "相手が入室するまでしばらくお待ちください",
       showGeneralCutIn: true,
       showActionCutIn: false,
       action: "attack",
@@ -56,7 +54,6 @@ export default {
   },
   created() {
     this.yourCardsData = [];
-    const searchParams = new URLSearchParams(window.location.search);
     console.log(this.yourCardsData);
     this.$axios.get("/getComboDb").then((res) => {
       for (let i = 0; i < res.data.length; i++) {
@@ -65,7 +62,7 @@ export default {
     });
     //HPの共有
     this.$axios
-      .post("/HPReload", {
+      .get("/cpuHPReload", {
         playerId: searchParams.get("id"),
       })
       .then((res) => {
@@ -75,7 +72,7 @@ export default {
       });
     // カードをドローする処理
     this.$axios
-      .post("/cardDraw", {
+      .post("/cpuCardDraw", {
         cardData: this.yourCardsData,
         playerId: searchParams.get("id"),
       })
@@ -88,23 +85,23 @@ export default {
         console.log("hogehoge");
       });
 
-    //joinするための送信
-    this.yourId = searchParams.get("id");
-    this.roomID = searchParams.get("room");
-    this.socket.emit("roomJoin", this.roomID, this.yourId);
+    // //joinするための送信
+    // this.yourId = searchParams.get("id");
+    // this.roomID = searchParams.get("room");
+    // this.socket.emit("roomJoin", this.roomID, this.yourId);
     //turn_flagに応じて、showAttackなどの表示、非表示を決定する。
     //偶数の時は自分の番
     this.$axios
-      .post("/getTurn", { playerId: searchParams.get("id") })
+      .post("/cpuGetTurn", { playerId: searchParams.get("id") })
       .then((res) => {
         if (res.data % 2 == 0) {
           this.oponentTurn = false;
         } else if (res.data == 1) {
           this.oponentTurn = true;
-          this.message = "相手が入室するまでしばらくお待ちください";
+          // this.message = "相手が入室するまでしばらくお待ちください";
         } else {
           this.oponentTurn = true;
-          this.message = "相手のターンです";
+          // this.message = "相手のターンです";
         }
       });
   },
