@@ -43,12 +43,12 @@ export default {
       yourCardsData: [],
       selectedCardsData: [],
       comboData: [],
+      givenCards: [],
       yourId: "",
       yourImg: "",
       selectedId: "",
       selectedImg: "",
       attackSignal: 0,
-      comboData: [],
       sampleHp: {
         yours: 200,
         opponent: 200,
@@ -127,6 +127,7 @@ export default {
         });
       }
     },
+
     //発動できるかどうかを判定する
     isEnableAction: function () {
       let updatedData = this.selectedCardsData.map((obj) => obj.id);
@@ -142,27 +143,31 @@ export default {
       // 一致してるものがあるかを判定
       const isIncludes = (arr, target) =>
         arr.every((el) => target.includes(el));
+      // 配列の完全一致
+      const isEqualArray = function (array1, array2) {
+        if (array1.length != array2.length) return false;
+        for (let i = 0; i < array1.length; j++) {
+          if (array1[i] !== array2[i]) return false;
+        }
+        return true;
+      };
       if (updatedData.length === 0) {
         return false;
       } else if (updatedData.length === 1) {
-        // this.cardValue.value = this.selectedCardsData[0].value;
         return true;
       } else {
-        let ableCombo = this.comboData.filter((comboData) => {
+        const ableCombo = this.comboData.filter((comboData) => {
         return isIncludes(updatedData, comboData.idList);
         });
         // 完全一致した攻撃だけを返す
-        for (let i = 0, n = updatedData.length; i < n; ++i) {
         if (ableCombo.length == 0) {
           return false;
         } else if (
-          updatedData[i] == ableCombo[0].idList[i] &&
-          updatedData.length == ableCombo[0].idList.length
+          isEqualArray(updatedData, ableCombo[0].idList)
         ) {
           return true;
         } else {
           return false;
-        }
         }
       }
     },
