@@ -101,48 +101,29 @@ export default {
       let ableAttackData = updatedData.sort((a, b) => (a < b ? -1 : 1));
       const isIncludes = (arr, target) =>
         arr.every((el) => target.includes(el));
-      if (ableAttackData.length === 0) {
-        return [];
-      } else {
-        return this.comboData.filter((comboData) => {
-          return isIncludes(ableAttackData, comboData.idList);
-        });
-      }
+      if (ableAttackData.length === 0) return [];
+      return this.comboData.filter((comboData) => {
+        return isIncludes(ableAttackData, comboData.idList);
+      });
     },
     isEnableAction: function () {
       let updatedData = this.selectedCardsData.map((obj) => obj.id);
       updatedData.sort(function (first, second) {
-        if (first > second) {
-          return 1;
-        } else if (first < second) {
-          return -1;
-        } else {
-          return 0;
-        }
+        if (first > second) return 1;
+        if (first < second) return -1;
+        return 0;
       });
       const isIncludes = (arr, target) =>
         arr.every((el) => target.includes(el));
-  
-      if (updatedData.length === 0) {
+      if (updatedData.length === 0) return false;
+      if (updatedData.length === 1) return true;
+      let ableCombo = this.comboData.filter((comboData) => {
+        return isIncludes(updatedData, comboData.idList);
+      });
+      for (let i = 0, n = updatedData.length; i < n; ++i) {
+        if (ableCombo.length == 0) return false;
+        if (updatedData[i] == ableCombo[0].idList[i] &&updatedData.length == ableCombo[0].idList.length) return true;
         return false;
-      } else if (updatedData.length === 1) {
-        return true;
-      } else {
-        let ableCombo = this.comboData.filter((comboData) => {
-          return isIncludes(updatedData, comboData.idList);
-        });
-        for (let i = 0, n = updatedData.length; i < n; ++i) {
-        if (ableCombo.length == 0) {
-          return false;
-        } else if (
-          updatedData[i] == ableCombo[0].idList[i] &&
-          updatedData.length == ableCombo[0].idList.length
-        ) {
-          return true;
-        } else {
-          return false;
-        }
-        }
       }
     },
     closeGeneralCutIn: function () {

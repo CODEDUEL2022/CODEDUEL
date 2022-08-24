@@ -113,15 +113,11 @@ export const cpuCulculateHP = function (cardValue, playerId, isCPU) {
   const ableAttacks = function (selectedData) {
     let updatedData = selectedData.map((obj) => obj.id);
     let canAttackData = updatedData.sort((a, b) => (a < b ? -1 : 1));
-  
     const isIncludes = (arr, target) => arr.every((el) => target.includes(el));
-    if (canAttackData.length === 0) {
-      return [];
-    } else {
-      return this.comboDB.filter((comboDB) => {
+    if (canAttackData.length === 0) return [];
+    return this.comboDB.filter((comboDB) => {
         return isIncludes(canAttackData, comboDB.idList);
-      });
-    }
+    });
   };
 
 export const cpuAction = function(req,res){
@@ -151,7 +147,6 @@ export const cardDraw = function (selectId) {
       const tmp = Number(Math.floor(Math.random() * cardNumber));
       //playerDB[selectId].cardList.push(selectDec(playerDB[selectId].decId)[tmp]);
       cpuPlayerDB[selectId].cardList.push(cardDB[tmp]);
-  
       j++;
     }
   };
