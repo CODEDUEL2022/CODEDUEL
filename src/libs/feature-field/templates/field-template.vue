@@ -11,6 +11,7 @@
       <ActionCutIn
         :action="action"
         :value="value"
+        :cardsList="cardsList"
         @closeActionCutIn="$emit('closeActionCutIn')"
       />
     </div>
@@ -66,7 +67,7 @@
 
 <script>
 import ActionButton from "../components/ActionButton.vue";
-import HPDisplay from "../components/HPDisplay.vue";
+import HPDisplay from "../components/HpDisplay.vue";
 import RoundDisplay from "../components/RoundDisplay.vue";
 import VueDrag from "vuedraggable";
 import GeneralCutIn from "../components/GeneralCutIn.vue";

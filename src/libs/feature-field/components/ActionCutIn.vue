@@ -1,17 +1,27 @@
 <template>
   <div class="overlay" @click="$emit('closeActionCutIn')">
-    <div>
+    <div v-for="card in cardsList" :key="card.id">
       <v-card height="475px" width="400px" class="black">
-        <v-img src="../../ui/assets/cards/Angular.png" />
+        <v-img :src="searchSelectedCard(card.id)"></v-img>
       </v-card>
     </div>
     <div class="dalayEffect">{{ action }} {{ value }} pt</div>
   </div>
 </template>
 <script>
+import { data } from 'browserslist';
+import {searchSelectedCard} from "../../../../backend/components/searchSelectedCard.js"
+
 export default {
   name: "ActionCutIn",
-  props: ["action", "value"],
+  props: ["cardsList", "action", "value"],
+
+  method: {
+    searchSelectedCard(id){
+      return searchSelectedCard(id)
+    }
+  }
+
 };
 </script>
 <style scoped>

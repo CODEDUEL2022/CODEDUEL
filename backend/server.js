@@ -13,7 +13,8 @@ import {
   cpuCulculateHP,
   cpuPostCardDraw,
   cpuGetTurn,
-  cpuContorlTrun
+  cpuContorlTrun,
+  cpuAction
 } from "./components/cpu.js"
 import path from "path";
 import { fileURLToPath } from "url";
@@ -155,7 +156,6 @@ app.get("api/reload", (req, res) => {
 /*
 以下CPU戦用のaxios
 */
-//HPの更新　リロード時
 app.post("api/cpuHPReload",(req,res) => {
   res.send(cpuHPReload(req,res))
 });
@@ -164,7 +164,6 @@ app.post("api/cpuGetTurn",(req,res) => {
   res.json(cpuGetTurn(req, res));
 })
 
-//カードドローリクエストがフロントから走った場合に発火
 app.post("/api/cpuCardDraw", (req, res) => {
   res.send(cpuPostCardDraw(req, res));
 });
@@ -175,7 +174,7 @@ app.post("api/cpuControlTurn",(req,res) => {
 });
 
 app.post("api/cpuAction",(req,res) => {
-  
+  res.send(cpuAction(req,res))
 })
 
 http.listen(PORT, function () {
