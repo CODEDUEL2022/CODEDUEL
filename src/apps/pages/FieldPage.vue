@@ -160,7 +160,7 @@ export default {
         return true;
       } else {
         const ableCombo = this.comboData.filter((comboData) => {
-        return isIncludes(updatedData, comboData.idList);
+          return isIncludes(updatedData, comboData.idList);
         });
         // 完全一致した攻撃だけを返す
         if (ableCombo.length == 0) {
@@ -180,11 +180,20 @@ export default {
       this.roundCount += 1;
     },
     handleAction: function () {
+      const searchParams = new URLSearchParams(window.location.search);
+      this.$axios.post("/controlTurn", { playerId: searchParams.get("id") });
+      let cardValue = {
+        selectedCardData: this.selectedCardsData,
+        roomId: searchParams.get("room"),
+      };
+      this.socket.emit("cardValue", cardValue, searchParams.get("id"));
       this.selectedCardsData.splice(this.index, this.selectedCardsData.length);
       // エフェクト用に画像を持ってくる
       for (let i = 0; i < this.usedCardIdList.length; i++) {
-        let UsedCard = this.cardData.find(element => element.id == this.usedCardIdList[i])
-        this.effectImages.push(UsedCard.img)
+        let UsedCard = this.cardData.find(
+          (element) => element.id == this.usedCardIdList[i]
+        );
+        this.effectImages.push(UsedCard.img);
       }
       this.showActionCutIn = true;
     },
@@ -215,8 +224,8 @@ export default {
       }
     });
 
-    console.log("action:" + this.action)
-    console.log("cardlist:" + this.usedCardIdList)
+    console.log("action:" + this.action);
+    console.log("cardlist:" + this.usedCardIdList);
   },
 };
 </script>

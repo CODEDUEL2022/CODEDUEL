@@ -1,7 +1,7 @@
 import { cardDB } from "./DB.js";
 import { comboDB } from "./DB.js";
 import {
-  controlTrun,
+  controlTurn,
   getTurn,
   HPreload,
   postPlayerData,
@@ -10,10 +10,10 @@ import {
 } from "./components/player.js";
 import {
   cpuHPReload,
-  cpuCulculateHP,
+  cpuCalculateHP,
   cpuPostCardDraw,
-  cpuGetTurn
-} from "./components/cpu.js"
+  cpuGetTurn,
+} from "./components/cpu.js";
 import path from "path";
 import { fileURLToPath } from "url";
 import express from "express";
@@ -66,10 +66,12 @@ const __dirname = path.dirname(__filename);
 app.use(serveStatic(__dirname + "/dist"));
 
 //historyモードを追加(deploy後のreload対策になるらしい)
-app.use(history({
-  disableDotRule: true,
-  verbose: true
-}));
+app.use(
+  history({
+    disableDotRule: true,
+    verbose: true,
+  })
+);
 
 //WebSocket周りの処理
 io.sockets.on("connection", function (socket) {
@@ -104,7 +106,7 @@ io.sockets.on("connection", function (socket) {
   });
   socket.on("cardValue", function (cardValue, playerId) {
     socket.join(cardValue.roomId);
-    io.to(cardValue.roomId).emit("HPinfo", culculateHP(cardValue, playerId));
+    io.to(cardValue.roomId).emit("HPinfo", calculateHP(cardValue, playerId));
     console.log("カードの使用が認められました");
   });
 });
@@ -138,7 +140,6 @@ app.get("/api/getCardDB", (req, res) => {
   res.json(cardDB);
 });
 
-
 //ページリロード時のターンを決定づける。
 app.post("/api/getTurn", (req, res) => {
   res.json(getTurn(req, res));
@@ -146,7 +147,7 @@ app.post("/api/getTurn", (req, res) => {
 
 //同じRoomにいる、自分以外の人のturnFlagを+１する
 app.post("/api/controlTurn", (req, res) => {
-  controlTrun(req, res);
+  controlTurn(req, res);
   res.send();
 });
 
@@ -155,18 +156,17 @@ app.get("api/reload", (req, res) => {
   res.send(reload(req, res));
 });
 
-
 /*
 以下CPU戦用のaxios
 */
 //HPの更新　リロード時
-app.post("api/cpuHPReload",(req,res) => {
-  res.send(cpuHPReload(req,res))
+app.post("api/cpuHPReload", (req, res) => {
+  res.send(cpuHPReload(req, res));
 });
 
-app.post("api/cpuGetTurn",(req,res) => {
+app.post("api/cpuGetTurn", (req, res) => {
   res.json(cpuGetTurn(req, res));
-})
+});
 
 //カードドローリクエストがフロントから走った場合に発火
 app.post("/api/cpuCardDraw", (req, res) => {
