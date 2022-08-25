@@ -146,8 +146,8 @@ export const calculateHP = function (cardValue, playerId) {
   let effect = "";
   let updatedData = cardValue.selectedCardData.map((obj) => obj.id);
   let thisTurnField = playerDB[indexAttacked].field;
-  chengeField(indexAttacked);
-  chengeField(indexDamaged);
+  changeField(indexAttacked);
+  changeField(indexDamaged);
   let nextTurnField = playerDB[indexAttacked].field;
   let fieldBonus = 1;
   let fieldBonusFlag = "false";
@@ -220,6 +220,6 @@ const ableAttacks = function (selectedData) {
   }
 };
 
-const chengeField = function (playerId) {
+const changeField = function (playerId) {
   playerDB[playerId].field = (playerDB[playerId].field + 1) % 5;
 };

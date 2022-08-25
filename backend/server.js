@@ -3,6 +3,7 @@ import { comboDB } from "./DB.js";
 import {
   controlTurn,
   getTurn,
+  calculateHP,
   HPreload,
   postPlayerData,
   reload,
