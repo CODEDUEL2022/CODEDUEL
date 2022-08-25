@@ -144,14 +144,25 @@ export const culculateHP = function (cardValue, playerId) {
     (e) => e.playerId === thisRoomPlayer[0].playerId
   );
   let effect = "";
-  if (cardValue.selectedData.length == 1) {
-    let damageValue = cardValue.selectedData[0].value;
-    if (cardValue.selectedData[0].action == "enhancement") {
+  let updatedData = cardValue.selectedCardData.map((obj) => obj.id);
+  let thisTrunField = playerDB[indexAttacked].field;
+  chengeField(indexAttacked);
+  chengeField(indexDamaged);
+  let nextTrunField = playerDB[indexAttacked].field;
+  let fieldBonus = 1;
+  let fieldBonusFlag = "false";
+  if (cardValue.selectedCardData.length == 1) {
+    if (cardValue.selectedCardData[0].field == thisTrunField) {
+      fieldBonus = 1.3;
+      fieldBonusFlag = "true";
+    }
+    let damageValue = cardValue.selectedCardData[0].value * fieldBonus;
+    if (cardValue.selectedCardData[0].action == "enhancement") {
       //回復の処理
       effect += "enhancement";
       playerDB[indexAttacked].yourHP += damageValue;
       playerDB[indexDamaged].opponentHP += damageValue;
-    } else if (cardValue.selectedData[0].action == "steal") {
+    } else if (cardValue.selectedCardData[0].action == "steal") {
       //ハッカーカードの処理
       effect += "steal";
       playerDB[indexAttacked].yourHP += damageValue;
@@ -165,9 +176,8 @@ export const culculateHP = function (cardValue, playerId) {
       playerDB[indexDamaged].yourHP -= damageValue;
     }
   } else {
-    effect += ableAttacks(selectedData)[0].nameEn;
+    effect += ableAttacks(selectedCardData)[0].nameEn;
     const isIncludes = (arr, target) => arr.every((el) => target.includes(el));
-    let updatedData = cardValue.selectedData.map((obj) => obj.id);
     comboDB.filter((comboDB) => {
       if (isIncludes(updatedData, comboDB.idList)) {
         if (updatedData.length == comboDB.idList.length) {
@@ -179,11 +189,14 @@ export const culculateHP = function (cardValue, playerId) {
     });
   }
   const HPinfo = {
-    effect: effect,
+    action: effect,
     attackedPlayerID: playerDB[indexAttacked].playerId,
     damagedPlayerID: playerDB[indexDamaged].playerId,
     attackedPlayerHP: playerDB[indexAttacked].yourHP,
     damagedPlayerHP: playerDB[indexDamaged].yourHP,
+    usedCardIdList: updatedData,
+    nextTrunField: nextTrunField,
+    fieldBonusFlag: fieldBonusFlag,
   };
   return HPinfo;
 };
@@ -205,4 +218,8 @@ const ableAttacks = function (selectedData) {
       return isIncludes(canAttackData, comboDB.idList);
     });
   }
+};
+
+const chengeField = function (playerId) {
+  playerDB[playerId].field = (playerDB[playerId].field + 1) % 5;
 };

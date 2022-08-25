@@ -5,16 +5,14 @@
     :showActionCutIn="showActionCutIn"
     :action="action"
     :value="value"
-    :yourHp="yourHp"
-    :opponentHp="opponentHp"
+    :yourHP="yourHP"
+    :opponentHP="opponentHP"
     :roundCount="roundCount"
     :yourCardsData.sync="yourCardsData"
     :selectedCardsData.sync="selectedCardsData"
     :selectedId="selectedId"
-    :selectedImg="selectedImg"
-    :comboData="comboData"
     :yourId="yourId"
-    :yourImg="yourImg"
+    :effectImages="effectImages"
     :attackOptions="attackOptions()"
     :isEnableAction="isEnableAction()"
     @closeGeneralCutIn="closeGeneralCutIn()"
@@ -24,6 +22,7 @@
 </template>
 <script>
 import FieldTemplate from "/src/libs/feature-field/templates/field-template.vue";
+import io from "socket.io-client";
 
 export default {
   name: "field",
@@ -35,25 +34,24 @@ export default {
       message: "相手が入室するまでしばらくお待ちください",
       showGeneralCutIn: true,
       showActionCutIn: false,
-      action: "attack",
-      value: 20,
-      yourHp: 150,
-      opponentHp: 180,
+      action: "",
+      value: "",
+      yourHP: "",
+      opponentHP: "",
       roundCount: 1,
       yourCardsData: [],
       selectedCardsData: [],
       comboData: [],
-      givenCards: [],
+      CardData: [],
       yourId: "",
-      yourImg: "",
+      roomId: "",
       selectedId: "",
-      selectedImg: "",
       attackSignal: 0,
-      sampleHp: {
-        yours: 200,
-        opponent: 200,
-      },
       opponentTrun: false,
+      isAlone: false,
+      usedCardIdList: [], //攻撃された、攻撃したカードのIDのリスト
+      effectImages: [],
+      socket: io("localhost:3000"),
     };
   },
   created() {
@@ -65,6 +63,11 @@ export default {
         this.comboData.push(res.data[i]);
       }
     });
+    this.$axios.get("/getCardDB").then((res) => {
+      for (let i = 0; i < res.data.length; i++) {
+        this.CardData.push(res.data[i]);
+      }
+    });
     //HPの共有
     this.$axios
       .post("/HPReload", {
@@ -72,8 +75,8 @@ export default {
       })
       .then((res) => {
         console.log(res.data);
-        this.sampleHp.yours = res.data.yourHP;
-        this.sampleHp.opponent = res.data.opponentHP;
+        this.yourHP = res.data.yourHP;
+        this.opponentHP = res.data.opponentHP;
       });
     // カードをドローする処理
     this.$axios
@@ -92,8 +95,8 @@ export default {
 
     //joinするための送信
     this.yourId = searchParams.get("id");
-    let RoomID = searchParams.get("room");
-    this.socket.emit("roomJoin", RoomID, this.yourId);
+    this.roomID = searchParams.get("room");
+    this.socket.emit("roomJoin", this.roomID, this.yourId);
     //turn_flagに応じて、showAttackなどの表示、非表示を決定する。
     //偶数の時は自分の番
     this.$axios
@@ -179,9 +182,43 @@ export default {
       this.roundCount += 1;
     },
     handleAction: function () {
-      this.showActionCutIn = true;
       this.selectedCardsData.splice(this.index, this.selectedCardsData.length);
+      // エフェクト用に画像を持ってくる
+      for (let i = 0; i < this.usedCardIdList.length; i++) {
+        let UsedCard = this.cardData.find(element => element.id == this.usedCardIdList[i])
+        this.effectImages.push(UsedCard.img)
+      }
+      this.showActionCutIn = true;
     },
+  },
+  mounted() {
+    let anotherThis = this;
+    this.socket.on("numPlayer", function (numPlayer) {
+      if (numPlayer == 1) {
+        anotherThis.isAlone = true;
+      } else {
+        anotherThis.isAlone = false;
+      }
+    });
+
+    this.socket.on("HPinfo", function (HPinfo) {
+      anotherThis.action = HPinfo.action; //攻撃の種類
+      anotherThis.usedCardIdList = HPinfo.usedCardIdList; //カードのIDのリスト
+      if (HPinfo.attackedPlayerID == anotherThis.playerId) {
+        //攻撃した時の処理
+        anotherThis.yourHP = HPinfo.attackedPlayerHP;
+        anotherThis.opponentHP = HPinfo.damagedPlayerHP;
+        anotherThis.opponentTrun = true;
+      } else if (HPinfo.damagedPlayerID == anotherThis.playerId) {
+        //攻撃された時の処理
+        anotherThis.yourHP = HPinfo.damagedPlayerHP;
+        anotherThis.opponentHP = HPinfo.attackedPlayerHP;
+        anotherThis.opponentTrun = false;
+      }
+    });
+
+    console.log("action:" + this.action)
+    console.log("cardlist:" + this.usedCardIdList)
   },
 };
 </script>
