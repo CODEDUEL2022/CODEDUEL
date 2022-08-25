@@ -14,7 +14,8 @@ import {
   cpuPostCardDraw,
   cpuGetTurn,
   cpuContorlTrun,
-  cpuAction
+  cpuAction,
+  cpuPostPlayerData
 } from "./components/cpu.js"
 import path from "path";
 import { fileURLToPath } from "url";
@@ -148,7 +149,7 @@ app.post("/api/controlTurn", (req, res) => {
 });
 
 //リロード時の処理
-app.get("api/reload", (req, res) => {
+app.get("/api/reload", (req, res) => {
   res.send(reload(req, res));
 });
 
@@ -156,11 +157,14 @@ app.get("api/reload", (req, res) => {
 /*
 以下CPU戦用のaxios
 */
-app.post("api/cpuHPReload",(req,res) => {
+app.post("/api/cpuHPReload",(req,res) => {
   res.send(cpuHPReload(req,res))
 });
+app.post("/api/cpuPlayerData", (req,res) => {
+  cpuPostPlayerData(req,res)
+})
 
-app.post("api/cpuGetTurn",(req,res) => {
+app.post("/api/cpuGetTurn",(req,res) => {
   res.json(cpuGetTurn(req, res));
 })
 
@@ -168,12 +172,12 @@ app.post("/api/cpuCardDraw", (req, res) => {
   res.send(cpuPostCardDraw(req, res));
 });
 
-app.post("api/cpuControlTurn",(req,res) => {
+app.post("/api/cpuControlTurn",(req,res) => {
   cpuContorlTrun(req,res);
   res.send();
 });
 
-app.post("api/cpuAction",(req,res) => {
+app.post("/api/cpuAction",(req,res) => {
   res.send(cpuAction(req,res))
 })
 

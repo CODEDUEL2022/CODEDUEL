@@ -1,4 +1,4 @@
-import cardDB from "../DB.js"
+import {cardDB} from "../DB.js"
 
 
 export const searchSelectedCard = function(id){

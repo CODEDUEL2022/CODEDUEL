@@ -58,6 +58,12 @@ export default {
       });
     },
     onPushCPU: function () {
+      this.playerId = Math.random().toString(32).substring(2)
+      this.$axios
+        .post("/cpuPlayerData", {
+          playerId: this.playerId,
+          decId: 0, //仮においている。本来はデッキ選択用
+        })
       alert("CPU戦だよ！よろしくね！");
       this.$router.push({
         name: "cpu",

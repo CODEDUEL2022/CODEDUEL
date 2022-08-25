@@ -32,7 +32,7 @@ export default {
   },
   data() {
     return {
-      message: "準備が整うまでしばらくお待ちください",
+      message: "画面をクリックしてください",
       showGeneralCutIn: true,
       showActionCutIn: false,
       action: "attack",
@@ -57,19 +57,20 @@ export default {
   created() {
     this.yourCardsData = [];
     console.log(this.yourCardsData);
+    const searchParams = new URLSearchParams(window.location.search);
     this.$axios.get("/getComboDb").then((res) => {
       for (let i = 0; i < res.data.length; i++) {
         this.comboData.push(res.data[i]);
       }
     });
     this.$axios
-      .get("/cpuHPReload", {
+      .post("/cpuHPReload", {
         playerId: searchParams.get("id"),
       })
       .then((res) => {
         console.log(res.data);
         this.yourHP = res.data.yourHP;
-        this.opponentHP = res.data.opponentHP;
+        this.opponentHP = res.data.oponentHP;
       });
     this.$axios
       .post("/cpuCardDraw", {
@@ -135,7 +136,6 @@ export default {
     },
     handleAction: function () {
       this.showActionCutIn = true;
-      this.selectedCardsData.splice(this.index, this.selectedCardsData.length);
       const searchParams = new URLSearchParams(window.location.search);
       this.$axios.post("/cpuControlTurn", { playerId: searchParams.get("id") });
 
@@ -143,14 +143,15 @@ export default {
         userId: searchParams.get("id"),
         selectedCardData: this.selectedCardsData
       }
-      this.$axios.post("/cpuAction", { cardValue })
+      this.$axios.post("/cpuAction", { cardValue: cardValue })
       .then((res) => {
         //色素さん宛て：正常に動いていればresの中にはCPUが使用したカードが入っています
+        //res.data -> { action: 'attack', playerHP: 170, cpuHP: 180, usedCardIdList: [ 34 ] }  こんな感じ
       });
 
       this.$axios.post("/cpuControlTurn", { playerId: searchParams.get("id") });
 
-      this.$axios.post("/cpuGetTurn", { player_Id: searchParams.get("id") })
+      this.$axios.post("/cpuGetTurn", { playerId: searchParams.get("id") })
       .then((res) => {
         if (res.data % 2 == 0) {
           this.oponentTurn = false;
@@ -159,6 +160,7 @@ export default {
           this.message = "相手のターンです";
         }
       });;
+      this.selectedCardsData.splice(this.index, this.selectedCardsData.length);
       
     },
   },

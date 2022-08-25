@@ -1,11 +1,3 @@
-/**
- * postHP -> フロントエンドからHPを受け取る関数　帰り値はプレイヤーのHP配列
- * HPreload -> そのまんま
- * postPlayerData -> 帰り値はjson化したnumclients
- * getTurn -> 帰り値はturnFlag
- * controlTrun -> turnFlagを1進める
- */
-
 import { comboDB } from "../DB.js";
 import { cardDB } from "../DB.js";
 
