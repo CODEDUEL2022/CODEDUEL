@@ -1,5 +1,5 @@
-import cardDB from "DB.js";
-import comboDB from "DB.js";
+import {cardDB} from "../DB.js";
+import {comboDB} from "../DB.js";
 
 let cpuHP = 0
 let cpuComboFrec = 0

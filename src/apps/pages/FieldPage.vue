@@ -47,7 +47,7 @@ export default {
       roomId: "",
       selectedId: "",
       attackSignal: 0,
-      opponentTrun: false,
+      opponentTurn: false,
       isAlone: false,
       usedCardIdList: [], //攻撃された、攻撃したカードのIDのリスト
       effectImages: [],
@@ -103,12 +103,12 @@ export default {
       .post("/getTurn", { playerId: searchParams.get("id") })
       .then((res) => {
         if (res.data % 2 == 0) {
-          this.oponentTurn = false;
+          this.opponentTurn = false;
         } else if (res.data == 1) {
-          this.oponentTurn = true;
+          this.opponentTurn = true;
           this.message = "相手が入室するまでしばらくお待ちください";
         } else {
-          this.oponentTurn = true;
+          this.opponentTurn = true;
           this.message = "相手のターンです";
         }
       });
@@ -206,12 +206,12 @@ export default {
         //攻撃した時の処理
         anotherThis.yourHP = HPinfo.attackedPlayerHP;
         anotherThis.opponentHP = HPinfo.damagedPlayerHP;
-        anotherThis.opponentTrun = true;
+        anotherThis.opponentTurn = true;
       } else if (HPinfo.damagedPlayerID == anotherThis.playerId) {
         //攻撃された時の処理
         anotherThis.yourHP = HPinfo.damagedPlayerHP;
         anotherThis.opponentHP = HPinfo.attackedPlayerHP;
-        anotherThis.opponentTrun = false;
+        anotherThis.opponentTurn = false;
       }
     });
 
