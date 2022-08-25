@@ -3,7 +3,7 @@
  * HPreload -> そのまんま
  * postPlayerData -> 帰り値はjson化したnumclients
  * getTurn -> 帰り値はturnFlag
- * controlTrun -> turnFlagを1進める
+ * controlTurn -> turnFlagを1進める
  */
 
 import { comboDB } from "../DB.js";
@@ -77,7 +77,7 @@ export const postPlayerData = function (req, res, numClients) {
       yourHP: 200,
       opponentHP: 200,
       cardListNumber: [],
-      trunFlag: 1,
+      turnFlag: 1,
       decId: decId,
     });
   } else {
@@ -88,7 +88,7 @@ export const postPlayerData = function (req, res, numClients) {
       yourHP: 200,
       opponentHP: 200,
       cardListNumber: [],
-      trunFlag: 0,
+      turnFlag: 0,
       decId: decId,
     });
   }
@@ -96,17 +96,17 @@ export const postPlayerData = function (req, res, numClients) {
 };
 
 export const getTurn = function (req, res) {
-  const selectTrunId = playerDB.findIndex(
+  const selectTurnId = playerDB.findIndex(
     (e) => e.playerId === req.body.playerId
   );
-  return playerDB[selectTrunId].trunFlag;
+  return playerDB[selectTurnId].turnFlag;
 };
 
-export const controlTrun = function (req, res) {
-  const selectTrunId = playerDB.findIndex(
+export const controlTurn = function (req, res) {
+  const selectTurnId = playerDB.findIndex(
     (e) => e.playerId === req.body.playerId
   );
-  const thisRoomId = playerDB[selectTrunId].RoomId;
+  const thisRoomId = playerDB[selectTurnId].RoomId;
   const thisRoomPlayer = playerDB.filter((e) => {
     if (e.RoomId === thisRoomId && e.playerId != req.body.playerId) {
       return true;
@@ -116,8 +116,8 @@ export const controlTrun = function (req, res) {
   const selectId = playerDB.findIndex(
     (e) => e.playerId === thisRoomPlayer[0].playerId
   );
-  playerDB[selectId].trunFlag += 1;
-  playerDB[selectTrunId].trunFlag += 1;
+  playerDB[selectId].turnFlag += 1;
+  playerDB[selectTurnId].turnFlag += 1;
 };
 
 export const reload = function (req, res) {
@@ -128,12 +128,12 @@ export const reload = function (req, res) {
     yourHP: localStorage.getItem("yourHP"),
     opponentHP: localStorage.getItem("opponentHP"),
     cardListNumber: localStorage.getItem("cardListNumber"),
-    trunFlag: localStorage.getItem("trunFlag"),
+    turnFlag: localStorage.getItem("turnFlag"),
   };
   return playerDBFromLocalStorage;
 };
 
-export const culculateHP = function (cardValue, playerId) {
+export const calculateHP = function (cardValue, playerId) {
   const indexAttacked = playerDB.findIndex((e) => e.playerId === playerId);
   const thisRoomPlayer = playerDB.filter((e) => {
     if (e.RoomId === cardValue.roomId && e.playerId != playerId) {
@@ -145,14 +145,14 @@ export const culculateHP = function (cardValue, playerId) {
   );
   let effect = "";
   let updatedData = cardValue.selectedCardData.map((obj) => obj.id);
-  let thisTrunField = playerDB[indexAttacked].field;
+  let thisTurnField = playerDB[indexAttacked].field;
   chengeField(indexAttacked);
   chengeField(indexDamaged);
-  let nextTrunField = playerDB[indexAttacked].field;
+  let nextTurnField = playerDB[indexAttacked].field;
   let fieldBonus = 1;
   let fieldBonusFlag = "false";
   if (cardValue.selectedCardData.length == 1) {
-    if (cardValue.selectedCardData[0].field == thisTrunField) {
+    if (cardValue.selectedCardData[0].field == thisTurnField) {
       fieldBonus = 1.3;
       fieldBonusFlag = "true";
     }
@@ -195,7 +195,7 @@ export const culculateHP = function (cardValue, playerId) {
     attackedPlayerHP: playerDB[indexAttacked].yourHP,
     damagedPlayerHP: playerDB[indexDamaged].yourHP,
     usedCardIdList: updatedData,
-    nextTrunField: nextTrunField,
+    nextTurnField: nextTurnField,
     fieldBonusFlag: fieldBonusFlag,
   };
   return HPinfo;

@@ -47,7 +47,7 @@ export default {
       selectedImg: "",
       attackSignal: 0,
       comboData: [],
-      opponentTrun: false,
+      opponentTurn: false,
       isAlone: false,
       usedCardIdList: [], //攻撃された、攻撃したカードのIDのリスト
     };
@@ -137,7 +137,7 @@ export default {
       // 一致してるものがあるかを判定
       const isIncludes = (arr, target) =>
         arr.every((el) => target.includes(el));
-  
+
       if (updatedData.length === 0) {
         return false;
       } else if (updatedData.length === 1) {
@@ -149,16 +149,16 @@ export default {
         });
         // 完全一致した攻撃だけを返す
         for (let i = 0, n = updatedData.length; i < n; ++i) {
-        if (ableCombo.length == 0) {
-          return false;
-        } else if (
-          updatedData[i] == ableCombo[0].idList[i] &&
-          updatedData.length == ableCombo[0].idList.length
-        ) {
-          return true;
-        } else {
-          return false;
-        }
+          if (ableCombo.length == 0) {
+            return false;
+          } else if (
+            updatedData[i] == ableCombo[0].idList[i] &&
+            updatedData.length == ableCombo[0].idList.length
+          ) {
+            return true;
+          } else {
+            return false;
+          }
         }
       }
     },
@@ -191,12 +191,12 @@ export default {
         //攻撃した時の処理
         anotherThis.yourHP = HPinfo.attackedPlayerHP;
         anotherThis.opponentHP = HPinfo.damagedPlayerHP;
-        anotherThis.opponentTrun = true;
+        anotherThis.opponentTurn = true;
       } else if (HPinfo.damagedPlayerID == anotherThis.playerId) {
         //攻撃された時の処理
         anotherThis.yourHP = HPinfo.damagedPlayerHP;
         anotherThis.opponentHP = HPinfo.attackedPlayerHP;
-        anotherThis.opponentTrun = false;
+        anotherThis.opponentTurn = false;
       }
     });
   },
