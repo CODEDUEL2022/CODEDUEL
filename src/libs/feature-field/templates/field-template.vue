@@ -1,5 +1,6 @@
 <template>
-  <v-app>
+  <div>
+    <Header />
     <div v-show="showGeneralCutIn">
       <GeneralCutIn
         :message="message"
@@ -34,7 +35,7 @@
             <SimpleCard
               v-for="card in selectedCardsData"
               :focusedCard="card"
-              :key="`first-${card.id}`"
+              :key="`${Math.random().toString(32).substring(2)}-first-${card.id}`"
             ></SimpleCard>
           </VueDrag>
         </div>
@@ -53,7 +54,7 @@
         <SimpleCard
           v-for="yours in yourCardsData"
           :focusedCard="yours"
-          :key="`second-${yours.id}`"
+          :key="`${Math.random().toString(32).substring(2)}-second-${yours.id}`"
         ></SimpleCard>
       </VueDrag>
     </div>
@@ -61,7 +62,7 @@
       :isEnableAction="isEnableAction"
       @handleAction="$emit('handleAction')"
     ></ActionButton>
-  </v-app>
+  </div>
 </template>
 
 <script>

@@ -1,6 +1,7 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import App from "../apps/App.vue";
+import CPUPage from "../apps/pages/CPUPage.vue";
 import HomePage from "../apps/pages/HomePage.vue";
 import FieldPage from "../apps/pages/FieldPage.vue";
 
@@ -16,6 +17,11 @@ const routes = [
     path: "/field",
     name: "field",
     component: FieldPage,
+  },
+  {
+    path: "/cpu",
+    name: "cpu",
+    component: CPUPage,
   },
 ];
 

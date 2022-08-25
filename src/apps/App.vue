@@ -17,7 +17,7 @@ template {
   -moz-osx-font-smoothing: grayscale;
   text-align: left;
   color: #ffffff;
-  background: radial-gradient(#134e61, #102335);
+  background: radial-gradient(#134e61, #020508);
 }
 .header-menu {
   background: #102335;

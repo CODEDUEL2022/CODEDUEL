@@ -8,6 +8,12 @@ import {
   reload,
   postCardDraw,
 } from "./components/player.js";
+import {
+  cpuHPReload,
+  cpuCulculateHP,
+  cpuPostCardDraw,
+  cpuGetTurn
+} from "./components/cpu.js"
 import path from "path";
 import { fileURLToPath } from "url";
 import express from "express";
@@ -147,6 +153,24 @@ app.post("/api/controlTurn", (req, res) => {
 //リロード時の処理
 app.get("api/reload", (req, res) => {
   res.send(reload(req, res));
+});
+
+
+/*
+以下CPU戦用のaxios
+*/
+//HPの更新　リロード時
+app.post("api/cpuHPReload",(req,res) => {
+  res.send(cpuHPReload(req,res))
+});
+
+app.post("api/cpuGetTurn",(req,res) => {
+  res.json(cpuGetTurn(req, res));
+})
+
+//カードドローリクエストがフロントから走った場合に発火
+app.post("/api/cpuCardDraw", (req, res) => {
+  res.send(cpuPostCardDraw(req, res));
 });
 
 http.listen(PORT, function () {
