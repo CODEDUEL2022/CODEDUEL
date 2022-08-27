@@ -11,7 +11,7 @@
         <v-img :src="require(`../../ui/assets/cards/${effectImage}`)"></v-img>
       </v-card>
     </div>
-    <div class="dalayEffect">{{ action }} {{ value }} pt</div>
+    <div class="dalayEffect">{{ actionType }} {{ value }} pt</div>
   </div>
 </template>
 <script>
@@ -19,7 +19,7 @@ import SimpleCard from "./SimpleCard.vue";
 
 export default {
   name: "ActionCutIn",
-  props: ["effectImages", "action", "value"],
+  props: ["effectImages", "actionType", "value"],
   components: {
     SimpleCard,
 }

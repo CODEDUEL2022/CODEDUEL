@@ -3,8 +3,8 @@
     :message="message"
     :showGeneralCutIn="showGeneralCutIn"
     :showActionCutIn="showActionCutIn"
-    :action="action"
-    :value="value"
+    :actionType="actionType"
+    :actionPoint="actionPoint"
     :yourHP="yourHP"
     :opponentHP="opponentHP"
     :roundCount="roundCount"
@@ -34,15 +34,15 @@ export default {
       message: "相手が入室するまでしばらくお待ちください",
       showGeneralCutIn: true,
       showActionCutIn: false,
-      action: "",
-      value: "",
-      yourHP: "",
-      opponentHP: "",
+      actionType: "",
+      actionPoint: "",
+      yourHP: 200,
+      opponentHP: 200,
       roundCount: 1,
       yourCardsData: [],
       selectedCardsData: [],
       comboData: [],
-      CardData: [],
+      cardData: [],
       yourId: "",
       roomId: "",
       selectedId: "",
@@ -65,7 +65,7 @@ export default {
     });
     this.$axios.get("/getCardDB").then((res) => {
       for (let i = 0; i < res.data.length; i++) {
-        this.CardData.push(res.data[i]);
+        this.cardData.push(res.data[i]);
       }
     });
     //HPの共有
@@ -188,13 +188,7 @@ export default {
       };
       this.socket.emit("cardValue", cardValue, searchParams.get("id"));
       this.selectedCardsData.splice(this.index, this.selectedCardsData.length);
-      // エフェクト用に画像を持ってくる
-      for (let i = 0; i < this.usedCardIdList.length; i++) {
-        let UsedCard = this.cardData.find(
-          (element) => element.id == this.usedCardIdList[i]
-        );
-        this.effectImages.push(UsedCard.img);
-      }
+      this.effectImages.splice(this.index, this.effectImages.length);
       this.showActionCutIn = true;
     },
   },
@@ -209,8 +203,15 @@ export default {
     });
 
     this.socket.on("HPinfo", function (HPinfo) {
-      anotherThis.action = HPinfo.action; //攻撃の種類
-      anotherThis.usedCardIdList = HPinfo.usedCardIdList; //カードのIDのリスト
+      anotherThis.actionType = HPinfo.actionType; //攻撃の種類
+      // エフェクト用に画像を持ってくる
+      for (let i = 0; i < HPinfo.usedCardIdList.length; i++) {
+        let usedCard = '';
+        usedCard = anotherThis.cardData.find(
+          (element) => element.id == HPinfo.usedCardIdList[i]
+        );
+        anotherThis.effectImages.push(usedCard.img);
+      };
       if (HPinfo.attackedPlayerID == anotherThis.playerId) {
         //攻撃した時の処理
         anotherThis.yourHP = HPinfo.attackedPlayerHP;
@@ -224,8 +225,6 @@ export default {
       }
     });
 
-    console.log("action:" + this.action);
-    console.log("cardlist:" + this.usedCardIdList);
   },
 };
 </script>

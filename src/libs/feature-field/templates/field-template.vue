@@ -10,8 +10,8 @@
     <div v-show="showActionCutIn">
       <ActionCutIn
         :effectImages="effectImages"
-        :action="action"
-        :value="value"
+        :actionType="actionType"
+        :actionPoint="actionPoint"
         @closeActionCutIn="$emit('closeActionCutIn')"
       />
     </div>
@@ -91,8 +91,8 @@ export default {
     "message",
     "showGeneralCutIn",
     "showActionCutIn",
-    "action",
-    "value",
+    "actionType",
+    "actionPoint",
     "yourHP",
     "opponentHP",
     "roundCount",

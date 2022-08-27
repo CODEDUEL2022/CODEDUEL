@@ -12,7 +12,8 @@
         <div>></div>
         <div class="input">
           >　<span>ルームIDを入力してください：</span
-          ><input v-model="roomId" placeholder="" /><v-btn
+          ><input type="text" :value="roomId" @input="$emit('update:roomId', $event.target.value)"/>
+          <v-btn
             outlined
             @click="$emit('handleSendId', roomId)"
             class="btn play"
