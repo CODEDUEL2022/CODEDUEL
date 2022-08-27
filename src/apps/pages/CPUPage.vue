@@ -2,8 +2,8 @@
   <FieldTemplate
     :showGeneralCutIn="showGeneralCutIn"
     :showActionCutIn="showActionCutIn"
-    :action="action"
-    :value="value"
+    :actionType="actionType"
+    :actionPoint="actionPoint"
     :yourHP="yourHP"
     :opponentHP="opponentHP"
     :roundCount="roundCount"
@@ -33,8 +33,8 @@ export default {
     return {
       showGeneralCutIn: true,
       showActionCutIn: false,
-      action: "attack",
-      value: 20,
+      actionType: "attack",
+      actionPoint: 20,
       yourHP: 150,
       opponentHP: 180,
       roundCount: 1,
@@ -185,7 +185,7 @@ export default {
     });
 
     this.socket.on("HPinfo", function (HPinfo) {
-      anotherThis.action = HPinfo.action; //攻撃の種類
+      anotherThis.actionType = HPinfo.actionType; //攻撃の種類
       anotherThis.usedCardIdList = HPinfo.usedCardIdList; //カードのIDのリスト
       if (HPinfo.attackedPlayerID == anotherThis.playerId) {
         //攻撃した時の処理

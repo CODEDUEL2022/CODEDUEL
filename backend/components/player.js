@@ -189,7 +189,7 @@ export const calculateHP = function (cardValue, playerId) {
     });
   }
   const HPinfo = {
-    action: effect,
+    actionType: effect,
     attackedPlayerID: playerDB[indexAttacked].playerId,
     damagedPlayerID: playerDB[indexDamaged].playerId,
     attackedPlayerHP: playerDB[indexAttacked].yourHP,

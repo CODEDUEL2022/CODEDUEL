@@ -56,11 +56,11 @@ export const cpuCalculateHP = function (cardValue, playerId) {
 
   if (cardValue.selectedCardData.length == 1) {
     let damageValue = cardValue.selectedCardData[0].value;
-    if (cardValue.selectedCardData[0].action == "enhancement") {
+    if (cardValue.selectedCardData[0].actionType == "enhancement") {
       //回復の処理
       effect += "enhancement";
       cpuPlayerDB[indexAttacked].yourHP += damageValue;
-    } else if (cardValue.selectedCardData[0].action == "steal") {
+    } else if (cardValue.selectedCardData[0].actionType == "steal") {
       //ハッカーカードの処理
       effect += "steal";
       cpuPlayerDB[indexAttacked].yourHP += damageValue;
@@ -83,7 +83,7 @@ export const cpuCalculateHP = function (cardValue, playerId) {
     });
   }
   let HPinfo = {
-    action: effect,
+    actionType: effect,
     playerHP: cpuPlayerDB[indexAttacked].yourHP,
     cpuHP: cpuDB.yourHP,
     usedCardIdList: updatedData,

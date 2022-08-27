@@ -1,6 +1,6 @@
 <template>
   <HomeTemplate
-    :roomId="roomId"
+    :roomId.sync="roomId"
     @handleSendId="onSendRoomId(roomId)"
     @handleStart="onPushField()"
     @handleSetIssue="onSetId()"
