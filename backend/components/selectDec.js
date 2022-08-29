@@ -13,3 +13,12 @@ export const selectDec = function (decId) {
     return makeDec(Dec3);
   }
 };
+
+
+//CPU用のデッキ選択
+export const cpuSelectDec = function (decId) {
+    //現状テストコード　今後バランスを考えて、Decの中身を考えたい
+    if (decId == 1) {
+      return makeDec(Dec1);
+    }
+  };
