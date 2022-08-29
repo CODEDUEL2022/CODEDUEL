@@ -224,7 +224,6 @@ export default {
         anotherThis.opponentTurn = false;
       }
     });
-
   },
 };
 </script>

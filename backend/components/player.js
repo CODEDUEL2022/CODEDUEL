@@ -133,6 +133,19 @@ export const reload = function (req, res) {
   return playerDBFromLocalStorage;
 };
 
+const decideUsedCombo = function (selectedData) {
+  const isEqualArray = function (array1, array2) {
+    if (array1.length != array2.length) return false;
+    for (let i = 0; i < array1.length; i++) {
+      if (array1[i] !== array2[i]) return false;
+    }
+    return true;
+  }
+  for(let i = 0; i < comboDB.length; i++) {
+    if(isEqualArray(selectedData, comboDB[i].idList) && selectedData.length == comboDB[i].idList.length) return comboDB[i];
+  }
+}
+
 export const calculateHP = function (cardValue, playerId) {
   const indexAttacked = playerDB.findIndex((e) => e.playerId === playerId);
   const thisRoomPlayer = playerDB.filter((e) => {
@@ -145,6 +158,15 @@ export const calculateHP = function (cardValue, playerId) {
   );
   let effect = "";
   let updatedData = cardValue.selectedCardData.map((obj) => obj.id);
+  updatedData.sort(function (first, second) {
+    if (first > second) {
+      return 1;
+    } else if (first < second) {
+      return -1;
+    } else {
+      return 0;
+    }
+  });
   let thisTurnField = playerDB[indexAttacked].field;
   changeField(indexAttacked);
   changeField(indexDamaged);
@@ -176,17 +198,11 @@ export const calculateHP = function (cardValue, playerId) {
       playerDB[indexDamaged].yourHP -= damageValue;
     }
   } else {
-    effect += ableAttacks(selectedCardData)[0].nameEn;
-    const isIncludes = (arr, target) => arr.every((el) => target.includes(el));
-    comboDB.filter((comboDB) => {
-      if (isIncludes(updatedData, comboDB.idList)) {
-        if (updatedData.length == comboDB.idList.length) {
-          let damageValue = comboDB.actionValue;
-          playerDB[indexAttacked].opponentHP -= damageValue;
-          playerDB[indexDamaged].yourHP -= damageValue;
-        }
-      }
-    });
+    // コンボの場合
+    const usedCombo = decideUsedCombo(updatedData)
+    effect += usedCombo.nameEn;
+    playerDB[indexAttacked].opponentHP -= usedCombo.actionValue;
+    playerDB[indexDamaged].yourHP -= usedCombo.actionValue;
   }
   const HPinfo = {
     actionType: effect,
@@ -199,25 +215,6 @@ export const calculateHP = function (cardValue, playerId) {
     fieldBonusFlag: fieldBonusFlag,
   };
   return HPinfo;
-};
-
-const ableAttacks = function (selectedData) {
-  // selecteddataのidだけを集めた
-  let updatedData = selectedData.map((obj) => obj.id);
-  let canAttackData = updatedData.sort((a, b) => (a < b ? -1 : 1));
-
-  // 一致してるものがあるかを判定
-  const isIncludes = (arr, target) => arr.every((el) => target.includes(el));
-  //recent_selectdataに、idに対応するカードの名前を入れたい
-  if (canAttackData.length === 0) {
-    // 何も選択されていないとき空の配列を返す
-    return [];
-  } else {
-    // updateddataにあるのと一致した攻撃だけを返す
-    return this.comboDB.filter((comboDB) => {
-      return isIncludes(canAttackData, comboDB.idList);
-    });
-  }
 };
 
 const changeField = function (playerId) {
