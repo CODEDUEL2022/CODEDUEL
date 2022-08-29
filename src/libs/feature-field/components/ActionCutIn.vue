@@ -1,15 +1,19 @@
 <template>
   <div class="overlay" @click="$emit('closeActionCutIn')">
-    <div>
-      <v-card
+    <div class="cards">
+      <div
+        class="cardParent"
         v-for="effectImage in effectImages"
         :key="effectImage.index"
-        height="345px"
-        hover
-        class="black"
       >
-        <v-img :src="require(`../../ui/assets/cards/${effectImage}`)"></v-img>
-      </v-card>
+        <v-card
+          height="345px"
+          hover
+          class="black"
+        >
+          <v-img :src="require(`../../ui/assets/cards/${effectImage}`)"></v-img>
+        </v-card>
+      </div>
     </div>
     <div class="dalayEffect">{{ actionType }} {{ value }} pt</div>
   </div>
@@ -62,6 +66,14 @@ export default {
   animation-delay: 0.6s;
   /* opacityが戻らないようにする */
   animation-fill-mode: forwards;
+}
+
+.cards {
+  display: flex;
+}
+
+.cardParent {
+  margin: 10px;
 }
 
 @keyframes SlideIn {
