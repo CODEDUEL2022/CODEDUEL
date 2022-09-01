@@ -1,9 +1,10 @@
+
 /**
  * postHP -> フロントエンドからHPを受け取る関数　帰り値はプレイヤーのHP配列
  * HPreload -> そのまんま
  * postPlayerData -> 帰り値はjson化したnumclients
  * getTurn -> 帰り値はturnFlag
- * controlTrun -> turnFlagを1進める
+ * controlTurn -> turnFlagを1進める
  */
 
 import { comboDB } from "../DB.js";
@@ -78,7 +79,7 @@ export const postPlayerData = function (req, res, numClients) {
       yourHP: 200,
       opponentHP: 200,
       cardListNumber: [],
-      trunFlag: 1,
+      turnFlag: 1,
       decId: decId,
       field: 0,
     });
@@ -90,7 +91,7 @@ export const postPlayerData = function (req, res, numClients) {
       yourHP: 200,
       opponentHP: 200,
       cardListNumber: [],
-      trunFlag: 0,
+      turnFlag: 0,
       decId: decId,
       field: 0,
     });
@@ -99,17 +100,17 @@ export const postPlayerData = function (req, res, numClients) {
 };
 
 export const getTurn = function (req, res) {
-  const selectTrunId = playerDB.findIndex(
+  const selectTurnId = playerDB.findIndex(
     (e) => e.playerId === req.body.playerId
   );
-  return playerDB[selectTrunId].trunFlag;
+  return playerDB[selectTurnId].turnFlag;
 };
 
-export const controlTrun = function (req, res) {
-  const selectTrunId = playerDB.findIndex(
+export const controlTurn = function (req, res) {
+  const selectTurnId = playerDB.findIndex(
     (e) => e.playerId === req.body.playerId
   );
-  const thisRoomId = playerDB[selectTrunId].RoomId;
+  const thisRoomId = playerDB[selectTurnId].RoomId;
   const thisRoomPlayer = playerDB.filter((e) => {
     if (e.RoomId === thisRoomId && e.playerId != req.body.playerId) {
       return true;
@@ -119,8 +120,8 @@ export const controlTrun = function (req, res) {
   const selectId = playerDB.findIndex(
     (e) => e.playerId === thisRoomPlayer[0].playerId
   );
-  playerDB[selectId].trunFlag += 1;
-  playerDB[selectTrunId].trunFlag += 1;
+  playerDB[selectId].turnFlag += 1;
+  playerDB[selectTurnId].turnFlag += 1;
 };
 
 export const reload = function (req, res) {
@@ -131,12 +132,25 @@ export const reload = function (req, res) {
     yourHP: localStorage.getItem("yourHP"),
     opponentHP: localStorage.getItem("opponentHP"),
     cardListNumber: localStorage.getItem("cardListNumber"),
-    trunFlag: localStorage.getItem("trunFlag"),
+    turnFlag: localStorage.getItem("turnFlag"),
   };
   return playerDBFromLocalStorage;
 };
 
-export const culculateHP = function (cardValue, playerId) {
+const decideUsedCombo = function (selectedData) {
+  const isEqualArray = function (array1, array2) {
+    if (array1.length != array2.length) return false;
+    for (let i = 0; i < array1.length; i++) {
+      if (array1[i] !== array2[i]) return false;
+    }
+    return true;
+  }
+  for(let i = 0; i < comboDB.length; i++) {
+    if(isEqualArray(selectedData, comboDB[i].idList) && selectedData.length == comboDB[i].idList.length) return comboDB[i];
+  }
+}
+
+export const calculateHP = function (cardValue, playerId) {
   const indexAttacked = playerDB.findIndex((e) => e.playerId === playerId);
   const thisRoomPlayer = playerDB.filter((e) => {
     if (e.RoomId === cardValue.roomId && e.playerId != playerId) {
@@ -148,14 +162,23 @@ export const culculateHP = function (cardValue, playerId) {
   );
   let effect = "";
   let updatedData = cardValue.selectedCardData.map((obj) => obj.id);
-  let thisTrunField = playerDB[indexAttacked].field;
-  chengeField(indexAttacked);
-  chengeField(indexDamaged);
-  let nextTrunField = playerDB[indexAttacked].field;
+  updatedData.sort(function (first, second) {
+    if (first > second) {
+      return 1;
+    } else if (first < second) {
+      return -1;
+    } else {
+      return 0;
+    }
+  });
+  let thisTurnField = playerDB[indexAttacked].field;
+  changeField(indexAttacked);
+  changeField(indexDamaged);
+  let nextTurnField = playerDB[indexAttacked].field;
   let fieldBonus = 0;
   let fieldBonusFlag = "false";
   if (cardValue.selectedCardData.length == 1) {
-    if (cardValue.selectedCardData[0].field == thisTrunField) {
+    if (cardValue.selectedCardData[0].field == thisTurnField) {
       fieldBonus = 10;
       fieldBonusFlag = "true";
     }
@@ -179,50 +202,25 @@ export const culculateHP = function (cardValue, playerId) {
       playerDB[indexDamaged].yourHP -= damageValue;
     }
   } else {
-    effect += ableAttacks(selectedCardData)[0].nameEn;
-    const isIncludes = (arr, target) => arr.every((el) => target.includes(el));
-    comboDB.filter((comboDB) => {
-      if (isIncludes(updatedData, comboDB.idList)) {
-        if (updatedData.length == comboDB.idList.length) {
-          let damageValue = comboDB.actionValue;
-          playerDB[indexAttacked].opponentHP -= damageValue;
-          playerDB[indexDamaged].yourHP -= damageValue;
-        }
-      }
-    });
+    // コンボの場合
+    const usedCombo = decideUsedCombo(updatedData)
+    effect += usedCombo.nameEn;
+    playerDB[indexAttacked].opponentHP -= usedCombo.actionValue;
+    playerDB[indexDamaged].yourHP -= usedCombo.actionValue;
   }
   const HPinfo = {
-    action: effect,
+    actionType: effect,
     attackedPlayerID: playerDB[indexAttacked].playerId,
     damagedPlayerID: playerDB[indexDamaged].playerId,
     attackedPlayerHP: playerDB[indexAttacked].yourHP,
     damagedPlayerHP: playerDB[indexDamaged].yourHP,
     usedCardIdList: updatedData,
-    nextTrunField: nextTrunField,
+    nextTurnField: nextTurnField,
     fieldBonusFlag: fieldBonusFlag,
   };
   return HPinfo;
 };
 
-const ableAttacks = function (selectedData) {
-  // selecteddataのidだけを集めた
-  let updatedData = selectedData.map((obj) => obj.id);
-  let canAttackData = updatedData.sort((a, b) => (a < b ? -1 : 1));
-
-  // 一致してるものがあるかを判定
-  const isIncludes = (arr, target) => arr.every((el) => target.includes(el));
-  //recent_selectdataに、idに対応するカードの名前を入れたい
-  if (canAttackData.length === 0) {
-    // 何も選択されていないとき空の配列を返す
-    return [];
-  } else {
-    // updateddataにあるのと一致した攻撃だけを返す
-    return this.comboDB.filter((comboDB) => {
-      return isIncludes(canAttackData, comboDB.idList);
-    });
-  }
-};
-
-const chengeField = function (playerId) {
+const changeField = function (playerId) {
   playerDB[playerId].field = (playerDB[playerId].field + 1) % 5;
 };

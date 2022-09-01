@@ -1,5 +1,5 @@
 import playerDB from "backend/player.js";
 
-export const chengeField = function (playerId) {
+export const changeField = function (playerId) {
   playerDB[playerId].field = (playerDB[playerId].field + 1) % 5;
 };

@@ -1,5 +1,6 @@
 <template>
-  <v-app>
+  <div>
+    <Header />
     <div v-show="showGeneralCutIn">
       <GeneralCutIn
         :message="message"
@@ -8,12 +9,18 @@
     </div>
     <div v-show="showActionCutIn">
       <ActionCutIn
-        :action="action"
-        :value="value"
+        :effectImages="effectImages"
+        :actionType="actionType"
+        :actionPoint="actionPoint"
         @closeActionCutIn="$emit('closeActionCutIn')"
       />
     </div>
-    <HPDisplay :yourHP="yourHP" :opponentHP="opponentHP"></HPDisplay>
+    <HPDisplay
+      :yourName="yourName"
+      :yourHP="yourHP"
+      :opponentName="opponentName"
+      :opponentHP="opponentHP"
+    ></HPDisplay>
     <RoundDisplay :roundCount="roundCount"></RoundDisplay>
     <v-row>
       <v-col cols="3">
@@ -33,7 +40,9 @@
             <SimpleCard
               v-for="card in selectedCardsData"
               :focusedCard="card"
-              :key="`first-${card.id}`"
+              :key="`${Math.random().toString(32).substring(2)}-first-${
+                card.id
+              }`"
             ></SimpleCard>
           </VueDrag>
         </div>
@@ -52,7 +61,7 @@
         <SimpleCard
           v-for="yours in yourCardsData"
           :focusedCard="yours"
-          :key="`second-${yours.id}`"
+          :key="`${Math.random().toString(32).substring(2)}-second-${yours.id}`"
         ></SimpleCard>
       </VueDrag>
     </div>
@@ -60,12 +69,12 @@
       :isEnableAction="isEnableAction"
       @handleAction="$emit('handleAction')"
     ></ActionButton>
-  </v-app>
+  </div>
 </template>
 
 <script>
 import ActionButton from "../components/ActionButton.vue";
-import HPDisplay from "../components/HPDisplay.vue";
+import HPDisplay from "../components/HpDisplay.vue";
 import RoundDisplay from "../components/RoundDisplay.vue";
 import VueDrag from "vuedraggable";
 import GeneralCutIn from "../components/GeneralCutIn.vue";
@@ -89,8 +98,8 @@ export default {
     "message",
     "showGeneralCutIn",
     "showActionCutIn",
-    "action",
-    "value",
+    "actionType",
+    "actionPoint",
     "yourHP",
     "opponentHP",
     "roundCount",
@@ -98,9 +107,8 @@ export default {
     "selectedCardsData",
     "yourGroup",
     "yourId",
-    "yourImg",
+    "effectImages",
     "selectedId",
-    "selectedImg",
     "comboData",
     "isEnableAction",
     "attackOptions",
@@ -116,21 +124,22 @@ export default {
     };
   },
 };
+
 </script>
 
 <style scoped>
-.field {
-  height: 300px;
-  width: 100%;
-  background: rgba(211, 255, 253);
-  border: 2px solid #d3fffd;
-  box-shadow: 0px 0px 50px #d3fffd;
-}
+  .field {
+    height: 300px;
+    width: 100%;
+    background: rgba(211, 255, 253);
+    border: 2px solid #d3fffd;
+    box-shadow: 0px 0px 50px #d3fffd;
+  }
 
-.area {
-  display: flex;
-  justify-content: stretch;
-  width: 1500px;
-  height: 300px;
-}
+  .area {
+    display: flex;
+    justify-content: stretch;
+    width: 1500px;
+    height: 300px;
+  }
 </style>
