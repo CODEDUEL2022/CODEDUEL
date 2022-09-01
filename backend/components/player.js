@@ -149,14 +149,14 @@ export const culculateHP = function (cardValue, playerId) {
   chengeField(indexAttacked);
   chengeField(indexDamaged);
   let nextTrunField = playerDB[indexAttacked].field;
-  let fieldBonus = 1;
+  let fieldBonus = 0;
   let fieldBonusFlag = "false";
   if (cardValue.selectedCardData.length == 1) {
     if (cardValue.selectedCardData[0].field == thisTrunField) {
-      fieldBonus = 1.3;
+      fieldBonus = 10;
       fieldBonusFlag = "true";
     }
-    let damageValue = cardValue.selectedCardData[0].value * fieldBonus;
+    let damageValue = cardValue.selectedCardData[0].value + fieldBonus;
     if (cardValue.selectedCardData[0].action == "enhancement") {
       //回復の処理
       effect += "enhancement";
