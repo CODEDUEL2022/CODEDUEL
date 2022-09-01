@@ -11,7 +11,6 @@ import {
 } from "./components/player.js";
 import {
   cpuHPReload,
-  cpuCalculateHP,
   cpuPostCardDraw,
   cpuGetTurn,
   cpuContorlTrun,
