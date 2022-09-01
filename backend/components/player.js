@@ -21,6 +21,7 @@ let playerDB = [
     cardListNumber: [],
     turnFlag: 0,
     decId: 0, //デッキの種類を選ぶ　初期は0で、ルームに入る際に選択&フロントエンドから送信してもらいたい
+    filed: 0,
   },
 ];
 
@@ -80,6 +81,7 @@ export const postPlayerData = function (req, res, numClients) {
       cardListNumber: [],
       turnFlag: 1,
       decId: decId,
+      field: 0,
     });
   } else {
     playerDB.push({
@@ -91,6 +93,7 @@ export const postPlayerData = function (req, res, numClients) {
       cardListNumber: [],
       turnFlag: 0,
       decId: decId,
+      field: 0,
     });
   }
   return numClients[req.body.RoomId];
@@ -172,14 +175,14 @@ export const calculateHP = function (cardValue, playerId) {
   changeField(indexAttacked);
   changeField(indexDamaged);
   let nextTurnField = playerDB[indexAttacked].field;
-  let fieldBonus = 1;
+  let fieldBonus = 0;
   let fieldBonusFlag = "false";
   if (cardValue.selectedCardData.length == 1) {
     if (cardValue.selectedCardData[0].field == thisTurnField) {
-      fieldBonus = 1.3;
+      fieldBonus = 10;
       fieldBonusFlag = "true";
     }
-    let damageValue = cardValue.selectedCardData[0].value * fieldBonus;
+    let damageValue = cardValue.selectedCardData[0].value + fieldBonus;
     if (cardValue.selectedCardData[0].action == "enhancement") {
       //回復の処理
       effect += "enhancement";
