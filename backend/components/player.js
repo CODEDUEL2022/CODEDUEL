@@ -20,6 +20,7 @@ let playerDB = [
     cardListNumber: [],
     turnFlag: 0,
     decId: 0, //デッキの種類を選ぶ　初期は0で、ルームに入る際に選択&フロントエンドから送信してもらいたい
+    filed: 0,
   },
 ];
 
@@ -79,6 +80,7 @@ export const postPlayerData = function (req, res, numClients) {
       cardListNumber: [],
       trunFlag: 1,
       decId: decId,
+      field: 0,
     });
   } else {
     playerDB.push({
@@ -90,6 +92,7 @@ export const postPlayerData = function (req, res, numClients) {
       cardListNumber: [],
       trunFlag: 0,
       decId: decId,
+      field: 0,
     });
   }
   return numClients[req.body.RoomId];
