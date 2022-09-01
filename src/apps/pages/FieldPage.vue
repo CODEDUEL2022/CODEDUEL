@@ -1,5 +1,6 @@
 <template>
   <FieldTemplate
+    :cardsList="cardsList"
     :message="message"
     :showGeneralCutIn="showGeneralCutIn"
     :showActionCutIn="showActionCutIn"
@@ -21,6 +22,7 @@
   />
 </template>
 <script>
+
 import FieldTemplate from "/src/libs/feature-field/templates/field-template.vue";
 import io from "socket.io-client";
 
@@ -37,7 +39,9 @@ export default {
       actionType: "",
       actionPoint: "",
       yourHP: 200,
+      yourName: "User1",
       opponentHP: 200,
+      opponentName: "User2",
       roundCount: 1,
       yourCardsData: [],
       selectedCardsData: [],
@@ -87,11 +91,24 @@ export default {
       .then((res) => {
         console.log(res.data);
         for (let i = 0; i < res.data.length; i++) {
+          //ここ、issue13ではcomboDataになっていたけれど、多分違うので修正します
           this.yourCardsData.push(res.data[i]);
         }
-        console.log(this.yourCardsData);
-        console.log("hogehoge");
       });
+      // カードをドローする処理
+      this.$axios
+        .post("/cardDraw", {
+          cardData: this.yourCardsData,
+          playerId: searchParams.get("id"),
+        })
+        .then((res) => {
+          console.log(res.data);
+          for (let i = 0; i < res.data.length; i++) {
+            this.yourCardsData.push(res.data[i]);
+          }
+          console.log(this.yourCardsData);
+          console.log("hogehoge");
+        });
 
     //joinするための送信
     this.yourId = searchParams.get("id");
@@ -127,10 +144,10 @@ export default {
         // updateddataにあるのと一致した攻撃だけを返す
         return this.comboData.filter((comboData) => {
           return isIncludes(ableAttackData, comboData.idList);
+
         });
       }
     },
-
     //発動できるかどうかを判定する
     isEnableAction: function () {
       let updatedData = this.selectedCardsData.map((obj) => obj.id);
@@ -139,8 +156,12 @@ export default {
           return 1;
         } else if (first < second) {
           return -1;
+
         } else {
-          return 0;
+          // updateddataにあるのと一致した攻撃だけを返す
+          return this.comboData.filter((comboData) => {
+            return isIncludes(ableAttackData, comboData.idList);
+          });
         }
       });
       // 一致してるものがあるかを判定
@@ -154,21 +175,34 @@ export default {
         }
         return true;
       };
-      if (updatedData.length === 0) {
-        return false;
-      } else if (updatedData.length === 1) {
-        return true;
-      } else {
-        const ableCombo = this.comboData.filter((comboData) => {
+      if (updatedData.length === 0) return false;
+      if (updatedData.length === 1) return true;
+      
+      const ableCombo = this.comboData.filter((comboData) => {
           return isIncludes(updatedData, comboData.idList);
-        });
+      });
         // 完全一致した攻撃だけを返す
         if (ableCombo.length == 0) {
           return false;
         } else if (isEqualArray(updatedData, ableCombo[0].idList)) {
+
           return true;
         } else {
-          return false;
+          let ableCombo = this.comboData.filter((comboData) => {
+            return isIncludes(updatedData, comboData.idList);
+          });
+          // 完全一致した攻撃だけを返す
+          for (let i = 0, n = updatedData.length; i < n; ++i) {
+            if (ableCombo.length == 0) {
+              return false;
+            } else if (
+              updatedData[i] == ableCombo[0].idList[i] &&
+              updatedData.length == ableCombo[0].idList.length
+            ) {
+              return true;
+            } else {
+              return false;
+            }
         }
       }
     },
@@ -226,5 +260,6 @@ export default {
     });
   },
 };
+
 </script>
 <style scoped></style>

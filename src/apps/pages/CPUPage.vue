@@ -1,10 +1,14 @@
 <template>
   <FieldTemplate
+    :cardsList="cardsList"
+    :message="message"
     :showGeneralCutIn="showGeneralCutIn"
     :showActionCutIn="showActionCutIn"
     :actionType="actionType"
     :actionPoint="actionPoint"
+    :yourName="yourName"
     :yourHP="yourHP"
+    :opponentName="opponentName"
     :opponentHP="opponentHP"
     :roundCount="roundCount"
     :yourCardsData.sync="yourCardsData"
@@ -22,184 +26,159 @@
   />
 </template>
 <script>
-import FieldTemplate from "/src/libs/feature-field/templates/field-template.vue";
-
-export default {
-  name: "cpu",
-  components: {
-    FieldTemplate,
-  },
-  data() {
-    return {
-      showGeneralCutIn: true,
-      showActionCutIn: false,
-      actionType: "attack",
-      actionPoint: 20,
-      yourHP: 150,
-      opponentHP: 180,
-      roundCount: 1,
-      yourCardsData: [],
-      selectedCardsData: [],
-      yourId: "",
-      roomId: "",
-      yourImg: "",
-      selectedId: "",
-      selectedImg: "",
-      attackSignal: 0,
-      comboData: [],
-      opponentTurn: false,
-      isAlone: false,
-      usedCardIdList: [], //攻撃された、攻撃したカードのIDのリスト
-    };
-  },
-  created() {
-    this.yourCardsData = [];
-    console.log(this.yourCardsData);
-    this.$axios.get("/getComboDb").then((res) => {
-      for (let i = 0; i < res.data.length; i++) {
-        this.comboData.push(res.data[i]);
-      }
-    });
-    //HPの共有
-    this.$axios
-      .get("/cpuHPReload", {
-        playerId: searchParams.get("id"),
-      })
-      .then((res) => {
-        console.log(res.data);
-        this.yourHP = res.data.yourHP;
-        this.opponentHP = res.data.opponentHP;
-      });
-    // カードをドローする処理
-    this.$axios
-      .post("/cpuCardDraw", {
-        cardData: this.yourCardsData,
-        playerId: searchParams.get("id"),
-      })
-      .then((res) => {
-        console.log(res.data);
+  import FieldTemplate from "/src/libs/feature-field/templates/field-template.vue";
+  export default {
+    name: "cpu",
+    components: {
+      FieldTemplate,
+    },
+    data() {
+      return {
+        cardsList: [],
+        message: "相手が入室するまでしばらくお待ちください",
+        showGeneralCutIn: true,
+        showActionCutIn: false,
+        actionType: "attack",
+        actionPoint: 20,
+        yourName: "User1",
+        yourHP: null,
+        opponentName: "User2",
+        opponentHP: null,
+        roundCount: 1,
+        yourCardsData: [],
+        selectedCardsData: [],
+        yourId: "",
+        roomId: "",
+        yourImg: "",
+        selectedId: "",
+        selectedImg: "",
+        attackSignal: 0,
+        comboData: [],
+        opponentTrun: false,
+        isAlone: false,
+        usedCardIdList: [], //攻撃された、攻撃したカードのIDのリスト
+      };
+    },
+    created() {
+      this.yourCardsData = [];
+      console.log(this.yourCardsData);
+      const searchParams = new URLSearchParams(window.location.search);
+      this.$axios.get("/getComboDb").then((res) => {
         for (let i = 0; i < res.data.length; i++) {
-          this.yourCardsData.push(res.data[i]);
+          this.comboData.push(res.data[i]);
         }
-        console.log(this.yourCardsData);
-        console.log("hogehoge");
       });
+      this.$axios
+        .post("/cpuHPReload", {
+          playerId: searchParams.get("id"),
+        })
+        .then((res) => {
+          console.log(res.data);
+          this.yourHP = res.data.yourHP;
+          this.opponentHP = res.data.oponentHP;
+        });
+      this.$axios
+        .post("/cpuCardDraw", {
+          cardData: this.yourCardsData,
+          playerId: searchParams.get("id"),
+        })
+        .then((res) => {
+          console.log(res.data);
+          for (let i = 0; i < res.data.length; i++) {
+            this.yourCardsData.push(res.data[i]);
+          }
+          console.log(this.yourCardsData);
+        });
 
-    // //joinするための送信
-    // this.yourId = searchParams.get("id");
-    // this.roomID = searchParams.get("room");
-    // this.socket.emit("roomJoin", this.roomID, this.yourId);
-    //turn_flagに応じて、showAttackなどの表示、非表示を決定する。
-    //偶数の時は自分の番
-    this.$axios
-      .post("/cpuGetTurn", { playerId: searchParams.get("id") })
-      .then((res) => {
-        if (res.data % 2 == 0) {
-          this.oponentTurn = false;
-        } else if (res.data == 1) {
-          this.oponentTurn = true;
-          // this.message = "相手が入室するまでしばらくお待ちください";
-        } else {
-          this.oponentTurn = true;
-          // this.message = "相手のターンです";
-        }
-      });
-  },
-  methods: {
-    // 可能なコンボを取得
-    attackOptions: function () {
-      let updatedData = this.selectedCardsData.map((obj) => obj.id);
-      let ableAttackData = updatedData.sort((a, b) => (a < b ? -1 : 1));
-      // 一致してるものがあるかを判定
-      const isIncludes = (arr, target) =>
-        arr.every((el) => target.includes(el));
-      if (ableAttackData.length === 0) {
-        return [];
-      } else {
-        // updateddataにあるのと一致した攻撃だけを返す
+      this.$axios
+        .post("/cpuGetTurn", { playerId: searchParams.get("id") })
+        .then((res) => {
+          if (res.data % 2 == 0) {
+            this.oponentTurn = false;
+          } else {
+            this.oponentTurn = true;
+            this.message = "CPUのターンです";
+          }
+        });
+    },
+    methods: {
+      attackOptions: function () {
+        let updatedData = this.selectedCardsData.map((obj) => obj.id);
+        let ableAttackData = updatedData.sort((a, b) => (a < b ? -1 : 1));
+        const isIncludes = (arr, target) =>
+          arr.every((el) => target.includes(el));
+        if (ableAttackData.length === 0) return [];
         return this.comboData.filter((comboData) => {
           return isIncludes(ableAttackData, comboData.idList);
         });
-      }
-    },
-    //発動できるかどうかを判定する
-    isEnableAction: function () {
-      let updatedData = this.selectedCardsData.map((obj) => obj.id);
-      updatedData.sort(function (first, second) {
-        if (first > second) {
-          return 1;
-        } else if (first < second) {
-          return -1;
-        } else {
+      },
+      isEnableAction: function () {
+        let updatedData = this.selectedCardsData.map((obj) => obj.id);
+        updatedData.sort(function (first, second) {
+          if (first > second) return 1;
+          if (first < second) return -1;
           return 0;
-        }
-      });
-      // 一致してるものがあるかを判定
-      const isIncludes = (arr, target) =>
-        arr.every((el) => target.includes(el));
 
-      if (updatedData.length === 0) {
-        return false;
-      } else if (updatedData.length === 1) {
-        // this.cardValue.value = this.selectedCardsData[0].value;
-        return true;
-      } else {
+        });
+        const isIncludes = (arr, target) =>
+          arr.every((el) => target.includes(el));
+        if (updatedData.length === 0) return false;
+        if (updatedData.length === 1) return true;
         let ableCombo = this.comboData.filter((comboData) => {
           return isIncludes(updatedData, comboData.idList);
         });
-        // 完全一致した攻撃だけを返す
         for (let i = 0, n = updatedData.length; i < n; ++i) {
-          if (ableCombo.length == 0) {
-            return false;
-          } else if (
-            updatedData[i] == ableCombo[0].idList[i] &&
-            updatedData.length == ableCombo[0].idList.length
-          ) {
-            return true;
-          } else {
-            return false;
+          if (ableCombo.length == 0) return false;
+          if (updatedData[i] == ableCombo[0].idList[i] && updatedData.length == ableCombo[0].idList.length) return true;
+          return false;
           }
         }
-      }
-    },
-    closeGeneralCutIn: function () {
-      this.showGeneralCutIn = false;
-    },
-    closeActionCutIn: function () {
-      this.showActionCutIn = false;
-      this.roundCount += 1;
-    },
-    handleAction: function () {
-      this.showActionCutIn = true;
-      this.selectedCardsData.splice(this.index, this.selectedCardsData.length);
-    },
-  },
-  mounted() {
-    let anotherThis = this;
-    this.socket.on("numPlayer", function (numPlayer) {
-      if (numPlayer == 1) {
-        anotherThis.isAlone = true;
-      } else {
-        anotherThis.isAlone = false;
-      }
-    });
+      },
+      closeGeneralCutIn: function () {
+        this.showGeneralCutIn = false;
+      },
+      closeActionCutIn: function () {
+        this.showActionCutIn = false;
+        this.roundCount += 1;
+      },
+      handleAction: function () {
+        this.showActionCutIn = true;
+        const searchParams = new URLSearchParams(window.location.search);
+        this.$axios.post("/cpuControlTurn", {
+          playerId: searchParams.get("id"),
+        });
 
-    this.socket.on("HPinfo", function (HPinfo) {
-      anotherThis.actionType = HPinfo.actionType; //攻撃の種類
-      anotherThis.usedCardIdList = HPinfo.usedCardIdList; //カードのIDのリスト
-      if (HPinfo.attackedPlayerID == anotherThis.playerId) {
-        //攻撃した時の処理
-        anotherThis.yourHP = HPinfo.attackedPlayerHP;
-        anotherThis.opponentHP = HPinfo.damagedPlayerHP;
-        anotherThis.opponentTurn = true;
-      } else if (HPinfo.damagedPlayerID == anotherThis.playerId) {
-        //攻撃された時の処理
-        anotherThis.yourHP = HPinfo.damagedPlayerHP;
-        anotherThis.opponentHP = HPinfo.attackedPlayerHP;
-        anotherThis.opponentTurn = false;
-      }
-    });
-  },
-};
+        let cardValue = {
+          userId: searchParams.get("id"),
+          selectedCardData: this.selectedCardsData,
+        };
+        this.$axios.post("/cpuAction", { cardValue: cardValue }).then((res) => {
+          //色素さん宛て：正常に動いていればresの中にはCPUが使用したカードが入っています
+          //res.data -> { action: 'attack', playerHP: 170, cpuHP: 180, usedCardIdList: [ 34 ] }  こんな感じ
+        });
+
+        this.$axios.post("/cpuControlTurn", {
+          playerId: searchParams.get("id"),
+        });
+
+        this.$axios
+          .post("/cpuGetTurn", { playerId: searchParams.get("id") })
+          .then((res) => {
+            if (res.data % 2 == 0) {
+              this.oponentTurn = false;
+            } else {
+              this.oponentTurn = true;
+              this.message = "相手のターンです";
+            }
+          });
+        this.selectedCardsData.splice(
+          this.index,
+          this.selectedCardsData.length
+        );
+      },
+    mounted() {
+
+    },
+  };
 </script>
 <style scoped></style>

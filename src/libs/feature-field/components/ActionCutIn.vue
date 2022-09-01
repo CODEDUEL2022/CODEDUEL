@@ -19,6 +19,7 @@
   </div>
 </template>
 <script>
+
 import SimpleCard from "./SimpleCard.vue";
 
 export default {
@@ -26,7 +27,7 @@ export default {
   props: ["effectImages", "actionType", "value"],
   components: {
     SimpleCard,
-}
+  }
 };
 </script>
 <style scoped>
