@@ -15,8 +15,8 @@ import {
   cpuGetTurn,
   cpuContorlTrun,
   cpuAction,
-  cpuPostPlayerData
-} from "./components/cpu.js"
+  cpuPostPlayerData,
+} from "./components/cpu.js";
 import path from "path";
 import { fileURLToPath } from "url";
 import express from "express";
@@ -100,12 +100,13 @@ io.sockets.on("connection", function (socket) {
   });
   socket.on("roomJoin", function (RoomID) {
     socket.join(RoomID);
+    console.log("roomJoin fire");
     if (numPlayer[RoomID] == undefined) {
       numPlayer[RoomID] = 1;
-    } else {
+    } else if (numPlayer[RoomID] == 1) {
       numPlayer[RoomID]++;
+      io.to(RoomID).emit("gameStart");
     }
-    io.to(RoomID).emit("num-player", numPlayer[RoomID]);
   });
   socket.on("cardValue", function (cardValue, playerId) {
     socket.join(cardValue.roomId);
@@ -163,14 +164,14 @@ app.get("/api/reload", (req, res) => {
 以下CPU戦用のaxios
 */
 
-app.post("/api/cpuHPReload",(req,res) => {
-  res.send(cpuHPReload(req,res))
+app.post("/api/cpuHPReload", (req, res) => {
+  res.send(cpuHPReload(req, res));
 });
-app.post("/api/cpuPlayerData", (req,res) => {
-  cpuPostPlayerData(req,res)
-})
+app.post("/api/cpuPlayerData", (req, res) => {
+  cpuPostPlayerData(req, res);
+});
 
-app.post("/api/cpuGetTurn",(req,res) => {
+app.post("/api/cpuGetTurn", (req, res) => {
   res.json(cpuGetTurn(req, res));
 });
 
@@ -178,14 +179,14 @@ app.post("/api/cpuCardDraw", (req, res) => {
   res.send(cpuPostCardDraw(req, res));
 });
 
-app.post("/api/cpuControlTurn",(req,res) => {
-  cpuContorlTrun(req,res);
+app.post("/api/cpuControlTurn", (req, res) => {
+  cpuContorlTrun(req, res);
   res.send();
 });
 
-app.post("/api/cpuAction",(req,res) => {
-  res.send(cpuAction(req,res))
-})
+app.post("/api/cpuAction", (req, res) => {
+  res.send(cpuAction(req, res));
+});
 
 http.listen(PORT, function () {
   console.log("server listening. Port:" + PORT);

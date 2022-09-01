@@ -22,7 +22,6 @@
   />
 </template>
 <script>
-
 import FieldTemplate from "/src/libs/feature-field/templates/field-template.vue";
 import io from "socket.io-client";
 
@@ -130,7 +129,6 @@ export default {
         // updateddataにあるのと一致した攻撃だけを返す
         return this.comboData.filter((comboData) => {
           return isIncludes(ableAttackData, comboData.idList);
-
         });
       }
     },
@@ -142,7 +140,6 @@ export default {
           return 1;
         } else if (first < second) {
           return -1;
-
         } else {
           // updateddataにあるのと一致した攻撃だけを返す
           return this.comboData.filter((comboData) => {
@@ -163,32 +160,31 @@ export default {
       };
       if (updatedData.length === 0) return false;
       if (updatedData.length === 1) return true;
-      
-      const ableCombo = this.comboData.filter((comboData) => {
-          return isIncludes(updatedData, comboData.idList);
-      });
-        // 完全一致した攻撃だけを返す
-        if (ableCombo.length == 0) {
-          return false;
-        } else if (isEqualArray(updatedData, ableCombo[0].idList)) {
 
-          return true;
-        } else {
-          let ableCombo = this.comboData.filter((comboData) => {
-            return isIncludes(updatedData, comboData.idList);
-          });
-          // 完全一致した攻撃だけを返す
-          for (let i = 0, n = updatedData.length; i < n; ++i) {
-            if (ableCombo.length == 0) {
-              return false;
-            } else if (
-              updatedData[i] == ableCombo[0].idList[i] &&
-              updatedData.length == ableCombo[0].idList.length
-            ) {
-              return true;
-            } else {
-              return false;
-            }
+      const ableCombo = this.comboData.filter((comboData) => {
+        return isIncludes(updatedData, comboData.idList);
+      });
+      // 完全一致した攻撃だけを返す
+      if (ableCombo.length == 0) {
+        return false;
+      } else if (isEqualArray(updatedData, ableCombo[0].idList)) {
+        return true;
+      } else {
+        let ableCombo = this.comboData.filter((comboData) => {
+          return isIncludes(updatedData, comboData.idList);
+        });
+        // 完全一致した攻撃だけを返す
+        for (let i = 0, n = updatedData.length; i < n; ++i) {
+          if (ableCombo.length == 0) {
+            return false;
+          } else if (
+            updatedData[i] == ableCombo[0].idList[i] &&
+            updatedData.length == ableCombo[0].idList.length
+          ) {
+            return true;
+          } else {
+            return false;
+          }
         }
       }
     },
@@ -221,17 +217,21 @@ export default {
         anotherThis.isAlone = false;
       }
     });
-
+    this.socket.on(
+      "gameStart",
+      function () // TODO:この処理が走るとルームに二人が入ったことになる
+      {}
+    );
     this.socket.on("HPinfo", function (HPinfo) {
       anotherThis.actionType = HPinfo.actionType; //攻撃の種類
       // エフェクト用に画像を持ってくる
       for (let i = 0; i < HPinfo.usedCardIdList.length; i++) {
-        let usedCard = '';
+        let usedCard = "";
         usedCard = anotherThis.cardData.find(
           (element) => element.id == HPinfo.usedCardIdList[i]
         );
         anotherThis.effectImages.push(usedCard.img);
-      };
+      }
       if (HPinfo.attackedPlayerID == anotherThis.playerId) {
         //攻撃した時の処理
         anotherThis.yourHP = HPinfo.attackedPlayerHP;
@@ -246,6 +246,5 @@ export default {
     });
   },
 };
-
 </script>
 <style scoped></style>
