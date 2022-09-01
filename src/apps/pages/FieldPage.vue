@@ -32,7 +32,7 @@ export default {
   },
   data() {
     return {
-      message: "相手が入室するまでしばらくお待ちください",
+      message: "マッチング中",
       showGeneralCutIn: true,
       showActionCutIn: false,
       actionType: "",
@@ -104,11 +104,12 @@ export default {
     this.$axios
       .post("/getTurn", { playerId: searchParams.get("id") })
       .then((res) => {
+        console.log(res.data);
         if (res.data % 2 == 0) {
           this.opponentTurn = false;
-        } else if (res.data == 1) {
+        } else if (res.data % 2 == 1) {
           this.opponentTurn = true;
-          this.message = "相手が入室するまでしばらくお待ちください";
+          this.message = "マッチング中";
         } else {
           this.opponentTurn = true;
           this.message = "相手のターンです";
@@ -219,8 +220,17 @@ export default {
     });
     this.socket.on(
       "gameStart",
-      function () // TODO:この処理が走るとルームに二人が入ったことになる
-      {}
+      function () // 報告:この処理が走るとルームに二人が入ったことになる
+      {
+        //ここに処理を書いてほしいです
+        //ゲームスタート！みたいなカットイン＋opponentTurnによる場合分けで相手のターンみたいなのを表示する
+        anotherThis.showGeneralCutIn = true;
+        anotherThis.message = "Game Start";
+        const chengeMessage = () => (anotherThis.message = "相手のターンです");
+        if (anotherThis.opponentTurn) {
+          setTimeout(chengeMessage, 1000);
+        }
+      }
     );
     this.socket.on("HPinfo", function (HPinfo) {
       anotherThis.actionType = HPinfo.actionType; //攻撃の種類

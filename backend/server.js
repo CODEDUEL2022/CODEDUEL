@@ -146,6 +146,7 @@ app.get("/api/getCardDB", (req, res) => {
 
 //ページリロード時のターンを決定づける。
 app.post("/api/getTurn", (req, res) => {
+  console.log("/api/getTurn");
   res.json(getTurn(req, res));
 });
 
