@@ -227,8 +227,8 @@ export default {
         anotherThis.showGeneralCutIn = true;
         anotherThis.message = "Game Start";
         const chengeMessage = () => (anotherThis.message = "相手のターンです");
-        if (opponentTurn) {
-          setTimeout(chengeMessage, 3000);
+        if (anotherThis.opponentTurn) {
+          setTimeout(chengeMessage, 1000);
         }
       }
     );
