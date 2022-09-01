@@ -95,20 +95,6 @@ export default {
           this.yourCardsData.push(res.data[i]);
         }
       });
-      // カードをドローする処理
-      this.$axios
-        .post("/cardDraw", {
-          cardData: this.yourCardsData,
-          playerId: searchParams.get("id"),
-        })
-        .then((res) => {
-          console.log(res.data);
-          for (let i = 0; i < res.data.length; i++) {
-            this.yourCardsData.push(res.data[i]);
-          }
-          console.log(this.yourCardsData);
-          console.log("hogehoge");
-        });
 
     //joinするための送信
     this.yourId = searchParams.get("id");
