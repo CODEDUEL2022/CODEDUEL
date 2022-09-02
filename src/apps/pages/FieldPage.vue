@@ -61,6 +61,7 @@ export default {
   created() {
     this.yourCardsData = [];
     const searchParams = new URLSearchParams(window.location.search);
+    const giveNewProperty = function(object) {object.isCombined = true}
     console.log(this.yourCardsData);
     this.$axios.get("/getComboDb").then((res) => {
       for (let i = 0; i < res.data.length; i++) {
@@ -92,6 +93,7 @@ export default {
         console.log(res.data);
         for (let i = 0; i < res.data.length; i++) {
           //ここ、issue13ではcomboDataになっていたけれど、多分違うので修正します
+          giveNewProperty(res.data[i])
           this.yourCardsData.push(res.data[i]);
         }
       });
