@@ -7,7 +7,9 @@
     :actionType="actionType"
     :actionPoint="actionPoint"
     :yourHP="yourHP"
+    :yourName="yourName"
     :opponentHP="opponentHP"
+    :opponentName="opponentName"
     :roundCount="roundCount"
     :yourCardsData.sync="yourCardsData"
     :selectedCardsData.sync="selectedCardsData"
@@ -117,21 +119,21 @@ export default {
       });
   },
   methods: {
-    // 可能なコンボを取得
+    // ターミナルuiに表示するために可能なコンボを取得
     attackOptions: function () {
       let updatedData = this.selectedCardsData.map((obj) => obj.id);
       let ableAttackData = updatedData.sort((a, b) => (a < b ? -1 : 1));
       // 一致してるものがあるかを判定
       const isIncludes = (arr, target) =>
         arr.every((el) => target.includes(el));
-      if (ableAttackData.length === 0) {
-        return [];
-      } else {
-        // updateddataにあるのと一致した攻撃だけを返す
-        return this.comboData.filter((comboData) => {
-          return isIncludes(ableAttackData, comboData.idList);
-        });
-      }
+      if (ableAttackData.length === 0) return [];
+      // updateddataにあるのと一致した攻撃だけを返す
+      console.log()
+      let a = this.comboData.filter((comboData) => {
+        return isIncludes(ableAttackData, comboData.idList);
+      });
+      console.log(a)
+      return a
     },
     //発動できるかどうかを判定する
     isEnableAction: function () {
