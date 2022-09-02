@@ -1,6 +1,5 @@
 <template>
   <FieldTemplate
-    :cardsList="cardsList"
     :message="message"
     :showGeneralCutIn="showGeneralCutIn"
     :showActionCutIn="showActionCutIn"
@@ -129,11 +128,9 @@ export default {
       if (ableAttackData.length === 0) return [];
       // updateddataにあるのと一致した攻撃だけを返す
       console.log()
-      let a = this.comboData.filter((comboData) => {
+      return this.comboData.filter((comboData) => {
         return isIncludes(ableAttackData, comboData.idList);
       });
-      console.log(a)
-      return a
     },
     //発動できるかどうかを判定する
     isEnableAction: function () {
@@ -156,7 +153,7 @@ export default {
       // 配列の完全一致
       const isEqualArray = function (array1, array2) {
         if (array1.length != array2.length) return false;
-        for (let i = 0; i < array1.length; j++) {
+        for (let i = 0; i < array1.length; i++) {
           if (array1[i] !== array2[i]) return false;
         }
         return true;
