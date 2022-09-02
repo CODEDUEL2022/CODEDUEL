@@ -93,8 +93,13 @@
       this.$axios
         .post("/cpuGetTurn", { playerId: searchParams.get("id") })
         .then((res) => {
+          console.log("cpuGetTurn"+res.data)
           if (res.data % 2 == 0) {
             this.oponentTurn = false;
+            this.message = "貴方のターンです";
+          } else if (res.data == 1) {
+          this.opponentTurn = true;
+          this.message = "相手が入室するまでしばらくお待ちください";
           } else {
             this.oponentTurn = true;
             this.message = "CPUのターンです";
@@ -157,20 +162,23 @@
           //res.data -> { action: 'attack', playerHP: 170, cpuHP: 180, usedCardIdList: [ 34 ] }  こんな感じ
         });
 
+        this.$axios
+        .post("/cpuCardDraw", {
+          cardData: this.yourCardsData,
+          playerId: searchParams.get("id"),
+        })
+        .then((res) => {
+          console.log(res.data);
+          for (let i = 0; i < res.data.length; i++) {
+            this.yourCardsData.push(res.data[i]);
+          }
+          console.log(this.yourCardsData);
+        });
+
         this.$axios.post("/cpuControlTurn", {
           playerId: searchParams.get("id"),
         });
 
-        this.$axios
-          .post("/cpuGetTurn", { playerId: searchParams.get("id") })
-          .then((res) => {
-            if (res.data % 2 == 0) {
-              this.oponentTurn = false;
-            } else {
-              this.oponentTurn = true;
-              this.message = "相手のターンです";
-            }
-          });
         this.selectedCardsData.splice(
           this.index,
           this.selectedCardsData.length
