@@ -225,7 +225,7 @@ export default {
         //ここに処理を書いてほしいです
         //ゲームスタート！みたいなカットイン＋opponentTurnによる場合分けで相手のターンみたいなのを表示する
         anotherThis.showGeneralCutIn = true;
-        anotherThis.message = "Game Start";
+        anotherThis.message = "Hello World";
         const chengeMessage = () => (anotherThis.message = "相手のターンです");
         const closeCutIn = () => (anotherThis.showGeneralCutIn = false);
         if (anotherThis.opponentTurn) {
