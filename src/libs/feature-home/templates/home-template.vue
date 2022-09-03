@@ -7,9 +7,10 @@
         <br />
         <div class="line"></div>
       </div>
-      <div outlined class="play-btn" @click="$emit('handleModalOpen')">
+      <div class="play-btn" @click="$emit('handleModalOpen')">
         <span>＞ PLAY</span>
       </div>
+      <div class="tempolary-btn" @click="$emit('handleStart')">start</div>
       <StartModal
         v-if="isStartModalOpen"
         :isStartModalOpen="isStartModalOpen"
@@ -133,6 +134,10 @@
         }
         animation: neon 2s infinite alternate;
       }
+    }
+
+    .tempolary-btn {
+      font-size: 1rem;
     }
   }
 

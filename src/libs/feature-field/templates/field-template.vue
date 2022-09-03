@@ -1,6 +1,79 @@
 <template>
   <div>
     <Header />
+    <div class="field-container">
+      <v-row class="first-row">
+        <v-col>
+          <HPDisplay
+            :yourName="yourName"
+            :yourHP="yourHP"
+            :opponentName="opponentName"
+            :opponentHP="opponentHP"
+          />
+        </v-col>
+        <v-col>
+          <div class="turn-display">
+            <span>It's your turn.</span>
+          </div>
+        </v-col>
+        <v-col>
+          <RoundDisplay :roundCount="roundCount" />
+        </v-col>
+      </v-row>
+      <v-row class="second-row">
+        <v-col cols="10">
+          <div class="field">
+            <VueDrag
+              :list="selectedCardsData"
+              @input="$emit('update:selectedCardsData', $event.target.list)"
+              group="yourGroup"
+              @start="drag = true"
+              @end="drag = false"
+              :options="options"
+            >
+              <SimpleCard
+                v-for="card in selectedCardsData"
+                :focusedCard="card"
+                :key="`${Math.random().toString(32).substring(2)}-first-${
+                  card.id
+                }`"
+              ></SimpleCard>
+            </VueDrag>
+          </div>
+        </v-col>
+        <v-col cols="2">
+          <TerminalUI :attackOptions="attackOptions"></TerminalUI>
+        </v-col>
+      </v-row>
+      <v-row class="third-row">
+        <v-col cols="10">
+          <VueDrag
+            :list="yourCardsData"
+            @input="$emit('update:yourCardsData', $event.target.list)"
+            group="yourGroup"
+            @start="drag = true"
+            @end="drag = false"
+            :options="options"
+            class="area"
+          >
+            <SimpleCard
+              v-for="yours in yourCardsData"
+              :focusedCard="yours"
+              :key="`${Math.random().toString(32).substring(2)}-second-${
+                yours.id
+              }`"
+            />
+          </VueDrag>
+        </v-col>
+        <v-col cols="2">
+          <ActionButton
+            :isEnableAction="isEnableAction"
+            @handleAction="$emit('handleAction')"
+          ></ActionButton>
+        </v-col>
+      </v-row>
+    </div>
+
     <div v-show="showGeneralCutIn">
       <GeneralCutIn
         :message="message"
@@ -15,64 +88,11 @@
         @closeActionCutIn="$emit('closeActionCutIn')"
       />
     </div>
-    <HPDisplay
-      :yourName="yourName"
-      :yourHP="yourHP"
-      :opponentName="opponentName"
-      :opponentHP="opponentHP"
-    ></HPDisplay>
-    <RoundDisplay :roundCount="roundCount"></RoundDisplay>
-    <v-row>
-      <v-col cols="3">
-        <TerminalUI :attackOptions="attackOptions"></TerminalUI>
-      </v-col>
-      <v-col cols="9">
-        <div class="field">
-          <VueDrag
-            :list="selectedCardsData"
-            @input="$emit('update:selectedCardsData', $event.target.list)"
-            group="yourGroup"
-            @start="drag = true"
-            @end="drag = false"
-            :options="options"
-            class="area"
-          >
-            <SimpleCard
-              v-for="card in selectedCardsData"
-              :focusedCard="card"
-              :key="`${Math.random().toString(32).substring(2)}-first-${
-                card.id
-              }`"
-            ></SimpleCard>
-          </VueDrag>
-        </div>
-      </v-col>
-    </v-row>
-    <div>
-      <VueDrag
-        :list="yourCardsData"
-        @input="$emit('update:yourCardsData', $event.target.list)"
-        group="yourGroup"
-        @start="drag = true"
-        @end="drag = false"
-        :options="options"
-        class="area"
-      >
-        <SimpleCard
-          v-for="yours in yourCardsData"
-          :focusedCard="yours"
-          :key="`${Math.random().toString(32).substring(2)}-second-${yours.id}`"
-        ></SimpleCard>
-      </VueDrag>
-    </div>
-    <ActionButton
-      :isEnableAction="isEnableAction"
-      @handleAction="$emit('handleAction')"
-    ></ActionButton>
   </div>
 </template>
 
 <script>
+  import Header from "/src/libs/layout/Header.vue";
   import ActionButton from "../components/ActionButton.vue";
   import HPDisplay from "../components/HpDisplay.vue";
   import RoundDisplay from "../components/RoundDisplay.vue";
@@ -85,6 +105,7 @@
   export default {
     name: "FieldTemplate",
     components: {
+      Header,
       ActionButton,
       HPDisplay,
       RoundDisplay,
@@ -126,20 +147,34 @@
   };
 </script>
 
-<style scoped>
-  .field {
-    height: 300px;
-    width: 100%;
-    background: rgba(211, 255, 253);
-    border: 2px solid #d3fffd;
-    box-shadow: 0px 0px 50px #d3fffd;
-  }
+<style scoped lang="scss">
+  .field-container {
+    font-family: "Gill Sans", sans-serif;
+    font-weight: 200;
+    font-size: 1.5rem;
+    margin: 2rem;
 
-  .area {
-    display: flex;
-    justify-content: stretch;
-    width: 1500px;
-    height: 300px;
+    .first-row {
+      .turn-display {
+      }
+    }
+
+    .second-row {
+      .field {
+        height: 15rem;
+        width: 98%;
+        background: rgba(211, 255, 253);
+        border: 2px solid #d3fffd;
+        box-shadow: 0px 0px 50px #d3fffd;
+      }
+    }
+
+    .third-row {
+      .area {
+        display: flex;
+        justify-content: stretch;
+      }
+    }
   }
 
   @media screen and (max-width: 959px) {
