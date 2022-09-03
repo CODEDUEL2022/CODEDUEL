@@ -73,58 +73,57 @@
 </template>
 
 <script>
-import ActionButton from "../components/ActionButton.vue";
-import HPDisplay from "../components/HpDisplay.vue";
-import RoundDisplay from "../components/RoundDisplay.vue";
-import VueDrag from "vuedraggable";
-import GeneralCutIn from "../components/GeneralCutIn.vue";
-import ActionCutIn from "../components/ActionCutIn.vue";
-import TerminalUI from "../components/TerminalUI.vue";
-import SimpleCard from "../components/SimpleCard.vue";
+  import ActionButton from "../components/ActionButton.vue";
+  import HPDisplay from "../components/HpDisplay.vue";
+  import RoundDisplay from "../components/RoundDisplay.vue";
+  import VueDrag from "vuedraggable";
+  import GeneralCutIn from "../components/GeneralCutIn.vue";
+  import ActionCutIn from "../components/ActionCutIn.vue";
+  import TerminalUI from "../components/TerminalUI.vue";
+  import SimpleCard from "../components/SimpleCard.vue";
 
-export default {
-  name: "FieldTemplate",
-  components: {
-    ActionButton,
-    HPDisplay,
-    RoundDisplay,
-    VueDrag,
-    GeneralCutIn,
-    ActionCutIn,
-    TerminalUI,
-    SimpleCard,
-  },
-  props: [
-    "message",
-    "showGeneralCutIn",
-    "showActionCutIn",
-    "actionType",
-    "actionPoint",
-    "yourHP",
-    "opponentHP",
-    "roundCount",
-    "yourCardsData",
-    "selectedCardsData",
-    "yourGroup",
-    "yourId",
-    "effectImages",
-    "selectedId",
-    "comboData",
-    "isEnableAction",
-    "attackOptions",
-    "focusedCard",
-  ],
-  data() {
-    return {
-      // drag&drop用のデータ
-      options: {
-        group: "yourGroup",
-        animation: 200,
-      },
-    };
-  },
-};
-
+  export default {
+    name: "FieldTemplate",
+    components: {
+      ActionButton,
+      HPDisplay,
+      RoundDisplay,
+      VueDrag,
+      GeneralCutIn,
+      ActionCutIn,
+      TerminalUI,
+      SimpleCard,
+    },
+    props: [
+      "message",
+      "showGeneralCutIn",
+      "showActionCutIn",
+      "actionType",
+      "actionPoint",
+      "yourHP",
+      "opponentHP",
+      "roundCount",
+      "yourCardsData",
+      "selectedCardsData",
+      "yourGroup",
+      "yourId",
+      "effectImages",
+      "selectedId",
+      "comboData",
+      "isEnableAction",
+      "attackOptions",
+      "focusedCard",
+    ],
+    data() {
+      return {
+        // drag&drop用のデータ
+        options: {
+          group: "yourGroup",
+          animation: 200,
+        },
+      };
+    },
+  };
 </script>
 
 <style scoped>
@@ -141,5 +140,12 @@ export default {
     justify-content: stretch;
     width: 1500px;
     height: 300px;
+  }
+
+  @media screen and (max-width: 959px) {
+    /* 959px以下に適用されるCSS（タブレット用） */
+  }
+  @media screen and (max-width: 480px) {
+    /* 480px以下に適用されるCSS（スマホ用） */
   }
 </style>
