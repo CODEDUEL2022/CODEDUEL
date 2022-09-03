@@ -1,11 +1,30 @@
 <template>
-  <div class="overlay">
+  <div class="overlay" @click="$emit('handleModalClose')">
     <div class="modal">
       <div class="contents">
-        <span>Choose Game Mode.</span>
-        <img src="/src/libs/ui/assets/bi_people-fill.png" />
-        <span>or</span>
-        <img src="/src/libs/ui/assets/bi_robot.png" />
+        <div>
+          <span>Choose Game Mode.</span>
+          <div class="select">
+            <div class="select-icon" @click="$emit('handleChangeContent')">
+              <span>
+                <img src="../../ui/assets/bi_people-fill.svg" />
+                <br />
+                Play with Human
+              </span>
+            </div>
+            <span>or</span>
+            <div class="select-icon">
+              <span>
+                <img src="../../ui/assets/bi_robot.svg" />
+                <br />
+                Play with CPU
+              </span>
+            </div>
+          </div>
+          <div class="close-btn">
+            <span @click="isStartModalOpen = false">back</span>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -13,7 +32,7 @@
 <script>
   export default {
     name: "StartModal",
-    props: [],
+    props: ["isStartModalOpen"],
   };
 </script>
 <style lang="scss" scoped>
@@ -34,7 +53,7 @@
       width: fit-content;
       padding: 1rem 3rem;
       position: relative;
-      border: 4px solid #d3fffd;
+      border: 9px solid #d3fffd;
       background-color: #0e3145;
       box-shadow: 0px 0px 20px #d3fffd;
 
@@ -43,10 +62,10 @@
         position: absolute;
         content: "";
         display: block;
-        top: -3px;
-        bottom: -3px;
-        left: 10px;
-        right: 10px;
+        top: -8px;
+        bottom: -8px;
+        left: 40px;
+        right: 40px;
       }
 
       &::after {
@@ -54,15 +73,15 @@
         position: absolute;
         content: "";
         display: block;
-        top: 10px;
-        bottom: 10px;
-        left: -3px;
-        right: -3px;
+        top: 40px;
+        bottom: 40px;
+        left: -8px;
+        right: -8px;
       }
 
       span {
         position: relative;
-        z-index: 1;
+        z-index: 10;
         font-size: 28px;
         letter-spacing: 0.15em;
         @keyframes neon {
@@ -78,6 +97,37 @@
 
       .contents {
         z-index: 10;
+
+        .select {
+          display: flex;
+          align-items: center;
+          padding: 1rem;
+
+          .select-icon {
+            margin: 1rem;
+            min-width: 165px;
+            span {
+              font-size: 1.15rem;
+            }
+            &:hover {
+              cursor: pointer;
+            }
+          }
+        }
+
+        .close-btn {
+          position: relative;
+          margin: 1rem;
+          cursor: pointer;
+
+          span {
+            z-index: 10;
+            text-align: center;
+            font-size: 1.5rem;
+            padding: 0.5rem 1.5rem;
+            background-color: rgb(18, 81, 100, 0.6);
+          }
+        }
       }
     }
   }

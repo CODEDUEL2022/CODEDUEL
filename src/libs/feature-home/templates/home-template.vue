@@ -7,10 +7,13 @@
         <br />
         <div class="line"></div>
       </div>
-      <div outlined class="play-btn" @click="handleModalOpen">
+      <div outlined class="play-btn" @click="$emit('handleModalOpen')">
         <span>＞ PLAY</span>
       </div>
-      <StartModal v-if="isStartModalOpen" />
+      <StartModal
+        v-if="isStartModalOpen"
+        :isStartModalOpen="isStartModalOpen"
+      />
     </div>
   </div>
 </template>
@@ -24,15 +27,7 @@
       Header,
       StartModal,
     },
-    props: ["roomId"],
-    data() {
-      return { isStartModalOpen: false };
-    },
-    methods: {
-      handleModalOpen: function () {
-        this.isStartModalOpen = true;
-      },
-    },
+    props: ["roomId", "isStartModalOpen"],
   };
 </script>
 <style scoped lang="scss">
@@ -99,6 +94,7 @@
       border: 4px solid #d3fffd;
       background-color: transparent;
       box-shadow: 0px 0px 20px #d3fffd;
+      cursor: pointer;
 
       &::before {
         background-color: #0e3145;
