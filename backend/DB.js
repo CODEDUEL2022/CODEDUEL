@@ -967,3 +967,40 @@ export const Dec2 = [4, 4, 5, 5, 8, 10, 10, 10, 10, 16, 20, 23, 26, 27, 28, 37, 
 export const Dec3 = [7, 9, 11, 13, 17, 21, 22, 24, 29, 30, 31, 32, 33, 35, 38, 39, 40, 41, 41, 42, 44, 45, 46, 49, 55]
 
 export const cpuDec = [1,2,3,4,5,6,7,8,9,10]
+
+export let playerDB = [
+  //初期化
+  {
+    RoomId: "",
+    playerId: "",
+    cardList: [],
+    myHP: 200,
+    enemyHP: 200,
+    cardListNumber: [],
+    turnFlag: 0,
+    field: 0,
+  },
+];
+
+export const fieldDB = [
+  {
+    id: 0,
+    name: "macOS",
+  },
+  {
+    id: 1,
+    name: "AndroidOS",
+  },
+  {
+    id: 2,
+    name: "WindowsOS",
+  },
+  {
+    id: 3,
+    name: "iOS",
+  },
+  {
+    id: 4,
+    name: "linuxOS",
+  },
+];
