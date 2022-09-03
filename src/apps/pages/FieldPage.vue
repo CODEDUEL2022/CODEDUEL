@@ -42,7 +42,7 @@ export default {
       yourName: "User1",
       opponentHP: 200,
       opponentName: "User2",
-      roundCount: 1,
+      roundCount: 0,
       yourCardsData: [],
       selectedCardsData: [],
       comboData: [],
@@ -195,7 +195,6 @@ export default {
     },
     closeActionCutIn: function () {
       this.showActionCutIn = false;
-      this.roundCount += 1;
     },
     handleAction: function () {
       const searchParams = new URLSearchParams(window.location.search);
@@ -238,6 +237,8 @@ export default {
     );
     this.socket.on("HPinfo", function (HPinfo) {
       anotherThis.actionType = HPinfo.actionType; //攻撃の種類
+      anotherThis.roundCount = HPinfo.nextTurnField // 何ターン目かの情報
+      console.log("round:" + anotherThis.roundCount)
       // エフェクト用に画像を持ってくる
       for (let i = 0; i < HPinfo.usedCardIdList.length; i++) {
         let usedCard = "";
