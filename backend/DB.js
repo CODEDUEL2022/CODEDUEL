@@ -981,17 +981,21 @@ export const fieldDB = [
   {
     id: 0,
     name: "iOS,macOS",
+    img: "Apple.svg"
   },
   {
     id: 1,
     name: "AndroidOS",
+    img: "Android.svg"
   },
   {
     id: 2,
     name: "WindowsOS",
+    img: "Windows.svg"
   },
   {
     id: 3,
     name: "linuxOS",
+    img: "Linux.svg"
   },
 ];

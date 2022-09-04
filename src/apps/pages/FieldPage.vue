@@ -10,7 +10,8 @@
     :opponentHP="opponentHP"
     :opponentName="opponentName"
     :roundCount="roundCount"
-    :currentField="currentField"
+    :currentFieldName="currentFieldName"
+    :currentFieldImg="currentFieldImg"
     :yourCardsData.sync="yourCardsData"
     :selectedCardsData.sync="selectedCardsData"
     :selectedId="selectedId"
@@ -44,7 +45,8 @@ export default {
       opponentHP: 200,
       opponentName: "User2",
       roundCount: 0,
-      currentField: "macOS",
+      currentFieldName: "macOS",
+      currentFieldImg: "",
       yourCardsData: [],
       selectedCardsData: [],
       comboData: [],
@@ -268,8 +270,12 @@ export default {
         anotherThis.opponentTurn = false;
       }
     });
-
   },
+  updated() {
+    // roundを受け取ってそこからfieldDBと照らし合わせる
+    this.currentFieldName = this.fieldData[this.roundCount].name
+    this.currentFieldImg = this.fieldData[this.roundCount].img
+  }
 };
 </script>
 <style scoped></style>

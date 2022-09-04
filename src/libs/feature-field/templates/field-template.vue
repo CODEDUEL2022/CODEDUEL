@@ -21,7 +21,11 @@
       :opponentName="opponentName"
       :opponentHP="opponentHP"
     ></HPDisplay>
-    <RoundDisplay :roundCount="roundCount"></RoundDisplay>
+    <RoundDisplay
+      :roundCount="roundCount"
+      :currentFieldName="currentFieldName"
+      :currentFieldImg="currentFieldImg"
+    ></RoundDisplay>
     <v-row>
       <v-col cols="3">
         <TerminalUI :attackOptions="attackOptions"></TerminalUI>
@@ -105,6 +109,8 @@ export default {
     "opponentHP",
     "opponentName",
     "roundCount",
+    "currentFieldName",
+    "currentFieldImg",
     "yourCardsData",
     "selectedCardsData",
     "yourGroup",
