@@ -8,7 +8,7 @@
 
 import { comboDB } from "../DB.js";
 import { cardDB } from "../DB.js";
-import { filedDB } from "../DB.js";
+import { fieldDB } from "../DB.js";
 
 let playerDB = [
   //初期化
@@ -186,7 +186,7 @@ export const calculateHP = function (cardValue, playerId) {
   changeRound(indexDamaged);
   let nextRoundCount = playerDB[indexAttacked].roundCount;
   if (cardValue.selectedCardData.length == 1) {
-    if (cardValue.selectedCardData[0].field == filedDB[thisTurnField]) {
+    if (cardValue.selectedCardData[0].field == fieldDB[thisTurnField]) {
       fieldBonus = 10;
       fieldBonusFlag = "true";
     }
