@@ -157,8 +157,9 @@
     margin: 1rem 2rem;
 
     .first-row {
+      margin-bottom: 2rem;
       text-align: center;
-      height: 8.5rem;
+      height: 9rem;
       .round {
         font-size: 2rem;
         font-weight: medium;
@@ -175,6 +176,7 @@
     }
 
     .second-row {
+      margin-bottom: 1rem;
       .field {
         height: 15rem;
         width: 98%;

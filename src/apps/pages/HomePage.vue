@@ -2,7 +2,7 @@
   <HomeTemplate
     :roomId.sync="roomId"
     :isStartModalOpen="isStartModalOpen"
-    @handleStart="onPushField(123456789)"
+    @handleStart="onPushField('asdfghjkl')"
     @handleSetIssue="onSetId()"
     @handleMoveCPUPage="onPushCPU()"
     @handleModalOpen="onStartModalOpen()"

@@ -1,6 +1,6 @@
 <template>
   <div class="item">
-    <v-card height="222px" hover class="black">
+    <v-card hover class="black">
       <v-img :src="require(`../../ui/assets/cards/${focusedCard.img}`)">
       </v-img>
     </v-card>
@@ -18,5 +18,6 @@
   .item {
     margin: 0.5rem;
     width: 15%;
+    max-height: 222px;
   }
 </style>
