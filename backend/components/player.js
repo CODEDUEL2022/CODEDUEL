@@ -1,4 +1,3 @@
-
 /**
  * postHP -> フロントエンドからHPを受け取る関数　帰り値はプレイヤーのHP配列
  * HPreload -> そのまんま
@@ -9,6 +8,7 @@
 
 import { comboDB } from "../DB.js";
 import { cardDB } from "../DB.js";
+import { filedDB } from "../DB.js";
 
 let playerDB = [
   //初期化
@@ -21,7 +21,8 @@ let playerDB = [
     cardListNumber: [],
     turnFlag: 0,
     decId: 0, //デッキの種類を選ぶ　初期は0で、ルームに入る際に選択&フロントエンドから送信してもらいたい
-    filed: 0,
+    roundCount: 0,
+    field: 0,
   },
 ];
 
@@ -144,11 +145,15 @@ const decideUsedCombo = function (selectedData) {
       if (array1[i] !== array2[i]) return false;
     }
     return true;
+  };
+  for (let i = 0; i < comboDB.length; i++) {
+    if (
+      isEqualArray(selectedData, comboDB[i].idList) &&
+      selectedData.length == comboDB[i].idList.length
+    )
+      return comboDB[i];
   }
-  for(let i = 0; i < comboDB.length; i++) {
-    if(isEqualArray(selectedData, comboDB[i].idList) && selectedData.length == comboDB[i].idList.length) return comboDB[i];
-  }
-}
+};
 
 export const calculateHP = function (cardValue, playerId) {
   const indexAttacked = playerDB.findIndex((e) => e.playerId === playerId);
@@ -177,8 +182,11 @@ export const calculateHP = function (cardValue, playerId) {
   let nextTurnField = playerDB[indexAttacked].field;
   let fieldBonus = 0;
   let fieldBonusFlag = "false";
+  changeRound(indexAttacked);
+  changeRound(indexDamaged);
+  let nextRoundCount = playerDB[indexAttacked].roundCount;
   if (cardValue.selectedCardData.length == 1) {
-    if (cardValue.selectedCardData[0].field == thisTurnField) {
+    if (cardValue.selectedCardData[0].field == filedDB[thisTurnField]) {
       fieldBonus = 10;
       fieldBonusFlag = "true";
     }
@@ -203,7 +211,7 @@ export const calculateHP = function (cardValue, playerId) {
     }
   } else {
     // コンボの場合
-    const usedCombo = decideUsedCombo(updatedData)
+    const usedCombo = decideUsedCombo(updatedData);
     effect += usedCombo.nameEn;
     playerDB[indexAttacked].opponentHP -= usedCombo.actionValue;
     playerDB[indexDamaged].yourHP -= usedCombo.actionValue;
@@ -217,10 +225,15 @@ export const calculateHP = function (cardValue, playerId) {
     usedCardIdList: updatedData,
     nextTurnField: nextTurnField,
     fieldBonusFlag: fieldBonusFlag,
+    roundCount: nextRoundCount,
   };
   return HPinfo;
 };
 
 const changeField = function (playerId) {
-  playerDB[playerId].field = (playerDB[playerId].field + 1) % 5;
+  playerDB[playerId].field = (playerDB[playerId].field + 1) % 4;
+};
+
+const changeRound = function (playerId) {
+  playerDB[playerId].roundCount = playerDB[playerId].roundCount + 1;
 };
