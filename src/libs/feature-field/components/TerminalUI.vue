@@ -17,11 +17,12 @@
 
 <style scoped>
   .action-list {
+    font-size: 1rem;
     padding: 1rem;
     height: 15rem;
     width: 180px;
-    border: 2px solid #d3fffd;
-    box-shadow: 0px 0px 50px #d3fffd;
+    border: 1px solid #d3fffd;
+    box-shadow: 0px 0px 10px #d3fffd;
     overflow-x: hidden;
   }
 </style>
