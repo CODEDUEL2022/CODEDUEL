@@ -12,12 +12,13 @@
           />
         </v-col>
         <v-col>
+          <span class="round">Round {{ roundCount }}</span>
           <div class="turn-display">
-            <span>It's your turn.</span>
+            <span>- Your Turn -</span>
           </div>
         </v-col>
         <v-col>
-          <RoundDisplay :roundCount="roundCount" />
+          <div><span>windows OS</span></div>
         </v-col>
       </v-row>
       <v-row class="second-row">
@@ -30,6 +31,7 @@
               @start="drag = true"
               @end="drag = false"
               :options="options"
+              class="area"
             >
               <SimpleCard
                 v-for="card in selectedCardsData"
@@ -95,7 +97,6 @@
   import Header from "/src/libs/layout/Header.vue";
   import ActionButton from "../components/ActionButton.vue";
   import HPDisplay from "../components/HpDisplay.vue";
-  import RoundDisplay from "../components/RoundDisplay.vue";
   import VueDrag from "vuedraggable";
   import GeneralCutIn from "../components/GeneralCutIn.vue";
   import ActionCutIn from "../components/ActionCutIn.vue";
@@ -108,7 +109,6 @@
       Header,
       ActionButton,
       HPDisplay,
-      RoundDisplay,
       VueDrag,
       GeneralCutIn,
       ActionCutIn,
@@ -152,10 +152,23 @@
     font-family: "Gill Sans", sans-serif;
     font-weight: 200;
     font-size: 1.5rem;
-    margin: 2rem;
+    margin: 1rem 2rem;
 
     .first-row {
+      text-align: center;
+      height: 8.5rem;
+      .round {
+        font-size: 2rem;
+        font-weight: medium;
+        letter-spacing: 0.15em;
+        text-align: center;
+        padding: 0 3rem 0.5rem 3rem;
+        border-bottom: solid 2px #ff5c00;
+        text-shadow: 0 0 10px #ff5c00;
+      }
       .turn-display {
+        padding-top: 0.5rem;
+        letter-spacing: 0.1em;
       }
     }
 
@@ -166,6 +179,12 @@
         background: rgba(211, 255, 253);
         border: 2px solid #d3fffd;
         box-shadow: 0px 0px 50px #d3fffd;
+
+        .area {
+          display: flex;
+          justify-content: stretch;
+          width: 100%;
+        }
       }
     }
 
