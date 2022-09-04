@@ -94,7 +94,6 @@
 </template>
 
 <script>
-  import Header from "/src/libs/layout/Header.vue";
   import ActionButton from "../components/ActionButton.vue";
   import HPDisplay from "../components/HpDisplay.vue";
   import VueDrag from "vuedraggable";
@@ -124,6 +123,8 @@
       "yourHP",
       "opponentHP",
       "roundCount",
+      "yourName",
+      "opponentName",
       "yourCardsData",
       "selectedCardsData",
       "yourGroup",

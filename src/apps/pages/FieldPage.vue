@@ -1,14 +1,16 @@
 <template>
   <FieldTemplate
-    :cardsList="cardsList"
     :message="message"
     :showGeneralCutIn="showGeneralCutIn"
     :showActionCutIn="showActionCutIn"
     :actionType="actionType"
     :actionPoint="actionPoint"
     :yourHP="yourHP"
+    :yourName="yourName"
     :opponentHP="opponentHP"
+    :opponentName="opponentName"
     :roundCount="roundCount"
+    :currentField="currentField"
     :yourCardsData.sync="yourCardsData"
     :selectedCardsData.sync="selectedCardsData"
     :selectedId="selectedId"
@@ -41,11 +43,13 @@ export default {
       yourName: "User1",
       opponentHP: 200,
       opponentName: "User2",
-      roundCount: 1,
+      roundCount: 0,
+      currentField: "macOS",
       yourCardsData: [],
       selectedCardsData: [],
       comboData: [],
       cardData: [],
+      fieldData: [],
       yourId: "",
       roomId: "",
       selectedId: "",
@@ -60,6 +64,7 @@ export default {
   created() {
     this.yourCardsData = [];
     const searchParams = new URLSearchParams(window.location.search);
+    const giveNewProperty = function(object) {object.isCombined = true}
     console.log(this.yourCardsData);
     this.$axios.get("/getComboDb").then((res) => {
       for (let i = 0; i < res.data.length; i++) {
@@ -69,6 +74,11 @@ export default {
     this.$axios.get("/getCardDB").then((res) => {
       for (let i = 0; i < res.data.length; i++) {
         this.cardData.push(res.data[i]);
+      }
+    });
+    this.$axios.get("/getFieldDB").then((res) => {
+      for (let i = 0; i < res.data.length; i++) {
+        this.fieldData.push(res.data[i]);
       }
     });
     //HPの共有
@@ -91,6 +101,7 @@ export default {
         console.log(res.data);
         for (let i = 0; i < res.data.length; i++) {
           //ここ、issue13ではcomboDataになっていたけれど、多分違うので修正します
+          giveNewProperty(res.data[i])
           this.yourCardsData.push(res.data[i]);
         }
       });
@@ -117,21 +128,18 @@ export default {
       });
   },
   methods: {
-    // 可能なコンボを取得
+    // ターミナルuiに表示するために可能なコンボを取得
     attackOptions: function () {
       let updatedData = this.selectedCardsData.map((obj) => obj.id);
       let ableAttackData = updatedData.sort((a, b) => (a < b ? -1 : 1));
       // 一致してるものがあるかを判定
       const isIncludes = (arr, target) =>
         arr.every((el) => target.includes(el));
-      if (ableAttackData.length === 0) {
-        return [];
-      } else {
-        // updateddataにあるのと一致した攻撃だけを返す
-        return this.comboData.filter((comboData) => {
-          return isIncludes(ableAttackData, comboData.idList);
-        });
-      }
+      if (ableAttackData.length === 0) return [];
+      // updateddataにあるのと一致した攻撃だけを返す
+      return this.comboData.filter((comboData) => {
+        return isIncludes(ableAttackData, comboData.idList);
+      });
     },
     //発動できるかどうかを判定する
     isEnableAction: function () {
@@ -154,7 +162,7 @@ export default {
       // 配列の完全一致
       const isEqualArray = function (array1, array2) {
         if (array1.length != array2.length) return false;
-        for (let i = 0; i < array1.length; j++) {
+        for (let i = 0; i < array1.length; i++) {
           if (array1[i] !== array2[i]) return false;
         }
         return true;
@@ -194,7 +202,6 @@ export default {
     },
     closeActionCutIn: function () {
       this.showActionCutIn = false;
-      this.roundCount += 1;
     },
     handleAction: function () {
       const searchParams = new URLSearchParams(window.location.search);
@@ -210,6 +217,8 @@ export default {
     },
   },
   mounted() {
+    const searchParams = new URLSearchParams(window.location.search);
+    let playerId = searchParams.get("id");
     let anotherThis = this;
     this.socket.on("numPlayer", function (numPlayer) {
       if (numPlayer == 1) {
@@ -225,15 +234,20 @@ export default {
         //ここに処理を書いてほしいです
         //ゲームスタート！みたいなカットイン＋opponentTurnによる場合分けで相手のターンみたいなのを表示する
         anotherThis.showGeneralCutIn = true;
-        anotherThis.message = "Game Start";
+        anotherThis.message = "Hello World";
         const chengeMessage = () => (anotherThis.message = "相手のターンです");
+        const closeCutIn = () => (anotherThis.showGeneralCutIn = false);
         if (anotherThis.opponentTurn) {
           setTimeout(chengeMessage, 1000);
+        } else {
+          setTimeout(closeCutIn, 1000);
         }
       }
     );
     this.socket.on("HPinfo", function (HPinfo) {
       anotherThis.actionType = HPinfo.actionType; //攻撃の種類
+      anotherThis.roundCount = HPinfo.nextTurnField // 何ターン目かの情報
+      console.log("round:" + anotherThis.roundCount)
       // エフェクト用に画像を持ってくる
       for (let i = 0; i < HPinfo.usedCardIdList.length; i++) {
         let usedCard = "";
@@ -242,18 +256,19 @@ export default {
         );
         anotherThis.effectImages.push(usedCard.img);
       }
-      if (HPinfo.attackedPlayerID == anotherThis.playerId) {
+      if (HPinfo.attackedPlayerID == playerId) {
         //攻撃した時の処理
         anotherThis.yourHP = HPinfo.attackedPlayerHP;
         anotherThis.opponentHP = HPinfo.damagedPlayerHP;
         anotherThis.opponentTurn = true;
-      } else if (HPinfo.damagedPlayerID == anotherThis.playerId) {
+      } else if (HPinfo.damagedPlayerID == playerId) {
         //攻撃された時の処理
         anotherThis.yourHP = HPinfo.damagedPlayerHP;
         anotherThis.opponentHP = HPinfo.attackedPlayerHP;
         anotherThis.opponentTurn = false;
       }
     });
+
   },
 };
 </script>
