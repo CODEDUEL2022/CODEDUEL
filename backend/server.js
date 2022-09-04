@@ -106,6 +106,7 @@ io.sockets.on("connection", function (socket) {
     } else if (numPlayer[RoomID] == 1) {
       numPlayer[RoomID]++;
       io.to(RoomID).emit("gameStart");
+      console.log("@@@@@@@@@@");
     }
   });
   socket.on("cardValue", function (cardValue, playerId) {

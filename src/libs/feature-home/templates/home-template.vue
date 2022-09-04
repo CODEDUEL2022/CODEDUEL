@@ -10,7 +10,9 @@
       <div class="play-btn" @click="$emit('handleModalOpen')">
         <span>＞ PLAY</span>
       </div>
-      <div class="tempolary-btn" @click="$emit('handleStart')">start</div>
+      <div class="tempolary-btn" @click="$emit('handleStart', roomId)">
+        start
+      </div>
       <StartModal
         v-if="isStartModalOpen"
         :isStartModalOpen="isStartModalOpen"

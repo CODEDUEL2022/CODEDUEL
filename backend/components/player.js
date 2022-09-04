@@ -158,6 +158,7 @@ const decideUsedCombo = function (selectedData) {
 export const calculateHP = function (cardValue, playerId) {
   const indexAttacked = playerDB.findIndex((e) => e.playerId === playerId);
   const thisRoomPlayer = playerDB.filter((e) => {
+    console.log(playerId);
     if (e.RoomId === cardValue.roomId && e.playerId != playerId) {
       return true;
     }

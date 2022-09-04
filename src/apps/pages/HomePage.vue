@@ -2,8 +2,7 @@
   <HomeTemplate
     :roomId.sync="roomId"
     :isStartModalOpen="isStartModalOpen"
-    @handleSendId="onSendRoomId(roomId)"
-    @handleStart="onPushField()"
+    @handleStart="onPushField(123456789)"
     @handleSetIssue="onSetId()"
     @handleMoveCPUPage="onPushCPU()"
     @handleModalOpen="onStartModalOpen()"
@@ -54,7 +53,20 @@
           });
       },
       //ページ遷移機能
-      onPushField: function () {
+      onPushField: function (roomId) {
+        this.playerId = Math.random().toString(32).substring(2);
+        this.roomId = roomId;
+        this.socket.emit("login", this.roomId);
+        this.$axios
+          .post("/playerData", {
+            RoomId: this.roomId,
+            playerId: this.playerId,
+            decId: 0, //仮においている。本来はデッキ選択用
+          })
+          .then((res) => {
+            //res.dataがRoomにいる人数ここで場合分けすればOK
+            console.log(res.data);
+          });
         this.$router.push({
           name: "field",
           query: { room: this.roomId, id: this.playerId },
