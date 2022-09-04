@@ -10,6 +10,7 @@
     :opponentHP="opponentHP"
     :opponentName="opponentName"
     :roundCount="roundCount"
+    :currentField="currentField"
     :yourCardsData.sync="yourCardsData"
     :selectedCardsData.sync="selectedCardsData"
     :selectedId="selectedId"
@@ -43,10 +44,12 @@ export default {
       opponentHP: 200,
       opponentName: "User2",
       roundCount: 0,
+      currentField: "macOS",
       yourCardsData: [],
       selectedCardsData: [],
       comboData: [],
       cardData: [],
+      fieldData: [],
       yourId: "",
       roomId: "",
       selectedId: "",
@@ -71,6 +74,11 @@ export default {
     this.$axios.get("/getCardDB").then((res) => {
       for (let i = 0; i < res.data.length; i++) {
         this.cardData.push(res.data[i]);
+      }
+    });
+    this.$axios.get("/getFieldDB").then((res) => {
+      for (let i = 0; i < res.data.length; i++) {
+        this.fieldData.push(res.data[i]);
       }
     });
     //HPの共有
@@ -129,7 +137,6 @@ export default {
         arr.every((el) => target.includes(el));
       if (ableAttackData.length === 0) return [];
       // updateddataにあるのと一致した攻撃だけを返す
-      console.log()
       return this.comboData.filter((comboData) => {
         return isIncludes(ableAttackData, comboData.idList);
       });
@@ -210,6 +217,8 @@ export default {
     },
   },
   mounted() {
+    const searchParams = new URLSearchParams(window.location.search);
+    let playerId = searchParams.get("id");
     let anotherThis = this;
     this.socket.on("numPlayer", function (numPlayer) {
       if (numPlayer == 1) {
@@ -247,18 +256,19 @@ export default {
         );
         anotherThis.effectImages.push(usedCard.img);
       }
-      if (HPinfo.attackedPlayerID == anotherThis.playerId) {
+      if (HPinfo.attackedPlayerID == playerId) {
         //攻撃した時の処理
         anotherThis.yourHP = HPinfo.attackedPlayerHP;
         anotherThis.opponentHP = HPinfo.damagedPlayerHP;
         anotherThis.opponentTurn = true;
-      } else if (HPinfo.damagedPlayerID == anotherThis.playerId) {
+      } else if (HPinfo.damagedPlayerID == playerId) {
         //攻撃された時の処理
         anotherThis.yourHP = HPinfo.damagedPlayerHP;
         anotherThis.opponentHP = HPinfo.attackedPlayerHP;
         anotherThis.opponentTurn = false;
       }
     });
+
   },
 };
 </script>
