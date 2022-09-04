@@ -22,7 +22,7 @@ let playerDB = [
     turnFlag: 0,
     decId: 0, //デッキの種類を選ぶ　初期は0で、ルームに入る際に選択&フロントエンドから送信してもらいたい
     roundCount: 0,
-    filed: 0,
+    field: 0,
   },
 ];
 
