@@ -182,7 +182,7 @@ export const calculateHP = function (cardValue, playerId) {
       fieldBonus = 10;
       fieldBonusFlag = "true";
     }
-    let damageValue = cardValue.selectedCardData[0].value + fieldBonus;
+    let damageValue = cardValue.selectedCardData[0].actionValue + fieldBonus;
     if (cardValue.selectedCardData[0].action == "enhancement") {
       //回復の処理
       effect += "enhancement";
