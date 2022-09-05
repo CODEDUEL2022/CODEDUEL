@@ -166,6 +166,7 @@
      (e) => e.playerId === thisRoomPlayer[0].playerId
    );
    let effect = "";
+   let damageValue = 0;
    let updatedData = cardValue.selectedCardData.map((obj) => obj.id);
    updatedData.sort(function (first, second) {
      if (first > second) {
@@ -190,7 +191,7 @@
        fieldBonus = 10;
        fieldBonusFlag = "true";
      }
-     let damageValue = cardValue.selectedCardData[0].actionValue + fieldBonus;
+     damageValue = cardValue.selectedCardData[0].actionValue + fieldBonus;
      if (cardValue.selectedCardData[0].action == "enhancement") {
        //回復の処理
        effect += "enhancement";
@@ -213,11 +214,13 @@
      // コンボの場合
      const usedCombo = decideUsedCombo(updatedData);
      effect += usedCombo.nameEn;
+     damageValue = usedCombo.actionValue;
      playerDB[indexAttacked].opponentHP -= usedCombo.actionValue;
      playerDB[indexDamaged].yourHP -= usedCombo.actionValue;
    }
    const HPinfo = {
      actionType: effect,
+     actionPoint: damageValue,
      attackedPlayerID: playerDB[indexAttacked].playerId,
      damagedPlayerID: playerDB[indexDamaged].playerId,
      attackedPlayerHP: playerDB[indexAttacked].yourHP,
