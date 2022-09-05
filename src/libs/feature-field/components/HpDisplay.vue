@@ -27,6 +27,7 @@
 .hp-monitor {
   width: 70%;
   letter-spacing: 0.1em;
+  text-shadow: 0 0 10px #d3fffd;
   .you {
     font-size: 1.5rem;
     margin-bottom: 1.5rem;
