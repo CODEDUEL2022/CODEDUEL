@@ -34,7 +34,7 @@ export default {
   },
   data() {
     return {
-      message: "マッチング中",
+      message: "",
       showGeneralCutIn: true,
       showActionCutIn: false,
       actionType: "",
@@ -124,7 +124,6 @@ export default {
           this.message = "マッチング中";
         } else {
           this.opponentTurn = true;
-          this.message = "相手のターンです";
         }
       });
   },
@@ -259,6 +258,7 @@ export default {
         anotherThis.yourHP = HPinfo.attackedPlayerHP;
         anotherThis.opponentHP = HPinfo.damagedPlayerHP;
         anotherThis.opponentTurn = true;
+        anotherThis.message = "相手のターンです";
         anotherThis.showGeneralCutIn = true;
       } else if (HPinfo.damagedPlayerID == playerId) {
         //攻撃された時の処理
