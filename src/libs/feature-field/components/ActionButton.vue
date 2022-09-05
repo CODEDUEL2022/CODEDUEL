@@ -8,7 +8,7 @@
       <span>発動</span>
     </div>
     <div v-else class="action-button disable">
-      <span>発動可能なカードを選択してください</span>
+      <span>ERROR! : Select cards.</span>
     </div>
   </div>
 </template>
@@ -27,8 +27,8 @@
     align-items: center;
     text-align: center;
     width: 180px;
-    height: 200px;
-    padding: 2rem;
+    height: fit-content;
+    padding: 1.5rem 2rem;
     margin-top: 0.5rem;
     position: relative;
     border: 4px solid #ff0000cb;

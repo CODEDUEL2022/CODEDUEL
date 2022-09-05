@@ -77,6 +77,9 @@
           </VueDrag>
         </v-col>
         <v-col cols="2">
+          <div @click="$emit()" class="card-list-btn">
+            <span>Card List</span>
+          </div>
           <ActionButton
             :isEnableAction="isEnableAction"
             @handleAction="$emit('handleAction')"
@@ -329,6 +332,49 @@
       .area {
         display: flex;
         justify-content: stretch;
+      }
+
+      .card-list-btn {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        width: 180px;
+        height: fit-content;
+        padding: 1rem 2rem;
+        margin: 0.5rem 0 1.5rem 0;
+        position: relative;
+        border: 4px solid #00fff2;
+        background-color: #0e3145;
+        box-shadow: 0px 0px 5px #00fff2;
+
+        span {
+          position: relative;
+          z-index: 1;
+          color: #00fff2;
+          font-size: 1.5rem;
+          letter-spacing: 0.15rem;
+        }
+      }
+      .card-list-btn::before {
+        position: absolute;
+        content: "";
+        display: block;
+        top: -3px;
+        bottom: -3px;
+        left: 10px;
+        right: 10px;
+        background-color: #0e3145;
+      }
+      .card-list-btn::after {
+        position: absolute;
+        content: "";
+        display: block;
+        top: 10px;
+        bottom: 10px;
+        left: -3px;
+        right: -3px;
+        background-color: #0e3145;
       }
     }
   }
