@@ -9,6 +9,7 @@ import {
   postPlayerData,
   reload,
   postCardDraw,
+  getPlayerName,
 } from "./components/player.js";
 import {
   cpuHPReload,
@@ -109,6 +110,14 @@ io.sockets.on("connection", function (socket) {
       io.to(RoomID).emit("gameStart");
     }
   });
+  socket.on("sendPlayerName", function(roomId, yourId, yourName){
+    socket.join(roomId);
+    console.log("名前共有　yourId"+yourId)
+    console.log("名前共有　yourName"+yourName)
+    //バックエンドで情報を保持するコードを書く
+    io.to(roomId).emit("playerName", yourName);
+    console.log("相手プレイヤーに名前を送った")
+  })
   socket.on("cardValue", function (cardValue, playerId) {
     socket.join(cardValue.roomId);
     io.to(cardValue.roomId).emit("HPinfo", calculateHP(cardValue, playerId));
@@ -148,6 +157,10 @@ app.get("/api/getCardDB", (req, res) => {
 app.get("/api/getFieldDB", (req, res) => {
   res.json(fieldDB);
 });
+
+app.post("/api/getPlayerName",(req,res) => {
+  res.send(getPlayerName(req,res))
+})
 
 //ページリロード時のターンを決定づける。
 app.post("/api/getTurn", (req, res) => {

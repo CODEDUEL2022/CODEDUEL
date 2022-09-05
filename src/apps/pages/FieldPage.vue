@@ -107,6 +107,15 @@ export default {
         }
       });
 
+    this.$axios
+      .post("/getPlayerName",{
+        playerId: searchParams.get("id"),
+      })
+      .then((res) => {
+        console.log("Player名"+res.data)
+        this.yourName = res.data
+      })
+    
     //joinするための送信
     this.yourId = searchParams.get("id");
     this.roomID = searchParams.get("room");
@@ -229,6 +238,10 @@ export default {
       "gameStart",
       function () // 報告:この処理が走るとルームに二人が入ったことになる
       {
+        const socket = io("localhost:3000")
+        this.yourId = searchParams.get("id");
+        this.roomID = searchParams.get("room");
+        socket.emit("sendPlayerName", this.roomId, this.yourId, anotherThis.yourName)
         //ここに処理を書いてほしいです
         //ゲームスタート！みたいなカットイン＋opponentTurnによる場合分けで相手のターンみたいなのを表示する
         anotherThis.showGeneralCutIn = true;
@@ -242,6 +255,12 @@ export default {
         }
       }
     );
+    
+    //今これが走っていない。何故だろう？理由が判らん
+    this.socket.on("playerName",function(playerName) {
+      console.log("playerNameが発火された"+playerName)
+      this.opponentName = playerName
+    })
     this.socket.on("HPinfo", function (HPinfo) {
       anotherThis.actionType = HPinfo.actionType; //攻撃の種類
       anotherThis.roundCount = HPinfo.nextTurnField // 何ターン目かの情報

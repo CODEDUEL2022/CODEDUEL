@@ -42,6 +42,7 @@ export default {
         .post("/playerData", {
           RoomId: this.roomId,
           playerId: this.playerId,
+          playerName: "hogehoge", //テスト用としてhogehogeにした
           decId: 0, //仮においている。本来はデッキ選択用
         })
         .then((res) => {

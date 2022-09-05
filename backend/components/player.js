@@ -15,6 +15,8 @@
    {
      RoomId: "",
      playerId: "",
+     yourName: "",
+     opponentName: "",
      cardList: [],
      yourHP: 200,
      opponentHP: 200,
@@ -76,6 +78,8 @@
      playerDB.push({
        RoomId: req.body.RoomId,
        playerId: req.body.playerId,
+       yourName: req.body.playerName,
+       opponentName: "",
        cardList: [],
        yourHP: 200,
        opponentHP: 200,
@@ -88,6 +92,7 @@
      playerDB.push({
        RoomId: req.body.RoomId,
        playerId: req.body.playerId,
+       yourName: req.body.playerName,
        cardList: [],
        yourHP: 200,
        opponentHP: 200,
@@ -106,6 +111,18 @@
    );
    return playerDB[selectTurnId].turnFlag;
  };
+ 
+ export const getPlayerName = function (req,res){
+  //修正加える　敵の名前も出せるように
+  const selectTurnId = playerDB.findIndex(
+    (e) => e.playerId === req.body.playerId
+  );
+  return playerDB[selectTurnId].yourName
+ }
+
+ export const getOpponentPlayerName = function(req,res){
+  
+ }
  
  export const controlTurn = function (req, res) {
    const selectTurnId = playerDB.findIndex(
