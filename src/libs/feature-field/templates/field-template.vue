@@ -347,6 +347,7 @@
         border: 4px solid #00fff2;
         background-color: #0e3145;
         box-shadow: 0px 0px 5px #00fff2;
+        cursor: pointer;
 
         span {
           position: relative;
@@ -375,6 +376,12 @@
         left: -3px;
         right: -3px;
         background-color: #0e3145;
+      }
+
+      .card-list-btn:hover,
+      .card-list-btn:hover::after,
+      .card-list-btn:hover::before {
+        background-color: #144f61;
       }
     }
   }
