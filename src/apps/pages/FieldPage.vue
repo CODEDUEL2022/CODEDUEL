@@ -101,7 +101,6 @@ export default {
       .then((res) => {
         console.log(res.data);
         for (let i = 0; i < res.data.length; i++) {
-          //ここ、issue13ではcomboDataになっていたけれど、多分違うので修正します
           giveNewProperty(res.data[i])
           this.yourCardsData.push(res.data[i]);
         }
@@ -198,12 +197,26 @@ export default {
       }
     },
     closeActionCutIn: function () {
+      const searchParams = new URLSearchParams(window.location.search);
+      const giveNewProperty = function(object) {object.isCombined = true}
       this.showActionCutIn = false;
       this.effectImages.splice(this.index, this.effectImages.length);
+      this.$axios
+      .post("/cardDraw", {
+        cardData: this.yourCardsData,
+        playerId: searchParams.get("id"),
+      })
+      .then((res) => {
+        console.log(res.data);
+        this.yourCardsData = []
+        for (let i = 0; i < res.data.length; i++) {
+          giveNewProperty(res.data[i])
+          this.yourCardsData.push(res.data[i]);
+        }
+      });
     },
     handleAction: function () {
       const searchParams = new URLSearchParams(window.location.search);
-      this.$axios.post("/controlTurn", { playerId: searchParams.get("id") });
       let cardValue = {
         selectedCardData: this.selectedCardsData,
         roomId: searchParams.get("room"),
@@ -270,6 +283,8 @@ export default {
         anotherThis.showGeneralCutIn = false;
         anotherThis.showActionCutIn = true;
       }
+
+      
     });
   },
   updated() {

@@ -30,26 +30,23 @@
    console.log("ドロー関数が発火されました");
    console.log(playerDB[selectId]);
    for (let j = playerDB[selectId].cardList.length; j < 6; ) {
-     //tmpには、デッキの中からランダムに1つ数字を選ぶようにしている
-     //const tmp = Number(Math.floor(Math.random() * selectDec(playerDB[selectId].decId).length));
-     const tmp = Number(Math.floor(Math.random() * 56));
-     //選んだIDのものをpushする
-     //playerDB[selectId].cardList.push(selectDec(playerDB[selectId].decId)[tmp]);
-     playerDB[selectId].cardList.push(cardDB[tmp]);
- 
-     j++;
+    //const tmp = Number(Math.floor(Math.random() * selectDec(playerDB[selectId].decId).length));
+    const tmp = Number(Math.floor(Math.random() * 56));
+    //playerDB[selectId].cardList.push(selectDec(playerDB[selectId].decId)[tmp]);
+    playerDB[selectId].cardList.push(cardDB[tmp]);
+    j++;
    }
  };
  
  export const postCardDraw = function (req, res) {
    const selectId = playerDB.findIndex((e) => e.playerId === req.body.playerId);
    if (req.body.cardData.length != 0) {
-     playerDB[selectId].cardList = req.body.cardData;
+    playerDB[selectId].cardList = req.body.cardData;
    }
    cardDraw(selectId);
    return playerDB[selectId].cardList;
  };
- 
+
  export const postHP = function (req, res) {
    let selectId = playerDB.findIndex((e) => e.playerId === req.body.playerId);
    playerDB[selectId].yourHP = req.body.HPs.yours;
