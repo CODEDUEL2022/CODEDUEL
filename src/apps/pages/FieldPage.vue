@@ -19,7 +19,6 @@
     :effectImages="effectImages"
     :attackOptions="attackOptions()"
     :isEnableAction="isEnableAction()"
-    @closeGeneralCutIn="closeGeneralCutIn()"
     @closeActionCutIn="closeActionCutIn()"
     @handleAction="handleAction()"
   />
@@ -35,7 +34,7 @@ export default {
   },
   data() {
     return {
-      message: "マッチング中",
+      message: "",
       showGeneralCutIn: true,
       showActionCutIn: false,
       actionType: "",
@@ -125,7 +124,6 @@ export default {
           this.message = "マッチング中";
         } else {
           this.opponentTurn = true;
-          this.message = "相手のターンです";
         }
       });
   },
@@ -199,11 +197,9 @@ export default {
         }
       }
     },
-    closeGeneralCutIn: function () {
-      this.showGeneralCutIn = false;
-    },
     closeActionCutIn: function () {
       this.showActionCutIn = false;
+      this.effectImages.splice(this.index, this.effectImages.length);
     },
     handleAction: function () {
       const searchParams = new URLSearchParams(window.location.search);
@@ -237,10 +233,10 @@ export default {
         //ゲームスタート！みたいなカットイン＋opponentTurnによる場合分けで相手のターンみたいなのを表示する
         anotherThis.showGeneralCutIn = true;
         anotherThis.message = "Hello World";
-        const chengeMessage = () => (anotherThis.message = "相手のターンです");
+        const changeMessage = () => (anotherThis.message = "相手のターンです");
         const closeCutIn = () => (anotherThis.showGeneralCutIn = false);
         if (anotherThis.opponentTurn) {
-          setTimeout(chengeMessage, 1000);
+          setTimeout(changeMessage, 1000);
         } else {
           setTimeout(closeCutIn, 1000);
         }
@@ -249,6 +245,7 @@ export default {
     this.socket.on("HPinfo", function (HPinfo) {
       anotherThis.actionType = HPinfo.actionType; //攻撃の種類
       anotherThis.roundCount = HPinfo.nextTurnField // 何ターン目かの情報
+      anotherThis.actionPoint = HPinfo.actionPoint
       console.log("round:" + anotherThis.roundCount)
       // エフェクト用に画像を持ってくる
       for (let i = 0; i < HPinfo.usedCardIdList.length; i++) {
@@ -263,11 +260,15 @@ export default {
         anotherThis.yourHP = HPinfo.attackedPlayerHP;
         anotherThis.opponentHP = HPinfo.damagedPlayerHP;
         anotherThis.opponentTurn = true;
+        anotherThis.message = "相手のターンです";
+        anotherThis.showGeneralCutIn = true;
       } else if (HPinfo.damagedPlayerID == playerId) {
         //攻撃された時の処理
         anotherThis.yourHP = HPinfo.damagedPlayerHP;
         anotherThis.opponentHP = HPinfo.attackedPlayerHP;
         anotherThis.opponentTurn = false;
+        anotherThis.showGeneralCutIn = false;
+        anotherThis.showActionCutIn = true;
       }
     });
   },

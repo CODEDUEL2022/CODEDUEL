@@ -4,7 +4,6 @@
     <div v-show="showGeneralCutIn">
       <GeneralCutIn
         :message="message"
-        @closeGeneralCutIn="$emit('closeGeneralCutIn')"
       />
     </div>
     <div v-show="showActionCutIn">

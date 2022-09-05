@@ -15,7 +15,7 @@
         </v-card>
       </div>
     </div>
-    <div class="dalayEffect">{{ actionType }} {{ value }} pt</div>
+    <div class="dalayEffect">{{ actionType }} {{ actionPoint }} pt</div>
   </div>
 </template>
 <script>
@@ -24,7 +24,7 @@ import SimpleCard from "./SimpleCard.vue";
 
 export default {
   name: "ActionCutIn",
-  props: ["effectImages", "actionType", "value"],
+  props: ["effectImages", "actionType", "actionPoint"],
   components: {
     SimpleCard,
   }
