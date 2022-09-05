@@ -106,9 +106,9 @@
 </template>
 
 <script>
-  import Header from "/src/libs/layout/Header.vue";
   import ActionButton from "../components/ActionButton.vue";
   import HPDisplay from "../components/HpDisplay.vue";
+  import RoundDisplay from "../components/RoundDisplay.vue";
   import VueDrag from "vuedraggable";
   import GeneralCutIn from "../components/GeneralCutIn.vue";
   import ActionCutIn from "../components/ActionCutIn.vue";
@@ -118,9 +118,9 @@
   export default {
     name: "FieldTemplate",
     components: {
-      Header,
       ActionButton,
       HPDisplay,
+      RoundDisplay,
       VueDrag,
       GeneralCutIn,
       ActionCutIn,
@@ -134,10 +134,12 @@
       "actionType",
       "actionPoint",
       "yourHP",
-      "opponentHP",
-      "roundCount",
       "yourName",
+      "opponentHP",
       "opponentName",
+      "roundCount",
+      "currentFieldName",
+      "currentFieldImg",
       "yourCardsData",
       "selectedCardsData",
       "yourGroup",
@@ -159,6 +161,52 @@
       };
     },
   };
+  >>>>>>> e6d7cf356ae554afd9703181e52f47b0951778db
+
+    export default {
+      name: "FieldTemplate",
+      components: {
+        Header,
+        ActionButton,
+        HPDisplay,
+        VueDrag,
+        GeneralCutIn,
+        ActionCutIn,
+        TerminalUI,
+        SimpleCard,
+      },
+      props: [
+        "message",
+        "showGeneralCutIn",
+        "showActionCutIn",
+        "actionType",
+        "actionPoint",
+        "yourHP",
+        "opponentHP",
+        "roundCount",
+        "yourName",
+        "opponentName",
+        "yourCardsData",
+        "selectedCardsData",
+        "yourGroup",
+        "yourId",
+        "effectImages",
+        "selectedId",
+        "comboData",
+        "isEnableAction",
+        "attackOptions",
+        "focusedCard",
+      ],
+      data() {
+        return {
+          // drag&drop用のデータ
+          options: {
+            group: "yourGroup",
+            animation: 200,
+          },
+        };
+      },
+    };
 </script>
 
 <style scoped lang="scss">
