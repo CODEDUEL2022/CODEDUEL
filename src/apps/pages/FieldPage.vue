@@ -199,6 +199,7 @@ export default {
     },
     closeActionCutIn: function () {
       this.showActionCutIn = false;
+      this.effectImages.splice(this.index, this.effectImages.length);
     },
     handleAction: function () {
       const searchParams = new URLSearchParams(window.location.search);
@@ -232,10 +233,10 @@ export default {
         //ゲームスタート！みたいなカットイン＋opponentTurnによる場合分けで相手のターンみたいなのを表示する
         anotherThis.showGeneralCutIn = true;
         anotherThis.message = "Hello World";
-        const chengeMessage = () => (anotherThis.message = "相手のターンです");
+        const changeMessage = () => (anotherThis.message = "相手のターンです");
         const closeCutIn = () => (anotherThis.showGeneralCutIn = false);
         if (anotherThis.opponentTurn) {
-          setTimeout(chengeMessage, 1000);
+          setTimeout(changeMessage, 1000);
         } else {
           setTimeout(closeCutIn, 1000);
         }
@@ -266,6 +267,7 @@ export default {
         anotherThis.opponentHP = HPinfo.attackedPlayerHP;
         anotherThis.opponentTurn = false;
         anotherThis.showGeneralCutIn = false;
+        anotherThis.showActionCutIn = true;
       }
     });
   },
