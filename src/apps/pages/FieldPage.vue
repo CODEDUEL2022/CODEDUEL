@@ -19,7 +19,6 @@
     :effectImages="effectImages"
     :attackOptions="attackOptions()"
     :isEnableAction="isEnableAction()"
-    @closeGeneralCutIn="closeGeneralCutIn()"
     @closeActionCutIn="closeActionCutIn()"
     @handleAction="handleAction()"
   />
@@ -198,9 +197,6 @@ export default {
           }
         }
       }
-    },
-    closeGeneralCutIn: function () {
-      this.showGeneralCutIn = false;
     },
     closeActionCutIn: function () {
       this.showActionCutIn = false;

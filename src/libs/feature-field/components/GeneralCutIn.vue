@@ -1,5 +1,5 @@
 <template>
-  <div class="overlay" @click="$emit('closeGeneralCutIn')">
+  <div class="overlay">
     <p class="alone">{{ message }}</p>
   </div>
 </template>
