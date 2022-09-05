@@ -8,7 +8,7 @@
       <span>発動</span>
     </div>
     <div v-else class="action-button disable">
-      <span>ERROR! : Select cards.</span>
+      <span>ERROR : Select cards.</span>
     </div>
   </div>
 </template>
@@ -28,7 +28,7 @@
     text-align: center;
     width: 180px;
     height: fit-content;
-    padding: 1.5rem 2rem;
+    padding: 1.25rem 2rem;
     margin-top: 0.5rem;
     position: relative;
     border: 4px solid #ff0000cb;
@@ -66,12 +66,13 @@
     position: relative;
     z-index: 1;
     color: #ff0000;
-    font-size: 20px;
+    font-size: 1.25rem;
   }
 
   .action-button.able span {
     animation: neon_blink_text 1.5s infinite alternate;
-    font-size: 32px;
+    font-size: 1.5rem;
+    text-shadow: 0 0 10px #d3fffd;
   }
 
   .action-button.disable,
