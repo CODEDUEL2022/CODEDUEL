@@ -1,6 +1,5 @@
 <template>
-  <div class="action-list">
-    <div>></div>
+  <div class="action-list"></div>
     <div v-for="option in attackOptions" :key="option.comboId">
       <div>> action : {{ option.nameEn }}</div>
       <div>> 必要なカード：{{ option.nameList }}</div>
