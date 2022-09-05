@@ -48,6 +48,17 @@ export default {
           //res.dataがRoomにいる人数ここで場合分けすればOK
           console.log(res.data);
         });
+
+      //デッキを自作する機能を実装。
+      //decIdにカードのidをリストとして入れれば成功するように設計
+      this.$axios
+        .post("/dec",{
+          playerId: this.playerId,
+          decIdList: [0,1,2,3,4,5,6]
+        })
+        .then((res) => {
+          console.log(res.data)
+        })
     },
     //ページ遷移機能
     onPushField: function () {
