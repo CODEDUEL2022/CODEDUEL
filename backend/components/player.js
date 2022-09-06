@@ -23,23 +23,28 @@
      decId: 0, //デッキの種類を選ぶ　初期は0で、ルームに入る際に選択&フロントエンドから送信してもらいたい
      roundCount: 0,
      field: 0,
+     decList: []
    },
  ];
  
- export const cardDraw = function (selectId) {
-   console.log("ドロー関数が発火されました");
-   console.log(playerDB[selectId]);
-   for (let j = playerDB[selectId].cardList.length; j < 6; ) {
-     //tmpには、デッキの中からランダムに1つ数字を選ぶようにしている
-     //const tmp = Number(Math.floor(Math.random() * selectDec(playerDB[selectId].decId).length));
-     const tmp = Number(Math.floor(Math.random() * 56));
-     //選んだIDのものをpushする
-     //playerDB[selectId].cardList.push(selectDec(playerDB[selectId].decId)[tmp]);
-     playerDB[selectId].cardList.push(cardDB[tmp]);
- 
-     j++;
-   }
- };
+export const cardDraw = function (selectId) {
+  console.log("ドロー関数が発火されました");
+  if(playerDB[selectId].decList.length == 0){
+    console.log("デッキ指定がない為、全てのカードを参照してドローをします")
+    for (let j = playerDB[selectId].cardList.length; j < 6; ) {
+      const tmp = Number(Math.floor(Math.random() * 56));
+      playerDB[selectId].cardList.push(cardDB[tmp]);
+      j++;
+    }
+  }else{
+    console.log("デッキが選択されている為、デッキの中から任意のカードをドローします")
+    for (let j = playerDB[selectId].cardList.length; j < 6; ) {
+      const tmp = Number(Math.floor(Math.random() * playerDB[selectId].decList.length));
+      playerDB[selectId].cardList.push(cardDB[playerDB[selectId].decList[tmp]]);
+      j++
+    }
+  }
+};
  
  export const postCardDraw = function (req, res) {
    const selectId = playerDB.findIndex((e) => e.playerId === req.body.playerId);
@@ -71,7 +76,7 @@
  };
  
  export const postPlayerData = function (req, res, numClients) {
-   let decId = req.body.decId; //フロントエンドからデッキデータを受け取るのはここにしたいな。フロント係の皆様頼んだ
+   let decId = req.body.decId; 
    if (numClients[req.body.RoomId] == 1) {
      playerDB.push({
        RoomId: req.body.RoomId,
@@ -83,6 +88,7 @@
        turnFlag: 1,
        decId: decId,
        field: 0,
+       decList: []
      });
    } else {
      playerDB.push({
@@ -95,11 +101,23 @@
        turnFlag: 0,
        decId: decId,
        field: 0,
+       decList: []
      });
    }
    return numClients[req.body.RoomId];
  };
  
+export const addDec = function(req,res) {
+  const selectTurnId = playerDB.findIndex(
+    (e) => e.playerId === req.body.playerId
+  );
+  const decIdList = req.body.decIdList
+  decIdList.forEach((dec) => {
+    playerDB[selectTurnId].decList.push(dec)
+  })
+  return playerDB[selectTurnId].decList
+}
+
  export const getTurn = function (req, res) {
    const selectTurnId = playerDB.findIndex(
      (e) => e.playerId === req.body.playerId
