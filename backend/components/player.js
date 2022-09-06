@@ -49,12 +49,12 @@ export const cardDraw = function (selectId) {
  export const postCardDraw = function (req, res) {
    const selectId = playerDB.findIndex((e) => e.playerId === req.body.playerId);
    if (req.body.cardData.length != 0) {
-     playerDB[selectId].cardList = req.body.cardData;
+    playerDB[selectId].cardList = req.body.cardData;
    }
    cardDraw(selectId);
    return playerDB[selectId].cardList;
  };
- 
+
  export const postHP = function (req, res) {
    let selectId = playerDB.findIndex((e) => e.playerId === req.body.playerId);
    playerDB[selectId].yourHP = req.body.HPs.yours;
