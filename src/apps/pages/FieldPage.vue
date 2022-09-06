@@ -130,20 +130,21 @@ export default {
   methods: {
     // ターミナルuiに表示するために可能なコンボを取得
     attackOptions: function () {
-      let updatedData = this.selectedCardsData.map((obj) => obj.id);
-      let ableAttackData = updatedData.sort((a, b) => (a < b ? -1 : 1));
+      const updatedData = this.selectedCardsData.map((obj) => obj.id);
+      const ableAttackData = updatedData.sort((a, b) => (a < b ? -1 : 1));
       // 一致してるものがあるかを判定
       const isIncludes = (arr, target) =>
         arr.every((el) => target.includes(el));
       if (ableAttackData.length === 0) return [];
-      // updateddataにあるのと一致した攻撃だけを返す
+      if (ableAttackData[0] === ableAttackData[1]) return [];
+      // ableAttackDataにあるのと一致した攻撃だけを返す
       return this.comboData.filter((comboData) => {
         return isIncludes(ableAttackData, comboData.idList);
       });
     },
     //発動できるかどうかを判定する
     isEnableAction: function () {
-      let updatedData = this.selectedCardsData.map((obj) => obj.id);
+      const updatedData = this.selectedCardsData.map((obj) => obj.id);
       updatedData.sort(function (first, second) {
         if (first > second) {
           return 1;
@@ -170,7 +171,7 @@ export default {
       } else if (updatedData.length === 1) {
         return true;
       } else {
-        let ableCombo = this.comboData.filter((comboData) => {
+        const ableCombo = this.comboData.filter((comboData) => {
           return isIncludes(updatedData, comboData.idList);
         });
         // 完全一致した攻撃だけを返す
