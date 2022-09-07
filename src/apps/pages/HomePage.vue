@@ -1,8 +1,7 @@
 <template>
   <HomeTemplate
-    :roomId.sync="roomId"
     :isStartModalOpen="isStartModalOpen"
-    @handleStart="onPushField('asdfghjkl')"
+    @handleStart="onPushField(gameMode, roomId)"
     @handleSetIssue="onSetId()"
     @handleMoveCPUPage="onPushCPU()"
     @handleModalOpen="onStartModalOpen()"
@@ -21,21 +20,18 @@
     data() {
       return {
         number: "",
-        roomId: "",
         socket: io("localhost:3000"),
         turn_flag: 0,
         playerId: "",
         isStartModalOpen: false,
+        gameMode: this.gameMode,
+        roomId: this.roomId,
       };
     },
     mounted() {
       this.socket.on("logined");
     },
     methods: {
-      onSetId: function () {
-        // HACK: ID作る関数入れておく
-        this.roomId = Math.random().toString(32).substring(2);
-      },
       //追加機能：クエリにplayer_Idを追加。同じルーム内でのプレイヤーを識別するのに利用。
       onSendRoomId: function (roomId) {
         this.playerId = Math.random().toString(32).substring(2);
@@ -53,7 +49,11 @@
           });
       },
       //ページ遷移機能
-      onPushField: function (roomId) {
+      onPushField: function (gameMode, roomId) {
+        this.gameMode = gameMode;
+        this.roomId = roomId;
+        console.log(this.gameMode);
+        console.log(this.roomId);
         this.playerId = Math.random().toString(32).substring(2);
         this.roomId = roomId;
         this.socket.emit("login", this.roomId);
@@ -87,8 +87,16 @@
         this.isStartModalOpen = true;
       },
       onStartModalClose: function () {
-        console.log("clicked.");
+        console.log("onStartModalClose");
         this.isStartModalOpen = false;
+      },
+    },
+    computed: {
+      changeRoomId: function () {
+        return this.roomId;
+      },
+      changeGameMode: function () {
+        return this.gameMode;
       },
     },
   };
