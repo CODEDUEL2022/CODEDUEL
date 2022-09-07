@@ -10,19 +10,14 @@
       <div class="play-btn" @click="$emit('handleModalOpen')">
         <span>＞ PLAY</span>
       </div>
-      <div
-        class="tempolary-btn"
-        @click="$emit('handleStart', gameMode, roomId)"
-      >
-        start
-      </div>
       <StartModal
         v-if="isStartModalOpen"
         :gameMode="gameMode"
-        :roomId="roomId"
+        :roomId.sync="roomId"
         :isStartModalOpen="isStartModalOpen"
         @handleModalClose="$emit('handleModalClose')"
-        @handleStart="handleStart(gameMode, roomId)"
+        @handleStart="handleStart"
+        @changeModalContent="handleChangeModalContent"
       />
     </div>
   </div>
@@ -37,19 +32,15 @@
       Header,
       StartModal,
     },
-    props: ["isStartModalOpen"],
-    data() {
-      return {
-        gameMode: null,
-        roomId: null,
-      };
-    },
+    props: ["isStartModalOpen", "gameMode", "roomId"],
     methods: {
-      handleStart: function (gameMode, roomId) {
+      handleChangeModalContent: function (gameMode) {
         this.gameMode = gameMode;
+        this.$emit("handleChangeModalContent", this.gameMode);
+      },
+      handleStart: function (roomId) {
         this.roomId = roomId;
-        console.log(gameMode);
-        console.log(roomId);
+        this.$emit("handleStart", this.roomId);
       },
     },
   };

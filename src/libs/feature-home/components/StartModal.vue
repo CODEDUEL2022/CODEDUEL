@@ -31,13 +31,13 @@
         <span>Input room ID.</span>
         <span class="input-text">
           <input
-            v-model="roomId"
+            :value="roomId"
             type="text"
             placeholder="room ID:"
             @input="$emit('update:roomId', $event.target.value)"
           />
         </span>
-        <div class="start-btn" @click="handleStart(gameMode, roomId)">
+        <div class="start-btn" @click="handleStart(roomId)">
           <span class="start-btn">＞ GAME START</span>
         </div>
       </div>
@@ -57,25 +57,25 @@
     },
     methods: {
       changeModalContent: function (gameMode) {
-        this.gameMode = gameMode;
-        console.log(this.gameMode);
         this.firstStep = false;
         this.secondStep = true;
-      },
-      handleStart: function (gameMode, roomId) {
         console.log(gameMode);
-        console.log(roomId);
-        this.$emit("handleStart", gameMode, roomId);
+        this.gameMode = gameMode;
+        this.$emit("changeModalContent", this.gameMode);
+      },
+      handleStart: function (roomId) {
+        this.roomId = roomId;
+        this.$emit("handleStart", this.roomId);
       },
     },
-    computed: {
-      changeRoomId: function (roomId) {
-        return (this.roomId = roomId);
-      },
-      changeGameMode: function (gameMode) {
-        return (this.gameMode = gameMode);
-      },
-    },
+    // computed: {
+    //   // changeRoomId: function (roomId) {
+    //   //   return (this.roomId = roomId);
+    //   // },
+    //   changeGameMode: function (gameMode) {
+    //     return (this.gameMode = gameMode);
+    //   },
+    // },
   };
 </script>
 

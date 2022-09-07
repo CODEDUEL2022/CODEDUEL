@@ -1,11 +1,14 @@
 <template>
   <HomeTemplate
+    :gameMode="gameMode"
+    :roomId.sync="roomId"
     :isStartModalOpen="isStartModalOpen"
-    @handleStart="onPushField(gameMode, roomId)"
+    @handleStart="onPushField"
     @handleSetIssue="onSetId()"
     @handleMoveCPUPage="onPushCPU()"
     @handleModalOpen="onStartModalOpen()"
     @handleModalClose="onStartModalClose()"
+    @handleChangeModalContent="onChangeModalContent"
   />
 </template>
 <script>
@@ -24,8 +27,8 @@
         turn_flag: 0,
         playerId: "",
         isStartModalOpen: false,
-        gameMode: this.gameMode,
-        roomId: this.roomId,
+        gameMode: null,
+        roomId: null,
       };
     },
     mounted() {
@@ -49,13 +52,10 @@
           });
       },
       //ページ遷移機能
-      onPushField: function (gameMode, roomId) {
-        this.gameMode = gameMode;
-        this.roomId = roomId;
-        console.log(this.gameMode);
+      onPushField: function (value) {
+        this.roomId = value;
         console.log(this.roomId);
         this.playerId = Math.random().toString(32).substring(2);
-        this.roomId = roomId;
         this.socket.emit("login", this.roomId);
         this.$axios
           .post("/playerData", {
@@ -90,13 +90,9 @@
         console.log("onStartModalClose");
         this.isStartModalOpen = false;
       },
-    },
-    computed: {
-      changeRoomId: function () {
-        return this.roomId;
-      },
-      changeGameMode: function () {
-        return this.gameMode;
+      onChangeModalContent: function (value) {
+        this.gameMode = value;
+        console.log(this.gameMode);
       },
     },
   };
