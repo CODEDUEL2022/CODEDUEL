@@ -12,7 +12,6 @@
       </div>
       <StartModal
         v-if="isStartModalOpen"
-        :gameMode="gameMode"
         :roomId.sync="roomId"
         :isStartModalOpen="isStartModalOpen"
         @handleModalClose="$emit('handleModalClose')"
@@ -32,15 +31,13 @@
       Header,
       StartModal,
     },
-    props: ["isStartModalOpen", "gameMode", "roomId"],
+    props: ["isStartModalOpen", "roomId"],
     methods: {
       handleChangeModalContent: function (gameMode) {
-        this.gameMode = gameMode;
-        this.$emit("handleChangeModalContent", this.gameMode);
+        this.$emit("handleChangeModalContent", gameMode);
       },
       handleStart: function (roomId) {
-        this.roomId = roomId;
-        this.$emit("handleStart", this.roomId);
+        this.$emit("handleStart", roomId);
       },
     },
   };

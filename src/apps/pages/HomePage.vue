@@ -1,6 +1,5 @@
 <template>
   <HomeTemplate
-    :gameMode="gameMode"
     :roomId.sync="roomId"
     :isStartModalOpen="isStartModalOpen"
     @handleStart="onPushField"

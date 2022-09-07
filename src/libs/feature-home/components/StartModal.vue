@@ -48,7 +48,7 @@
 <script>
   export default {
     name: "StartModal",
-    props: ["isStartModalOpen", "gameMode", "roomId"],
+    props: ["isStartModalOpen", "roomId"],
     data() {
       return {
         firstStep: true,
@@ -59,13 +59,10 @@
       changeModalContent: function (gameMode) {
         this.firstStep = false;
         this.secondStep = true;
-        console.log(gameMode);
-        this.gameMode = gameMode;
-        this.$emit("changeModalContent", this.gameMode);
+        this.$emit("changeModalContent", gameMode);
       },
       handleStart: function (roomId) {
-        this.roomId = roomId;
-        this.$emit("handleStart", this.roomId);
+        this.$emit("handleStart", roomId);
       },
     },
     // computed: {
