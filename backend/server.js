@@ -87,13 +87,15 @@ io.sockets.on("connection", function (socket) {
   socket.on("AutoMattingPreLogin", function(playerId){
     standByPlayer.push(playerId)
     console.log("現在の待機プレイヤー："+standByPlayer.length+"名")
-    function joinRoom(){
+    function joinRoom(player1,player2){
       let roomId = Math.random().toString(32).substring(2);
-      io.emit("FullRoom",roomId,standByPlayer[0],standByPlayer[1])
-      standByPlayer.splice(0,2);
+      io.emit("FullRoom",roomId,player1,player2)
     }
     if(standByPlayer.length >= 2){
-      setTimeout(joinRoom, 1000)
+      let player1 = standByPlayer[0]
+      let player2 = standByPlayer[1]
+      standByPlayer.splice(0,2);
+      setTimeout(function(){joinRoom(player1,player2)}, 1000)
     }
   })
 
