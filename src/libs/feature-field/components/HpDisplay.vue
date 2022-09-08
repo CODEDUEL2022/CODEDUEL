@@ -17,7 +17,6 @@
       <div id="hp-frame">
         <div id="bar-opponent"></div>
         <div id="mark-opponent"></div>
-
       </div>
     </div>
     <div id="btns-wrap">
