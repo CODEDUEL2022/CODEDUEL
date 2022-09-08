@@ -19,7 +19,6 @@
     :effectImages="effectImages"
     :attackOptions="attackOptions()"
     :isEnableAction="isEnableAction()"
-    @closeGeneralCutIn="closeGeneralCutIn()"
     @closeActionCutIn="closeActionCutIn()"
     @handleAction="handleAction()"
   />
@@ -35,7 +34,7 @@ export default {
   },
   data() {
     return {
-      message: "マッチング中",
+      message: "",
       showGeneralCutIn: true,
       showActionCutIn: false,
       actionType: "",
@@ -102,7 +101,6 @@ export default {
       .then((res) => {
         console.log(res.data);
         for (let i = 0; i < res.data.length; i++) {
-          //ここ、issue13ではcomboDataになっていたけれど、多分違うので修正します
           giveNewProperty(res.data[i])
           this.yourCardsData.push(res.data[i]);
         }
@@ -125,7 +123,6 @@ export default {
           this.message = "マッチング中";
         } else {
           this.opponentTurn = true;
-          this.message = "相手のターンです";
         }
       });
   },
@@ -152,16 +149,13 @@ export default {
         } else if (first < second) {
           return -1;
         } else {
-          // updateddataにあるのと一致した攻撃だけを返す
-          return this.comboData.filter((comboData) => {
-            return isIncludes(ableAttackData, comboData.idList);
-          });
+          return 0;
         }
       });
-      // 一致してるものがあるかを判定
+      // 一致してるものがあるかを判定する関数
       const isIncludes = (arr, target) =>
         arr.every((el) => target.includes(el));
-      // 配列の完全一致
+      // 配列の完全一致を判定する関数
       const isEqualArray = function (array1, array2) {
         if (array1.length != array2.length) return false;
         for (let i = 0; i < array1.length; i++) {
@@ -169,45 +163,46 @@ export default {
         }
         return true;
       };
-      if (updatedData.length === 0) return false;
-      if (updatedData.length === 1) return true;
-
-      const ableCombo = this.comboData.filter((comboData) => {
-        return isIncludes(updatedData, comboData.idList);
-      });
       // 完全一致した攻撃だけを返す
-      if (ableCombo.length == 0) {
+      if (updatedData.length === 0) {
         return false;
-      } else if (isEqualArray(updatedData, ableCombo[0].idList)) {
+      } else if (updatedData.length === 1) {
         return true;
       } else {
         let ableCombo = this.comboData.filter((comboData) => {
           return isIncludes(updatedData, comboData.idList);
         });
         // 完全一致した攻撃だけを返す
-        for (let i = 0, n = updatedData.length; i < n; ++i) {
-          if (ableCombo.length == 0) {
-            return false;
-          } else if (
-            updatedData[i] == ableCombo[0].idList[i] &&
-            updatedData.length == ableCombo[0].idList.length
-          ) {
-            return true;
-          } else {
-            return false;
-          }
+        if(ableCombo.length == 0) {
+          return false;
+        } else if (isEqualArray(updatedData, ableCombo[0].idList)) {
+          return true;
+        } else {
+          return false;
         }
       }
     },
-    closeGeneralCutIn: function () {
-      this.showGeneralCutIn = false;
-    },
     closeActionCutIn: function () {
+      const searchParams = new URLSearchParams(window.location.search);
+      const giveNewProperty = function(object) {object.isCombined = true}
       this.showActionCutIn = false;
+      this.effectImages.splice(this.index, this.effectImages.length);
+      this.$axios
+      .post("/cardDraw", {
+        cardData: this.yourCardsData,
+        playerId: searchParams.get("id"),
+      })
+      .then((res) => {
+        console.log(res.data);
+        this.yourCardsData = []
+        for (let i = 0; i < res.data.length; i++) {
+          giveNewProperty(res.data[i])
+          this.yourCardsData.push(res.data[i]);
+        }
+      });
     },
     handleAction: function () {
       const searchParams = new URLSearchParams(window.location.search);
-      this.$axios.post("/controlTurn", { playerId: searchParams.get("id") });
       let cardValue = {
         selectedCardData: this.selectedCardsData,
         roomId: searchParams.get("room"),
@@ -237,10 +232,10 @@ export default {
         //ゲームスタート！みたいなカットイン＋opponentTurnによる場合分けで相手のターンみたいなのを表示する
         anotherThis.showGeneralCutIn = true;
         anotherThis.message = "Hello World";
-        const chengeMessage = () => (anotherThis.message = "相手のターンです");
+        const changeMessage = () => (anotherThis.message = "相手のターンです");
         const closeCutIn = () => (anotherThis.showGeneralCutIn = false);
         if (anotherThis.opponentTurn) {
-          setTimeout(chengeMessage, 1000);
+          setTimeout(changeMessage, 1000);
         } else {
           setTimeout(closeCutIn, 1000);
         }
@@ -249,6 +244,7 @@ export default {
     this.socket.on("HPinfo", function (HPinfo) {
       anotherThis.actionType = HPinfo.actionType; //攻撃の種類
       anotherThis.roundCount = HPinfo.nextTurnField // 何ターン目かの情報
+      anotherThis.actionPoint = HPinfo.actionPoint
       console.log("round:" + anotherThis.roundCount)
       // エフェクト用に画像を持ってくる
       for (let i = 0; i < HPinfo.usedCardIdList.length; i++) {
@@ -263,16 +259,23 @@ export default {
         anotherThis.yourHP = HPinfo.attackedPlayerHP;
         anotherThis.opponentHP = HPinfo.damagedPlayerHP;
         anotherThis.opponentTurn = true;
+        anotherThis.message = "相手のターンです";
+        anotherThis.showGeneralCutIn = true;
       } else if (HPinfo.damagedPlayerID == playerId) {
         //攻撃された時の処理
         anotherThis.yourHP = HPinfo.damagedPlayerHP;
         anotherThis.opponentHP = HPinfo.attackedPlayerHP;
         anotherThis.opponentTurn = false;
+        anotherThis.showGeneralCutIn = false;
+        anotherThis.showActionCutIn = true;
       }
+
+      
     });
   },
   updated() {
     // roundを受け取ってそこからfieldDBと照らし合わせる
+    // room入室時にupdatedが発火されるがfieldDataがないのでエラーがでる。他の実装を考える
     this.currentFieldName = this.fieldData[this.roundCount].name
     this.currentFieldImg = this.fieldData[this.roundCount].img
   }
