@@ -34,6 +34,9 @@ export default {
   },
   data() {
     return {
+      actionSE: new Audio(require("/src/libs/ui/assets/sounds/action_se.mp3")),
+      damageSE: new Audio(require("/src/libs/ui/assets/sounds/damage_se.mp3")),
+      clickSE: new Audio(require("/src/libs/ui/assets/sounds/kako.mp3")),
       message: "",
       showGeneralCutIn: true,
       showActionCutIn: false,
@@ -65,7 +68,9 @@ export default {
   created() {
     this.yourCardsData = [];
     const searchParams = new URLSearchParams(window.location.search);
-    const giveNewProperty = function(object) {object.isCombined = true}
+    const giveNewProperty = function (object) {
+      object.isCombined = true;
+    };
     console.log(this.yourCardsData);
     this.$axios.get("/getComboDb").then((res) => {
       for (let i = 0; i < res.data.length; i++) {
@@ -101,7 +106,7 @@ export default {
       .then((res) => {
         console.log(res.data);
         for (let i = 0; i < res.data.length; i++) {
-          giveNewProperty(res.data[i])
+          giveNewProperty(res.data[i]);
           this.yourCardsData.push(res.data[i]);
         }
       });
@@ -173,7 +178,7 @@ export default {
           return isIncludes(updatedData, comboData.idList);
         });
         // 完全一致した攻撃だけを返す
-        if(ableCombo.length == 0) {
+        if (ableCombo.length == 0) {
           return false;
         } else if (isEqualArray(updatedData, ableCombo[0].idList)) {
           return true;
@@ -184,24 +189,27 @@ export default {
     },
     closeActionCutIn: function () {
       const searchParams = new URLSearchParams(window.location.search);
-      const giveNewProperty = function(object) {object.isCombined = true}
+      const giveNewProperty = function (object) {
+        object.isCombined = true;
+      };
       this.showActionCutIn = false;
       this.effectImages.splice(this.index, this.effectImages.length);
       this.$axios
-      .post("/cardDraw", {
-        cardData: this.yourCardsData,
-        playerId: searchParams.get("id"),
-      })
-      .then((res) => {
-        console.log(res.data);
-        this.yourCardsData = []
-        for (let i = 0; i < res.data.length; i++) {
-          giveNewProperty(res.data[i])
-          this.yourCardsData.push(res.data[i]);
-        }
-      });
+        .post("/cardDraw", {
+          cardData: this.yourCardsData,
+          playerId: searchParams.get("id"),
+        })
+        .then((res) => {
+          console.log(res.data);
+          this.yourCardsData = [];
+          for (let i = 0; i < res.data.length; i++) {
+            giveNewProperty(res.data[i]);
+            this.yourCardsData.push(res.data[i]);
+          }
+        });
     },
     handleAction: function () {
+      this.actionSE.play();
       const searchParams = new URLSearchParams(window.location.search);
       let cardValue = {
         selectedCardData: this.selectedCardsData,
@@ -243,9 +251,9 @@ export default {
     );
     this.socket.on("HPinfo", function (HPinfo) {
       anotherThis.actionType = HPinfo.actionType; //攻撃の種類
-      anotherThis.roundCount = HPinfo.nextTurnField // 何ターン目かの情報
-      anotherThis.actionPoint = HPinfo.actionPoint
-      console.log("round:" + anotherThis.roundCount)
+      anotherThis.roundCount = HPinfo.nextTurnField; // 何ターン目かの情報
+      anotherThis.actionPoint = HPinfo.actionPoint;
+      console.log("round:" + anotherThis.roundCount);
       // エフェクト用に画像を持ってくる
       for (let i = 0; i < HPinfo.usedCardIdList.length; i++) {
         let usedCard = "";
@@ -263,22 +271,21 @@ export default {
         anotherThis.showGeneralCutIn = true;
       } else if (HPinfo.damagedPlayerID == playerId) {
         //攻撃された時の処理
+        anotherThis.damageSE.play();
         anotherThis.yourHP = HPinfo.damagedPlayerHP;
         anotherThis.opponentHP = HPinfo.attackedPlayerHP;
         anotherThis.opponentTurn = false;
         anotherThis.showGeneralCutIn = false;
         anotherThis.showActionCutIn = true;
       }
-
-      
     });
   },
   updated() {
     // roundを受け取ってそこからfieldDBと照らし合わせる
     // room入室時にupdatedが発火されるがfieldDataがないのでエラーがでる。他の実装を考える
-    this.currentFieldName = this.fieldData[this.roundCount].name
-    this.currentFieldImg = this.fieldData[this.roundCount].img
-  }
+    this.currentFieldName = this.fieldData[this.roundCount].name;
+    this.currentFieldImg = this.fieldData[this.roundCount].img;
+  },
 };
 </script>
 <style scoped></style>
