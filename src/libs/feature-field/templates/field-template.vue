@@ -77,21 +77,19 @@
           </VueDrag>
         </v-col>
         <v-col cols="2">
-          <div @click="$emit()" class="card-list-btn">
-            <span>Card List</span>
-          </div>
           <ActionButton
             :isEnableAction="isEnableAction"
             @handleAction="$emit('handleAction')"
           ></ActionButton>
+          <div @click="$emit()" class="card-list-btn">
+            <span>Card List</span>
+          </div>
         </v-col>
       </v-row>
     </div>
 
     <div v-show="showGeneralCutIn">
-      <GeneralCutIn
-        :message="message"
-      />
+      <GeneralCutIn :message="message" />
     </div>
     <div v-show="showActionCutIn">
       <ActionCutIn
@@ -333,6 +331,7 @@
       .area {
         display: flex;
         justify-content: stretch;
+        height: fit-content;
       }
 
       .card-list-btn {
@@ -342,8 +341,8 @@
         text-align: center;
         width: 180px;
         height: fit-content;
-        padding: 1rem 2rem;
-        margin: 0.5rem 0 1.5rem 0;
+        padding: 0.75rem 2rem;
+        margin-top: 2rem;
         position: relative;
         border: 4px solid #00fff2;
         background-color: #0e3145;
@@ -354,7 +353,7 @@
           position: relative;
           z-index: 1;
           color: #00fff2;
-          font-size: 1.5rem;
+          font-size: 1.25rem;
           letter-spacing: 0.15rem;
         }
       }

@@ -27,17 +27,17 @@
     align-items: center;
     text-align: center;
     width: 180px;
-    height: fit-content;
+    height: 120px;
     padding: 1.25rem 2rem;
     margin-top: 0.5rem;
     position: relative;
-    border: 4px solid #ff0000cb;
+    border: 5px solid #ff0000;
     background-color: transparent;
-    box-shadow: 0px 0px 20px rgba(255, 0, 0, 0.798);
+    box-shadow: 0px 0px 20px #ff0000;
   }
 
   .action-button.able {
-    border: 4px solid #d3fffd;
+    border: 5px solid #d3fffd;
     box-shadow: 0px 0px 20px #d3fffd;
   }
 
@@ -49,17 +49,17 @@
   }
 
   .action-button::before {
-    top: -3px;
-    bottom: -3px;
-    left: 10px;
-    right: 10px;
+    top: -4px;
+    bottom: -4px;
+    left: 20px;
+    right: 20px;
   }
 
   .action-button::after {
-    top: 10px;
-    bottom: 10px;
-    left: -3px;
-    right: -3px;
+    top: 20px;
+    bottom: 20px;
+    left: -4px;
+    right: -4px;
   }
 
   .action-button span {

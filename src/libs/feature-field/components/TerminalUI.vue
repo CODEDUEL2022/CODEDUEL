@@ -1,9 +1,12 @@
 <template>
   <div class="action-list">
-    <div v-for="option in attackOptions" :key="option.comboId">
-      <div>> action : {{ option.nameEn }}</div>
-      <div>> 必要なカード：{{ option.nameList }}</div>
+    <div v-if="attackOptions.length > 0">
+      <div v-for="option in attackOptions" :key="option.comboId">
+        <div>> action : {{ option.nameEn }}</div>
+        <div>> 必要なカード：{{ option.nameList }}</div>
+      </div>
     </div>
+    <div v-else>></div>
   </div>
 </template>
 
