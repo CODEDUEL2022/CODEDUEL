@@ -10,6 +10,7 @@ import {
   reload,
   postCardDraw,
   getPlayerName,
+  addDec
 } from "./components/player.js";
 import {
   cpuHPReload,
@@ -144,6 +145,10 @@ app.post("/api/HPReload", (req, res) => {
 app.post("/api/playerData", (req, res) => {
   res.json(postPlayerData(req, res, numClients));
 });
+
+app.post("/api/dec",(req,res) => {
+  res.send(addDec(req,res))
+})
 
 //コンボカードリストをフロントに送信
 app.get("/api/getComboDb", (req, res) => {
