@@ -20,7 +20,6 @@
             let playerId = searchParams.get("id");
             let anotherThis = this
             this.socket.on("FullRoom",function(roomId,playerId1,playerId2){
-            console.log("FullRoomが呼ばれた")
             function logIn(){
                 anotherThis.socket.emit("login", roomId);
                 anotherThis.$axios

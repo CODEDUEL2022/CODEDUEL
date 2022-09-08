@@ -70,7 +70,7 @@ export default {
     },
     onPushAutoMatting: function (){
       this.playerId = Math.random().toString(32).substring(2);
-      this.socket.emit("preLogin", this.playerId);
+      this.socket.emit("AutoMattingPreLogin", this.playerId);
       this.$router.push({
         name: "waitingroom",
         query: { id: this.playerId },
