@@ -101,14 +101,14 @@ io.sockets.on("connection", function (socket) {
     }
     //ルーム入室
   });
-  socket.on("roomJoin", function (RoomID) {
+  socket.on("roomJoin", function (RoomID,yourId,yourName) {
     socket.join(RoomID);
     console.log("roomJoin fire");
     if (numPlayer[RoomID] == undefined) {
       numPlayer[RoomID] = 1;
     } else if (numPlayer[RoomID] == 1) {
       numPlayer[RoomID]++;
-      io.to(RoomID).emit("gameStart");
+      io.to(RoomID).emit("gameStart",yourId,yourName);
     }
   });
   socket.on("sendPlayerName", function(roomId, yourId, yourName){
@@ -116,7 +116,7 @@ io.sockets.on("connection", function (socket) {
     console.log("名前共有　yourId"+yourId)
     console.log("名前共有　yourName"+yourName)
     //バックエンドで情報を保持するコードを書く
-    io.to(roomId).emit("playerName", yourName);
+    io.to(roomId).emit("playerNameee");
     console.log("相手プレイヤーに名前を送った")
   })
   socket.on("cardValue", function (cardValue, playerId) {
