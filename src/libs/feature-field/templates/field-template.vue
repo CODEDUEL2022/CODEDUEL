@@ -4,67 +4,68 @@
     <div v-show="showGeneralCutIn">
       <GeneralCutIn
         :message="message"
-        @closeGeneralCutIn="$emit('closeGeneralCutIn')"
       />
     </div>
     <div v-show="showActionCutIn">
       <ActionCutIn
-        :action="action"
-        :value="value"
+        :effectImages="effectImages"
+        :actionType="actionType"
+        :actionPoint="actionPoint"
         @closeActionCutIn="$emit('closeActionCutIn')"
       />
     </div>
-    <HpDisplay
+    <HPDisplay
       :yourName="yourName"
-      :yourHp="yourHp"
+      :yourHP="yourHP"
       :opponentName="opponentName"
-      :opponentHp="opponentHp"
-    ></HpDisplay>
-    <RoundDisplay :roundCount="roundCount"></RoundDisplay>
-    <div class="field">
-      <VueDrag
-        v-model="selectedCardsData"
-        group="yourGroup"
-        @start="drag = true"
-        @end="drag = false"
-        :options="options"
-        class="area"
-      >
-        <div
-          v-for="select in selectedCardsData"
-          :key="`first-${select.id}`"
-          class="item"
-        >
-          <v-card height="242px" max-width="200px" hover class="black">
-            <v-img
-              aspect-ratio="475/400"
-              height="242px"
-              :src="require(`../../ui/assets/cards/${select.img}`)"
-            >
-            </v-img>
-          </v-card>
+      :opponentHP="opponentHP"
+    ></HPDisplay>
+    <RoundDisplay
+      :roundCount="roundCount"
+      :currentFieldName="currentFieldName"
+      :currentFieldImg="currentFieldImg"
+    ></RoundDisplay>
+    <v-row>
+      <v-col cols="3">
+        <TerminalUI :attackOptions="attackOptions"></TerminalUI>
+      </v-col>
+      <v-col cols="9">
+        <div class="field">
+          <VueDrag
+            :list="selectedCardsData"
+            @input="$emit('update:selectedCardsData', $event.target.list)"
+            group="yourGroup"
+            @start="drag = true"
+            @end="drag = false"
+            :options="options"
+            class="area"
+          >
+            <SimpleCard
+              v-for="card in selectedCardsData"
+              :focusedCard="card"
+              :key="`${Math.random().toString(32).substring(2)}-first-${
+                card.id
+              }`"
+            ></SimpleCard>
+          </VueDrag>
         </div>
-      </VueDrag>
-    </div>
+      </v-col>
+    </v-row>
     <div>
       <VueDrag
-        v-model="handleSelectCards"
+        :list="yourCardsData"
+        @input="$emit('update:yourCardsData', $event.target.list)"
         group="yourGroup"
         @start="drag = true"
         @end="drag = false"
         :options="options"
         class="area"
       >
-        <div
+        <SimpleCard
           v-for="yours in yourCardsData"
-          :key="`second-${yours.id}`"
-          class="item"
-        >
-          <v-card hover class="black" height="222px">
-            <v-img :src="require(`../../ui/assets/cards/${yours.img}`)">
-            </v-img>
-          </v-card>
-        </div>
+          :focusedCard="yours"
+          :key="`${Math.random().toString(32).substring(2)}-second-${yours.id}`"
+        ></SimpleCard>
       </VueDrag>
     </div>
     <ActionButton
@@ -76,84 +77,76 @@
 
 <script>
 import ActionButton from "../components/ActionButton.vue";
-import HpDisplay from "../components/HpDisplay.vue";
+import HPDisplay from "../components/HpDisplay.vue";
 import RoundDisplay from "../components/RoundDisplay.vue";
 import VueDrag from "vuedraggable";
 import GeneralCutIn from "../components/GeneralCutIn.vue";
 import ActionCutIn from "../components/ActionCutIn.vue";
-import Header from "@/libs/layout/Header.vue";
+import TerminalUI from "../components/TerminalUI.vue";
+import SimpleCard from "../components/SimpleCard.vue";
 
 export default {
   name: "FieldTemplate",
   components: {
     ActionButton,
-    HpDisplay,
+    HPDisplay,
     RoundDisplay,
     VueDrag,
     GeneralCutIn,
     ActionCutIn,
-    Header,
+    TerminalUI,
+    SimpleCard,
   },
   props: [
     "message",
     "showGeneralCutIn",
     "showActionCutIn",
-    "isEnableAction",
-    "action",
-    "value",
+    "actionType",
+    "actionPoint",
+    "yourHP",
     "yourName",
-    "yourHp",
-    "yourName",
+    "opponentHP",
     "opponentName",
-    "opponentHp",
     "roundCount",
+    "currentFieldName",
+    "currentFieldImg",
     "yourCardsData",
     "selectedCardsData",
     "yourGroup",
     "yourId",
-    "yourImg",
+    "effectImages",
     "selectedId",
-    "selectedImg",
+    "comboData",
+    "isEnableAction",
+    "attackOptions",
+    "focusedCard",
   ],
   data() {
     return {
+      // drag&drop用のデータ
       options: {
         group: "yourGroup",
         animation: 200,
       },
     };
   },
-  computed: {
-    handleSelectCards: {
-      get() {
-        return this.yourCardsData;
-      },
-      set(newVal) {
-        this.$emit("handleSelectCards", newVal);
-      },
-    },
-  },
 };
+
 </script>
 
 <style scoped>
-.field {
-  height: 300px;
-  width: 100%;
-  background: rgba(211, 255, 253);
-  border: 2px solid #d3fffd;
-  box-shadow: 0px 0px 50px #d3fffd;
-}
+  .field {
+    height: 300px;
+    width: 100%;
+    background: rgba(211, 255, 253);
+    border: 2px solid #d3fffd;
+    box-shadow: 0px 0px 50px #d3fffd;
+  }
 
-.area {
-  display: flex;
-  justify-content: stretch;
-  width: 1500px;
-  height: 300px;
-}
-
-.item {
-  margin: 10px;
-  width: 12%;
-}
+  .area {
+    display: flex;
+    justify-content: stretch;
+    width: 1500px;
+    height: 300px;
+  }
 </style>

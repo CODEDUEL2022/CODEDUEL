@@ -15,9 +15,9 @@
 
 <script>
 export default {
-  name: "ActionButton",
-  props: ["isEnableAction"],
-};
+    name: "ActionButton",
+    props: ["isEnableAction"],
+}
 </script>
 
 <style scoped>

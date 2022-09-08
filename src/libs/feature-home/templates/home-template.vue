@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <div>
     <Header />
     <v-row class="home-container">
       <v-col cols="8">
@@ -12,7 +12,8 @@
         <div>></div>
         <div class="input">
           >　<span>ルームIDを入力してください：</span
-          ><input v-model="roomId" placeholder="" /><v-btn
+          ><input type="text" :value="roomId" @input="$emit('update:roomId', $event.target.value)"/>
+          <v-btn
             outlined
             @click="$emit('handleSendId', roomId)"
             class="btn play"
@@ -24,6 +25,16 @@
             >ルームIDを発行</v-btn
           >
         </div>
+        <div>
+          <v-btn outlined class="btn big" @click="$emit('handleMoveCPUPage')"
+            ><span>CPU</span></v-btn
+          >
+        </div>
+        <div>
+          <v-btn outlined class="btn big" @click="$emit('handleAutoMatting')"
+            ><span>AutoMatting</span></v-btn
+          >
+        </div>
       </v-col>
       <v-col cols="4" class="start">
         <v-btn outlined class="btn big" @click="$emit('handleStart')">
@@ -31,7 +42,7 @@
         >
       </v-col>
     </v-row>
-  </v-container>
+  </div>
 </template>
 <script>
 import Header from "/src/libs/layout/Header.vue";
@@ -46,6 +57,7 @@ export default {
 </script>
 <style scoped>
 .home-container {
+  margin: 2rem;
   padding-top: 10rem;
 }
 .typing span {

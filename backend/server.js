@@ -1,13 +1,24 @@
 import { cardDB } from "./DB.js";
 import { comboDB } from "./DB.js";
+import { fieldDB } from "./DB.js"
 import {
-  controlTrun,
+  controlTurn,
   getTurn,
+  calculateHP,
   HPreload,
   postPlayerData,
   reload,
   postCardDraw,
+  addDec
 } from "./components/player.js";
+import {
+  cpuHPReload,
+  cpuPostCardDraw,
+  cpuGetTurn,
+  cpuContorlTrun,
+  cpuAction,
+  cpuPostPlayerData,
+} from "./components/cpu.js";
 import path from "path";
 import { fileURLToPath } from "url";
 import express from "express";
@@ -16,6 +27,7 @@ import { Server } from "socket.io";
 import serverStatic from "serve-static";
 import cors from "cors";
 import bodyParser from "body-parser";
+import history from "connect-history-api-fallback";
 
 const app = express();
 const http = importHttp.Server(app);
@@ -58,9 +70,35 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 app.use(serveStatic(__dirname + "/dist"));
 
+//historyモードを追加(deploy後のreload対策になるらしい)
+app.use(
+  history({
+    disableDotRule: true,
+    verbose: true,
+  })
+);
+
+let standByPlayer = []
+
 //WebSocket周りの処理
 io.sockets.on("connection", function (socket) {
   console.log("connected");
+  //オートマッチング機能
+  socket.on("AutoMattingPreLogin", function(playerId){
+    standByPlayer.push(playerId)
+    console.log("現在の待機プレイヤー："+standByPlayer.length+"名")
+    function joinRoom(player1,player2){
+      let roomId = Math.random().toString(32).substring(2);
+      io.emit("FullRoom",roomId,player1,player2)
+    }
+    if(standByPlayer.length >= 2){
+      let player1 = standByPlayer[0]
+      let player2 = standByPlayer[1]
+      standByPlayer.splice(0,2);
+      setTimeout(function(){joinRoom(player1,player2)}, 1000)
+    }
+  })
+
   //接続切断処理
   //ログイン時処理
   socket.on("login", function (RoomId) {
@@ -82,16 +120,17 @@ io.sockets.on("connection", function (socket) {
   });
   socket.on("roomJoin", function (RoomID) {
     socket.join(RoomID);
+    console.log("roomJoin fire");
     if (numPlayer[RoomID] == undefined) {
       numPlayer[RoomID] = 1;
-    } else {
+    } else if (numPlayer[RoomID] == 1) {
       numPlayer[RoomID]++;
+      io.to(RoomID).emit("gameStart");
     }
-    io.to(RoomID).emit("num-player", numPlayer[RoomID]);
   });
   socket.on("cardValue", function (cardValue, playerId) {
     socket.join(cardValue.roomId);
-    io.to(cardValue.roomId).emit("card-value", cardValue);
+    io.to(cardValue.roomId).emit("HPinfo", calculateHP(cardValue, playerId));
     console.log("カードの使用が認められました");
   });
 });
@@ -116,25 +155,66 @@ app.post("/api/playerData", (req, res) => {
   res.json(postPlayerData(req, res, numClients));
 });
 
+app.post("/api/dec",(req,res) => {
+  res.send(addDec(req,res))
+})
+
 //コンボカードリストをフロントに送信
 app.get("/api/getComboDb", (req, res) => {
   res.json(comboDB);
 });
 
+app.get("/api/getCardDB", (req, res) => {
+  res.json(cardDB);
+});
+
+app.get("/api/getFieldDB", (req, res) => {
+  res.json(fieldDB);
+});
+
 //ページリロード時のターンを決定づける。
 app.post("/api/getTurn", (req, res) => {
+  console.log("/api/getTurn");
   res.json(getTurn(req, res));
 });
 
 //同じRoomにいる、自分以外の人のturnFlagを+１する
 app.post("/api/controlTurn", (req, res) => {
-  controlTrun(req, res);
+  controlTurn(req, res);
   res.send();
 });
 
 //リロード時の処理
-app.get("api/reload", (req, res) => {
+app.get("/api/reload", (req, res) => {
   res.send(reload(req, res));
+});
+
+/*
+以下CPU戦用のaxios
+*/
+
+app.post("/api/cpuHPReload", (req, res) => {
+  res.send(cpuHPReload(req, res));
+});
+app.post("/api/cpuPlayerData", (req, res) => {
+  cpuPostPlayerData(req, res);
+});
+
+app.post("/api/cpuGetTurn", (req, res) => {
+  res.json(cpuGetTurn(req, res));
+});
+
+app.post("/api/cpuCardDraw", (req, res) => {
+  res.send(cpuPostCardDraw(req, res));
+});
+
+app.post("/api/cpuControlTurn", (req, res) => {
+  cpuContorlTrun(req, res);
+  res.send();
+});
+
+app.post("/api/cpuAction", (req, res) => {
+  res.send(cpuAction(req, res));
 });
 
 http.listen(PORT, function () {
