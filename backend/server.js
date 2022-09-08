@@ -9,7 +9,8 @@ import {
   postPlayerData,
   reload,
   postCardDraw,
-  addDec
+  addDec,
+  findOpponentUser
 } from "./components/player.js";
 import {
   cpuHPReload,
@@ -118,14 +119,16 @@ io.sockets.on("connection", function (socket) {
     }
     //ルーム入室
   });
-  socket.on("roomJoin", function (RoomID) {
-    socket.join(RoomID);
+  socket.on("roomJoin", function (roomId,playerId) {
+    socket.join(roomId);
     console.log("roomJoin fire");
-    if (numPlayer[RoomID] == undefined) {
-      numPlayer[RoomID] = 1;
-    } else if (numPlayer[RoomID] == 1) {
-      numPlayer[RoomID]++;
-      io.to(RoomID).emit("gameStart");
+    if (numPlayer[roomId] == undefined) {
+      numPlayer[roomId] = 1;
+    } else if (numPlayer[roomId] == 1) {
+      if(findOpponentUser(playerId)){
+        numPlayer[roomId]++;
+        io.to(roomId).emit("gameStart");
+      }
     }
   });
   socket.on("cardValue", function (cardValue, playerId) {
