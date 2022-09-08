@@ -23,6 +23,8 @@ export default {
       socket: io("localhost:3000"),
       turn_flag: 0,
       playerId: "",
+      startSE: new Audio(require("/src/libs/ui/assets/sounds/piri.mp3")),
+      clickSE: new Audio(require("/src/libs/ui/assets/sounds/kako.mp3")),
     };
   },
   mounted() {
@@ -35,6 +37,7 @@ export default {
     },
     //追加機能：クエリにplayer_Idを追加。同じルーム内でのプレイヤーを識別するのに利用。
     onSendRoomId: function (roomId) {
+      this.clickSE.play();
       this.playerId = Math.random().toString(32).substring(2);
       this.roomId = roomId;
       this.socket.emit("login", this.roomId);
@@ -52,22 +55,24 @@ export default {
       //デッキを自作する機能を実装。
       //decIdにカードのidをリストとして入れれば成功するように設計
       this.$axios
-        .post("/dec",{
+        .post("/dec", {
           playerId: this.playerId,
-          decIdList: [0,1,2,3,4,5,6]
+          decIdList: [0, 1, 2, 3, 4, 5, 6],
         })
         .then((res) => {
-          console.log(res.data)
-        })
+          console.log(res.data);
+        });
     },
     //ページ遷移機能
     onPushField: function () {
+      this.startSE.play();
       this.$router.push({
         name: "field",
         query: { room: this.roomId, id: this.playerId },
       });
     },
     onPushCPU: function () {
+      this.startSE.play();
       this.playerId = Math.random().toString(32).substring(2);
       this.$axios.post("/cpuPlayerData", {
         playerId: this.playerId,
