@@ -18,6 +18,9 @@
         @handleStart="handleStart"
         @changeModalContent="handleChangeModalContent"
       />
+      <div class="play-btn" @click="$emit('handleAutoMatting')">
+        <span>＞ AUTO MATTING</span>
+      </div>
     </div>
   </div>
 </template>

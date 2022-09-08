@@ -3,6 +3,9 @@
         <div>
         待機中です
         </div>
+        <div class="start-btn" @click="handleLeave()">
+          <span class="start-btn">＞ 待機画面から離脱します</span>
+        </div>
     </div>
 </template>
 
@@ -15,7 +18,21 @@
                 socket: io("localhost:3000"),
             }
         },
+        methods: {
+            handleLeave: function(){
+                const searchParams = new URLSearchParams(window.location.search);
+                let playerId = searchParams.get("id");
+                this.socket.emit("LeaveWaitingRoom",playerId)
+                this.$router.push({
+                    name: "home",
+                });
+            }
+        },
         mounted(){
+            window.addEventListener('popstate', (e) => {
+                this.handleLeave()
+            });
+
             const searchParams = new URLSearchParams(window.location.search);
             let playerId = searchParams.get("id");
             let anotherThis = this
@@ -58,3 +75,17 @@
     }
     
 </script>
+
+<style lang="scss" scoped>
+    .start-btn {
+        margin-top: 1rem;
+        padding: 1rem;
+        background-color: #186883;
+        font-size: 1.5rem;
+
+        &:hover {
+        background-color: #2d909e;
+        cursor: pointer;
+        }
+    }
+</style>
