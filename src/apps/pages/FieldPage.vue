@@ -120,16 +120,15 @@ export default {
     this.$axios
       .post("/getTurn", { playerId: searchParams.get("id") })
       .then((res) => {
+        this.roundCount = res.data -2
         console.log(res.data);
         if (res.data == 0) {
-          console.log("自分のターンです　今0")
           this.opponentTurn = false;
           this.showGeneralCutIn = false;
         } else if (res.data == 1) {
           this.opponentTurn = true;
           this.message = "マッチング中";
         } else if(res.data % 2 == 0){
-          console.log("自分のターンです 割って0")
           this.opponentTurn = false;
           this.showGeneralCutIn = false;
         }else {
@@ -272,7 +271,7 @@ export default {
       anotherThis.$axios
       .post("/getTurn", { playerId: searchParams.get("id") })
       .then((res) => {
-        console.log("ターン："+res.data)
+        anotherThis.roundCount = res.data - 2
       })
       anotherThis.actionType = HPinfo.actionType; //攻撃の種類
       anotherThis.roundCount = HPinfo.nextTurnField // 何ターン目かの情報
