@@ -3,6 +3,8 @@
     :message="message"
     :showGeneralCutIn="showGeneralCutIn"
     :showActionCutIn="showActionCutIn"
+    :showBattleOutcome="showBattleOutcome"
+    :judgeWin="judgeWin"
     :actionType="actionType"
     :actionPoint="actionPoint"
     :yourHP="yourHP"
@@ -19,6 +21,7 @@
     :effectImages="effectImages"
     :attackOptions="attackOptions()"
     :isEnableAction="isEnableAction()"
+    @goHome="goHome()"
     @closeActionCutIn="closeActionCutIn()"
     @handleAction="handleAction()"
   />
@@ -40,6 +43,8 @@ export default {
       message: "",
       showGeneralCutIn: true,
       showActionCutIn: false,
+      showBattleOutcome: false,
+      judgeWin: true,
       actionType: "",
       actionPoint: "",
       yourHP: 200,
@@ -142,12 +147,13 @@ export default {
     attackOptions: function () {
       const updatedData = this.selectedCardsData.map((obj) => obj.id);
       const ableAttackData = updatedData.sort((a, b) => (a < b ? -1 : 1));
+      const duplicatedAbleAttack = [...new Set(ableAttackData)]; //重複を消す
       // 一致してるものがあるかを判定
       const isIncludes = (arr, target) =>
         arr.every((el) => target.includes(el));
       if (ableAttackData.length === 0) return [];
-      // ２枚あってもターミナルに表示されてしまう問題
-      if (ableAttackData[0] === ableAttackData[1]) return [];
+      // 同じカードが2枚以上あってもターミナルにコンボが表示されてしまうのを解消
+      if (duplicatedAbleAttack.length !== ableAttackData.length) return [];
       // ableAttackDataにあるのと一致した攻撃だけを返す
       return this.comboData.filter((comboData) => {
         return isIncludes(ableAttackData, comboData.idList);
@@ -195,6 +201,9 @@ export default {
         }
       }
     },
+    goHome: function () {
+      this.$router.push("/");
+    },
     closeActionCutIn: function () {
       const searchParams = new URLSearchParams(window.location.search);
       const giveNewProperty = function (object) {
@@ -214,6 +223,17 @@ export default {
             this.yourCardsData.push(res.data[i]);
           }
         });
+      // 負け！
+      if(this.yourHP <= 0) {
+        this.showGeneralCutIn = false;
+        this.judgeWin = false;
+        this.showBattleOutcome = true;
+      }
+      // 勝ち！
+      if(this.opponentHP <= 0) {
+        this.showGeneralCutIn = false;
+        this.showBattleOutcome = true;
+      }
     },
     handleAction: function () {
       this.actionSE.play();

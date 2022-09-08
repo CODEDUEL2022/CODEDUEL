@@ -1,6 +1,25 @@
 <template>
   <div>
     <Header />
+    <div v-show="showGeneralCutIn">
+      <GeneralCutIn
+        :message="message"
+      />
+    </div>
+    <div v-show="showActionCutIn">
+      <ActionCutIn
+        :effectImages="effectImages"
+        :actionType="actionType"
+        :actionPoint="actionPoint"
+        @closeActionCutIn="$emit('closeActionCutIn')"
+      />
+    </div>
+    <div v-show="showBattleOutcome">
+      <BattleOutcomeView
+        :judgeWin="judgeWin"
+        @goHome="$emit('goHome')"
+      />
+    </div>
     <div class="field-container">
       <v-row class="first-row">
         <v-col cols="4">
@@ -103,61 +122,65 @@
 </template>
 
 <script>
-  import Header from "../../layout/Header.vue";
-  import ActionButton from "../components/ActionButton.vue";
-  import HPDisplay from "../components/HpDisplay.vue";
-  import VueDrag from "vuedraggable";
-  import GeneralCutIn from "../components/GeneralCutIn.vue";
-  import ActionCutIn from "../components/ActionCutIn.vue";
-  import TerminalUI from "../components/TerminalUI.vue";
-  import SimpleCard from "../components/SimpleCard.vue";
+import Header from "../../layout/Header.vue";
+import ActionButton from "../components/ActionButton.vue";
+import HPDisplay from "../components/HpDisplay.vue";
+import VueDrag from "vuedraggable";
+import GeneralCutIn from "../components/GeneralCutIn.vue";
+import ActionCutIn from "../components/ActionCutIn.vue";
+import TerminalUI from "../components/TerminalUI.vue";
+import SimpleCard from "../components/SimpleCard.vue";
+import BattleOutcomeView from "../components/BattleOutcomeView.vue"
 
-  export default {
-    name: "FieldTemplate",
-    components: {
-      Header,
-      ActionButton,
-      HPDisplay,
-      VueDrag,
-      GeneralCutIn,
-      ActionCutIn,
-      TerminalUI,
-      SimpleCard,
-    },
-    props: [
-      "message",
-      "showGeneralCutIn",
-      "showActionCutIn",
-      "actionType",
-      "actionPoint",
-      "yourHP",
-      "yourName",
-      "opponentHP",
-      "opponentName",
-      "roundCount",
-      "currentFieldName",
-      "currentFieldImg",
-      "yourCardsData",
-      "selectedCardsData",
-      "yourGroup",
-      "yourId",
-      "effectImages",
-      "selectedId",
-      "comboData",
-      "isEnableAction",
-      "attackOptions",
-      "focusedCard",
-    ],
-    data() {
-      return {
-        // drag&drop用のデータ
-        options: {
-          group: "yourGroup",
-          animation: 200,
-        },
-      };
-    },
-  };
+export default {
+  name: "FieldTemplate",
+  components: {
+    Header,
+    ActionButton,
+    HPDisplay,
+    VueDrag,
+    GeneralCutIn,
+    ActionCutIn,
+    TerminalUI,
+    SimpleCard,
+    BattleOutcomeView,
+},
+  props: [
+    "message",
+    "showGeneralCutIn",
+    "showActionCutIn",
+    "showBattleOutcome",
+    "judgeWin",
+    "actionType",
+    "actionPoint",
+    "yourHP",
+    "yourName",
+    "opponentHP",
+    "opponentName",
+    "roundCount",
+    "currentFieldName",
+    "currentFieldImg",
+    "yourCardsData",
+    "selectedCardsData",
+    "yourGroup",
+    "yourId",
+    "effectImages",
+    "selectedId",
+    "comboData",
+    "isEnableAction",
+    "attackOptions",
+    "focusedCard",
+  ],
+  data() {
+    return {
+      // drag&drop用のデータ
+      options: {
+        group: "yourGroup",
+        animation: 200,
+      },
+    };
+  },
+};
 </script>
 
 <style scoped lang="scss">
