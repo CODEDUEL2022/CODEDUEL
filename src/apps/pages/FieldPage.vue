@@ -130,6 +130,7 @@ export default {
           this.opponentTurn = true;
         }
       });
+    
   },
   methods: {
     // ターミナルuiに表示するために可能なコンボを取得

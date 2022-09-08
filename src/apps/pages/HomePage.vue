@@ -5,6 +5,7 @@
     @handleStart="onPushField()"
     @handleSetIssue="onSetId()"
     @handleMoveCPUPage="onPushCPU()"
+    @handleAutoMatting="onPushAutoMatting()"
   />
 </template>
 <script>
@@ -69,6 +70,14 @@ export default {
       this.$router.push({
         name: "field",
         query: { room: this.roomId, id: this.playerId },
+      });
+    },
+    onPushAutoMatting: function (){
+      this.playerId = Math.random().toString(32).substring(2);
+      this.socket.emit("AutoMattingPreLogin", this.playerId);
+      this.$router.push({
+        name: "waitingroom",
+        query: { id: this.playerId },
       });
     },
     onPushCPU: function () {

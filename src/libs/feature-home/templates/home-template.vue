@@ -30,6 +30,11 @@
             ><span>CPU</span></v-btn
           >
         </div>
+        <div>
+          <v-btn outlined class="btn big" @click="$emit('handleAutoMatting')"
+            ><span>AutoMatting</span></v-btn
+          >
+        </div>
       </v-col>
       <v-col cols="4" class="start">
         <v-btn outlined class="btn big" @click="$emit('handleStart')">
