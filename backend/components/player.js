@@ -142,6 +142,24 @@ export const addDec = function(req,res) {
    playerDB[selectId].turnFlag += 1;
    playerDB[selectTurnId].turnFlag += 1;
  };
+ export const findOpponentUser = function(playerId){
+  const selectTurnId = playerDB.findIndex(
+    (e) => e.playerId === playerId
+  );
+  const thisRoomId = playerDB[selectTurnId].RoomId;
+  try{
+    playerDB.filter((e) => {
+      if (e.RoomId === thisRoomId && e.playerId != playerId) {
+        return true;
+      }
+    })[0].playerId
+  }catch (e){
+    console.log("まだ相手プレイヤーがいません")
+    return false
+  }
+  console.log("相手プレイヤーがいます！")
+  return true
+ }
  
  export const reload = function (req, res) {
    let playerDBFromLocalStorage = {

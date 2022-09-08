@@ -113,20 +113,26 @@ export default {
 
     //joinするための送信
     this.yourId = searchParams.get("id");
-    this.roomID = searchParams.get("room");
-    this.socket.emit("roomJoin", this.roomID, this.yourId);
+    this.roomId = searchParams.get("room");
+    this.socket.emit("roomJoin", this.roomId, this.yourId);
     //turn_flagに応じて、showAttackなどの表示、非表示を決定する。
     //偶数の時は自分の番
     this.$axios
       .post("/getTurn", { playerId: searchParams.get("id") })
       .then((res) => {
+        this.roundCount = res.data -2
         console.log(res.data);
-        if (res.data % 2 == 0) {
+        if (res.data == 0) {
           this.opponentTurn = false;
-        } else if (res.data % 2 == 1) {
+          this.showGeneralCutIn = false;
+        } else if (res.data == 1) {
           this.opponentTurn = true;
           this.message = "マッチング中";
-        } else {
+        } else if(res.data % 2 == 0){
+          this.opponentTurn = false;
+          this.showGeneralCutIn = false;
+        }else {
+          this.message = "相手のターンです";
           this.opponentTurn = true;
         }
       });
@@ -211,6 +217,7 @@ export default {
     },
     handleAction: function () {
       this.actionSE.play();
+      console.log("handleAction発火")
       const searchParams = new URLSearchParams(window.location.search);
       this.$axios.post("/controlTurn", { playerId: searchParams.get("id") });
       let cardValue = {
@@ -237,20 +244,35 @@ export default {
       "gameStart",
       function () // 報告:この処理が走るとルームに二人が入ったことになる
       {
-        //ここに処理を書いてほしいです
-        //ゲームスタート！みたいなカットイン＋opponentTurnによる場合分けで相手のターンみたいなのを表示する
-        anotherThis.showGeneralCutIn = true;
-        anotherThis.message = "Hello World";
-        const changeMessage = () => (anotherThis.message = "相手のターンです");
-        const closeCutIn = () => (anotherThis.showGeneralCutIn = false);
-        if (anotherThis.opponentTurn) {
-          setTimeout(changeMessage, 1000);
-        } else {
-          setTimeout(closeCutIn, 1000);
+      anotherThis.$axios
+      .post("/getTurn", { playerId: searchParams.get("id") })
+      .then((res) => {
+        if(res.data < 2){
+          console.log("gamestart")
+          //2回書いているのは仕様です。
+          anotherThis.$axios.post("/controlTurn", { playerId: searchParams.get("id") });
+          anotherThis.$axios.post("/controlTurn", { playerId: searchParams.get("id") });
+          //ここに処理を書いてほしいです
+          //ゲームスタート！みたいなカットイン＋opponentTurnによる場合分けで相手のターンみたいなのを表示する
+          anotherThis.showGeneralCutIn = true;
+          anotherThis.message = "Hello World";
+          const changeMessage = () => (anotherThis.message = "相手のターンです");
+          const closeCutIn = () => (anotherThis.showGeneralCutIn = false);
+          if (anotherThis.opponentTurn % 2 == 1) {
+            setTimeout(changeMessage, 1000);
+          } else {
+            setTimeout(closeCutIn, 1000);
+          }
         }
+      })
       }
     );
     this.socket.on("HPinfo", function (HPinfo) {
+      anotherThis.$axios
+      .post("/getTurn", { playerId: searchParams.get("id") })
+      .then((res) => {
+        anotherThis.roundCount = res.data - 2
+      })
       anotherThis.actionType = HPinfo.actionType; //攻撃の種類
       anotherThis.roundCount = HPinfo.nextTurnField // 何ターン目かの情報
       anotherThis.actionPoint = HPinfo.actionPoint
