@@ -83,17 +83,14 @@ let standByPlayer = []
 //WebSocket周りの処理
 io.sockets.on("connection", function (socket) {
   console.log("connected");
-
   //オートマッチング機能
   socket.on("preLogin", function(playerId){
     standByPlayer.push(playerId)
-    console.log("現在の待機プレイヤー"+standByPlayer)
+    console.log("現在の待機プレイヤー："+standByPlayer.length+"名")
     function joinRoom(){
       let roomId = Math.random().toString(32).substring(2);
       io.emit("FullRoom",roomId,standByPlayer[0],standByPlayer[1])
       standByPlayer.splice(0,2);
-      console.log(standByPlayer)
-      console.log("preLoginが走り切った")
     }
     if(standByPlayer.length >= 2){
       setTimeout(joinRoom, 1000)
