@@ -136,6 +136,7 @@ export default {
       const isIncludes = (arr, target) =>
         arr.every((el) => target.includes(el));
       if (ableAttackData.length === 0) return [];
+      // ２枚あってもターミナルに表示されてしまう問題
       if (ableAttackData[0] === ableAttackData[1]) return [];
       // ableAttackDataにあるのと一致した攻撃だけを返す
       return this.comboData.filter((comboData) => {
@@ -186,7 +187,6 @@ export default {
     },
     closeActionCutIn: function () {
       this.showActionCutIn = false;
-      this.effectImages.splice(this.index, this.effectImages.length);
     },
     handleAction: function () {
       const searchParams = new URLSearchParams(window.location.search);
@@ -197,7 +197,6 @@ export default {
       };
       this.socket.emit("cardValue", cardValue, searchParams.get("id"));
       this.selectedCardsData.splice(this.index, this.selectedCardsData.length);
-      this.effectImages.splice(this.index, this.effectImages.length);
       this.showActionCutIn = true;
     },
   },
@@ -234,6 +233,7 @@ export default {
       anotherThis.roundCount = HPinfo.nextTurnField // 何ターン目かの情報
       anotherThis.actionPoint = HPinfo.actionPoint
       console.log("round:" + anotherThis.roundCount)
+      anotherThis.effectImages.splice(anotherThis.index, anotherThis.effectImages.length);
       // エフェクト用に画像を持ってくる
       for (let i = 0; i < HPinfo.usedCardIdList.length; i++) {
         let usedCard = "";
