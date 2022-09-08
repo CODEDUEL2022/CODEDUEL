@@ -4,6 +4,7 @@ import App from "../apps/App.vue";
 import CPUPage from "../apps/pages/CPUPage.vue";
 import HomePage from "../apps/pages/HomePage.vue";
 import FieldPage from "../apps/pages/FieldPage.vue";
+import WaitingRoom from "../apps/pages/WaitingRoom.vue";
 
 Vue.use(VueRouter);
 
@@ -23,6 +24,11 @@ const routes = [
     name: "cpu",
     component: CPUPage,
   },
+  {
+    path: "/waitingroom",
+    name: "waitingroom",
+    component: WaitingRoom
+  }
 ];
 
 const router = new VueRouter({
