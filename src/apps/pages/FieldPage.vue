@@ -34,6 +34,9 @@ export default {
   },
   data() {
     return {
+      actionSE: new Audio(require("/src/libs/ui/assets/sounds/action_se.mp3")),
+      damageSE: new Audio(require("/src/libs/ui/assets/sounds/damage_se.mp3")),
+      clickSE: new Audio(require("/src/libs/ui/assets/sounds/kako.mp3")),
       message: "",
       showGeneralCutIn: true,
       showActionCutIn: false,
@@ -65,7 +68,9 @@ export default {
   created() {
     this.yourCardsData = [];
     const searchParams = new URLSearchParams(window.location.search);
-    const giveNewProperty = function(object) {object.isCombined = true}
+    const giveNewProperty = function (object) {
+      object.isCombined = true;
+    };
     console.log(this.yourCardsData);
     this.$axios.get("/getComboDb").then((res) => {
       for (let i = 0; i < res.data.length; i++) {
@@ -101,27 +106,33 @@ export default {
       .then((res) => {
         console.log(res.data);
         for (let i = 0; i < res.data.length; i++) {
-          giveNewProperty(res.data[i])
+          giveNewProperty(res.data[i]);
           this.yourCardsData.push(res.data[i]);
         }
       });
 
     //joinするための送信
     this.yourId = searchParams.get("id");
-    this.roomID = searchParams.get("room");
-    this.socket.emit("roomJoin", this.roomID, this.yourId);
+    this.roomId = searchParams.get("room");
+    this.socket.emit("roomJoin", this.roomId, this.yourId);
     //turn_flagに応じて、showAttackなどの表示、非表示を決定する。
     //偶数の時は自分の番
     this.$axios
       .post("/getTurn", { playerId: searchParams.get("id") })
       .then((res) => {
+        this.roundCount = res.data -2
         console.log(res.data);
-        if (res.data % 2 == 0) {
+        if (res.data == 0) {
           this.opponentTurn = false;
-        } else if (res.data % 2 == 1) {
+          this.showGeneralCutIn = false;
+        } else if (res.data == 1) {
           this.opponentTurn = true;
           this.message = "マッチング中";
-        } else {
+        } else if(res.data % 2 == 0){
+          this.opponentTurn = false;
+          this.showGeneralCutIn = false;
+        }else {
+          this.message = "相手のターンです";
           this.opponentTurn = true;
         }
       });
@@ -129,20 +140,22 @@ export default {
   methods: {
     // ターミナルuiに表示するために可能なコンボを取得
     attackOptions: function () {
-      let updatedData = this.selectedCardsData.map((obj) => obj.id);
-      let ableAttackData = updatedData.sort((a, b) => (a < b ? -1 : 1));
+      const updatedData = this.selectedCardsData.map((obj) => obj.id);
+      const ableAttackData = updatedData.sort((a, b) => (a < b ? -1 : 1));
       // 一致してるものがあるかを判定
       const isIncludes = (arr, target) =>
         arr.every((el) => target.includes(el));
       if (ableAttackData.length === 0) return [];
-      // updateddataにあるのと一致した攻撃だけを返す
+      // ２枚あってもターミナルに表示されてしまう問題
+      if (ableAttackData[0] === ableAttackData[1]) return [];
+      // ableAttackDataにあるのと一致した攻撃だけを返す
       return this.comboData.filter((comboData) => {
         return isIncludes(ableAttackData, comboData.idList);
       });
     },
     //発動できるかどうかを判定する
     isEnableAction: function () {
-      let updatedData = this.selectedCardsData.map((obj) => obj.id);
+      const updatedData = this.selectedCardsData.map((obj) => obj.id);
       updatedData.sort(function (first, second) {
         if (first > second) {
           return 1;
@@ -169,11 +182,11 @@ export default {
       } else if (updatedData.length === 1) {
         return true;
       } else {
-        let ableCombo = this.comboData.filter((comboData) => {
+        const ableCombo = this.comboData.filter((comboData) => {
           return isIncludes(updatedData, comboData.idList);
         });
         // 完全一致した攻撃だけを返す
-        if(ableCombo.length == 0) {
+        if (ableCombo.length == 0) {
           return false;
         } else if (isEqualArray(updatedData, ableCombo[0].idList)) {
           return true;
@@ -184,32 +197,35 @@ export default {
     },
     closeActionCutIn: function () {
       const searchParams = new URLSearchParams(window.location.search);
-      const giveNewProperty = function(object) {object.isCombined = true}
+      const giveNewProperty = function (object) {
+        object.isCombined = true;
+      };
       this.showActionCutIn = false;
-      this.effectImages.splice(this.index, this.effectImages.length);
       this.$axios
-      .post("/cardDraw", {
-        cardData: this.yourCardsData,
-        playerId: searchParams.get("id"),
-      })
-      .then((res) => {
-        console.log(res.data);
-        this.yourCardsData = []
-        for (let i = 0; i < res.data.length; i++) {
-          giveNewProperty(res.data[i])
-          this.yourCardsData.push(res.data[i]);
-        }
-      });
+        .post("/cardDraw", {
+          cardData: this.yourCardsData,
+          playerId: searchParams.get("id"),
+        })
+        .then((res) => {
+          console.log(res.data);
+          this.yourCardsData = [];
+          for (let i = 0; i < res.data.length; i++) {
+            giveNewProperty(res.data[i]);
+            this.yourCardsData.push(res.data[i]);
+          }
+        });
     },
     handleAction: function () {
+      this.actionSE.play();
+      console.log("handleAction発火")
       const searchParams = new URLSearchParams(window.location.search);
+      this.$axios.post("/controlTurn", { playerId: searchParams.get("id") });
       let cardValue = {
         selectedCardData: this.selectedCardsData,
         roomId: searchParams.get("room"),
       };
       this.socket.emit("cardValue", cardValue, searchParams.get("id"));
       this.selectedCardsData.splice(this.index, this.selectedCardsData.length);
-      this.effectImages.splice(this.index, this.effectImages.length);
       this.showActionCutIn = true;
     },
   },
@@ -228,24 +244,40 @@ export default {
       "gameStart",
       function () // 報告:この処理が走るとルームに二人が入ったことになる
       {
-        //ここに処理を書いてほしいです
-        //ゲームスタート！みたいなカットイン＋opponentTurnによる場合分けで相手のターンみたいなのを表示する
-        anotherThis.showGeneralCutIn = true;
-        anotherThis.message = "Hello World";
-        const changeMessage = () => (anotherThis.message = "相手のターンです");
-        const closeCutIn = () => (anotherThis.showGeneralCutIn = false);
-        if (anotherThis.opponentTurn) {
-          setTimeout(changeMessage, 1000);
-        } else {
-          setTimeout(closeCutIn, 1000);
+      anotherThis.$axios
+      .post("/getTurn", { playerId: searchParams.get("id") })
+      .then((res) => {
+        if(res.data < 2){
+          console.log("gamestart")
+          //2回書いているのは仕様です。
+          anotherThis.$axios.post("/controlTurn", { playerId: searchParams.get("id") });
+          anotherThis.$axios.post("/controlTurn", { playerId: searchParams.get("id") });
+          //ここに処理を書いてほしいです
+          //ゲームスタート！みたいなカットイン＋opponentTurnによる場合分けで相手のターンみたいなのを表示する
+          anotherThis.showGeneralCutIn = true;
+          anotherThis.message = "Hello World";
+          const changeMessage = () => (anotherThis.message = "相手のターンです");
+          const closeCutIn = () => (anotherThis.showGeneralCutIn = false);
+          if (anotherThis.opponentTurn % 2 == 1) {
+            setTimeout(changeMessage, 1000);
+          } else {
+            setTimeout(closeCutIn, 1000);
+          }
         }
+      })
       }
     );
     this.socket.on("HPinfo", function (HPinfo) {
+      anotherThis.$axios
+      .post("/getTurn", { playerId: searchParams.get("id") })
+      .then((res) => {
+        anotherThis.roundCount = res.data - 2
+      })
       anotherThis.actionType = HPinfo.actionType; //攻撃の種類
       anotherThis.roundCount = HPinfo.nextTurnField // 何ターン目かの情報
       anotherThis.actionPoint = HPinfo.actionPoint
       console.log("round:" + anotherThis.roundCount)
+      anotherThis.effectImages.splice(anotherThis.index, anotherThis.effectImages.length);
       // エフェクト用に画像を持ってくる
       for (let i = 0; i < HPinfo.usedCardIdList.length; i++) {
         let usedCard = "";
@@ -263,22 +295,21 @@ export default {
         anotherThis.showGeneralCutIn = true;
       } else if (HPinfo.damagedPlayerID == playerId) {
         //攻撃された時の処理
+        anotherThis.damageSE.play();
         anotherThis.yourHP = HPinfo.damagedPlayerHP;
         anotherThis.opponentHP = HPinfo.attackedPlayerHP;
         anotherThis.opponentTurn = false;
         anotherThis.showGeneralCutIn = false;
         anotherThis.showActionCutIn = true;
       }
-
-      
     });
   },
   updated() {
     // roundを受け取ってそこからfieldDBと照らし合わせる
     // room入室時にupdatedが発火されるがfieldDataがないのでエラーがでる。他の実装を考える
-    this.currentFieldName = this.fieldData[this.roundCount].name
-    this.currentFieldImg = this.fieldData[this.roundCount].img
-  }
+    this.currentFieldName = this.fieldData[this.roundCount].name;
+    this.currentFieldImg = this.fieldData[this.roundCount].img;
+  },
 };
 </script>
 <style scoped></style>

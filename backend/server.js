@@ -9,7 +9,8 @@ import {
   postPlayerData,
   reload,
   postCardDraw,
-  addDec
+  addDec,
+  findOpponentUser
 } from "./components/player.js";
 import {
   cpuHPReload,
@@ -78,9 +79,27 @@ app.use(
   })
 );
 
+let standByPlayer = []
+
 //WebSocket周りの処理
 io.sockets.on("connection", function (socket) {
   console.log("connected");
+  //オートマッチング機能
+  socket.on("AutoMattingPreLogin", function(playerId){
+    standByPlayer.push(playerId)
+    console.log("現在の待機プレイヤー："+standByPlayer.length+"名")
+    function joinRoom(player1,player2){
+      let roomId = Math.random().toString(32).substring(2);
+      io.emit("FullRoom",roomId,player1,player2)
+    }
+    if(standByPlayer.length >= 2){
+      let player1 = standByPlayer[0]
+      let player2 = standByPlayer[1]
+      standByPlayer.splice(0,2);
+      setTimeout(function(){joinRoom(player1,player2)}, 1000)
+    }
+  })
+
   //接続切断処理
   //ログイン時処理
   socket.on("login", function (RoomId) {
@@ -100,15 +119,16 @@ io.sockets.on("connection", function (socket) {
     }
     //ルーム入室
   });
-  socket.on("roomJoin", function (RoomID) {
-    socket.join(RoomID);
+  socket.on("roomJoin", function (roomId,playerId) {
+    socket.join(roomId);
     console.log("roomJoin fire");
-    if (numPlayer[RoomID] == undefined) {
-      numPlayer[RoomID] = 1;
-    } else if (numPlayer[RoomID] == 1) {
-      numPlayer[RoomID]++;
-      io.to(RoomID).emit("gameStart");
-      console.log("@@@@@@@@@@");
+    if (numPlayer[roomId] == undefined) {
+      numPlayer[roomId] = 1;
+    } else if (numPlayer[roomId] == 1) {
+      if(findOpponentUser(playerId)){
+        numPlayer[roomId]++;
+        io.to(roomId).emit("gameStart");
+      }
     }
   });
   socket.on("cardValue", function (cardValue, playerId) {
