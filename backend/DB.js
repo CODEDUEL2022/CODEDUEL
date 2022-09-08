@@ -647,7 +647,7 @@ export const cardDB = [
   },
   {
     id: 28,
-    name: "Kotr",
+    name: "Ktor",
     type: "language",
     img: "Kotr.png",
     action: "attack",
@@ -820,7 +820,7 @@ export const cardDB = [
     id: 47,
     name: "scratch",
     type: "language",
-    img: "scratch.png",
+    img: "Scratch.png",
     action: "attack",
     actionValue: 20,
     field: "",
@@ -970,7 +970,7 @@ export const cardDB = [
     field: "",
   },
   {
-    id: 63,
+    id: 64,
     name: "Hacker",
     type: "hack",
     img: "hacker2.png",
@@ -981,18 +981,18 @@ export const cardDB = [
 ];
 
 export const Dec1 = [
-  1, 1, 1, 1, 2, 2, 3, 3, 6, 6, 12, 12, 15, 15, 18, 18, 19, 25, 34, 36, 43, 48,
-  49, 49, 55, 56,
+  2, 2, 3, 9, 9, 14, 19, 22, 22, 23, 24, 24, 24, 24, 25, 25, 30, 32, 33, 34, 41,
+  42, 45, 48, 49, 50, 53, 55, 56, 56, 57, 57, 58, 59, 62, 63, 63, 64,
 ];
 
 export const Dec2 = [
-  4, 4, 5, 5, 8, 10, 10, 10, 10, 16, 20, 23, 26, 27, 28, 37, 47, 48, 50, 51, 52,
-  53, 55,
+  7, 11, 11, 15, 15, 16, 20, 20, 28, 29, 31, 36, 37, 38, 38, 38, 38, 46, 47, 59,
+  61, 62, 64,
 ];
 
 export const Dec3 = [
-  7, 9, 11, 13, 17, 21, 22, 24, 29, 30, 31, 32, 33, 35, 38, 39, 40, 41, 41, 42,
-  44, 45, 46, 49, 55,
+  1, 4, 4, 5, 6, 8, 10, 12, 13, 17, 18, 21, 26, 27, 28, 35, 39, 40, 43, 44, 51,
+  52, 54, 59, 60, 63, 64,
 ];
 
 export const cpuDec = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
