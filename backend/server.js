@@ -78,9 +78,17 @@ app.use(
   })
 );
 
+let standByPlayer = []
+
 //WebSocket周りの処理
 io.sockets.on("connection", function (socket) {
   console.log("connected");
+
+  //オートマッチング機能
+  socket.on("preLogin", function(){
+
+  })
+
   //接続切断処理
   //ログイン時処理
   socket.on("login", function (RoomId) {
