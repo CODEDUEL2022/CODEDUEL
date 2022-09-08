@@ -99,6 +99,11 @@ io.sockets.on("connection", function (socket) {
       setTimeout(function(){joinRoom(player1,player2)}, 1000)
     }
   })
+  socket.on("LeaveWaitingRoom", function(playerId){
+    let idx = standByPlayer.indexOf(playerId)
+    standByPlayer.splice(idx,1);
+    console.log(standByPlayer)
+  })
 
   //接続切断処理
   //ログイン時処理
