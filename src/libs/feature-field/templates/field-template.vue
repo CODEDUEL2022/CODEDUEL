@@ -14,6 +14,12 @@
         @closeActionCutIn="$emit('closeActionCutIn')"
       />
     </div>
+    <div v-show="showBattleOutcome">
+      <BattleOutcomeView
+        :judgeWin="judgeWin"
+        @goHome="$emit('goHome')"
+      />
+    </div>
     <HPDisplay
       :yourName="yourName"
       :yourHP="yourHP"
@@ -84,6 +90,7 @@ import GeneralCutIn from "../components/GeneralCutIn.vue";
 import ActionCutIn from "../components/ActionCutIn.vue";
 import TerminalUI from "../components/TerminalUI.vue";
 import SimpleCard from "../components/SimpleCard.vue";
+import BattleOutcomeView from "../components/BattleOutcomeView.vue"
 
 export default {
   name: "FieldTemplate",
@@ -96,11 +103,14 @@ export default {
     ActionCutIn,
     TerminalUI,
     SimpleCard,
-  },
+    BattleOutcomeView,
+},
   props: [
     "message",
     "showGeneralCutIn",
     "showActionCutIn",
+    "showBattleOutcome",
+    "judgeWin",
     "actionType",
     "actionPoint",
     "yourHP",

@@ -3,6 +3,8 @@
     :message="message"
     :showGeneralCutIn="showGeneralCutIn"
     :showActionCutIn="showActionCutIn"
+    :showBattleOutcome="showBattleOutcome"
+    :judgeWin="judgeWin"
     :actionType="actionType"
     :actionPoint="actionPoint"
     :yourHP="yourHP"
@@ -19,6 +21,7 @@
     :effectImages="effectImages"
     :attackOptions="attackOptions()"
     :isEnableAction="isEnableAction()"
+    @goHome="goHome()"
     @closeActionCutIn="closeActionCutIn()"
     @handleAction="handleAction()"
   />
@@ -40,11 +43,13 @@ export default {
       message: "",
       showGeneralCutIn: true,
       showActionCutIn: false,
+      showBattleOutcome: false,
+      judgeWin: true,
       actionType: "",
       actionPoint: "",
-      yourHP: 200,
+      yourHP: 10,
       yourName: "User1",
-      opponentHP: 200,
+      opponentHP: 10,
       opponentName: "User2",
       roundCount: 0,
       currentFieldName: "macOS",
@@ -190,6 +195,9 @@ export default {
         }
       }
     },
+    goHome: function () {
+      this.$router.push("/");
+    },
     closeActionCutIn: function () {
       const searchParams = new URLSearchParams(window.location.search);
       const giveNewProperty = function (object) {
@@ -209,6 +217,17 @@ export default {
             this.yourCardsData.push(res.data[i]);
           }
         });
+      // 負け！
+      if(this.yourHP <= 0) {
+        this.showGeneralCutIn = false;
+        this.judgeWin = false;
+        this.showBattleOutcome = true;
+      }
+      // 勝ち！
+      if(this.opponentHP <= 0) {
+        this.showGeneralCutIn = false;
+        this.showBattleOutcome = true;
+      }
     },
     handleAction: function () {
       this.actionSE.play();
