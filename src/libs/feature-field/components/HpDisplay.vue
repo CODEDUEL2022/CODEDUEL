@@ -1,98 +1,202 @@
 <template>
-  <div class="wrapper">
-    <div class="display">
-      <div class="circle you"></div>
-      <div class="content">
-        <div class="text">
-          <div class="your">{{ yourName }}</div>
-          <div class="your">HP：{{ yourHp }}</div>
-        </div>
-        <div class="progress-bar you"></div>
+  <div class="hp-monitor">
+    <div class="you">
+      <div class="flex">
+        <span class="user-name">You</span><span>HP:{{ yourLife }}</span>
+      </div>
+      <div id="hp-frame">
+        <div id="bar-you"></div>
+        <div id="mark-you"></div>
       </div>
     </div>
-    <div class="display">
-      <div class="circle you"></div>
-      <div class="content">
-        <div class="text">
-          <div class="opponent">{{ opponentName }}</div>
-          <div class="opponent">HP：{{ opponentHp }}</div>
-        </div>
-        <div class="progress-bar opponent"></div>
+    <div class="opponent">
+      <div class="flex">
+        <span class="user-name">Opponent</span
+        ><span>HP:{{ opponentLife }}</span>
       </div>
+      <div id="hp-frame">
+        <div id="bar-opponent"></div>
+        <div id="mark-opponent"></div>
+      </div>
+    </div>
+    <div id="btns-wrap">
+      <div id="decrease-you" @click="alterYourLife(-10)">-</div>
+      <div id="increase-you" @click="alterYourLife(10)">+</div>
+      <div id="decrease-opponent" @click="alterOpponentLife(-10)">-</div>
+      <div id="increase-opponent" @click="alterOpponentLife(10)">+</div>
     </div>
   </div>
-  <!-- <div class="container">
-    <h4 class="text">HP</h4>
-    <h2 class="text">自分：{{ yourHp }}</h2>
-    <h4 class="text">相手：{{ opponentHp }}</h4>
-  </div> -->
 </template>
 
 <script>
-export default {
-  name: "HpDisplay",
-  props: ["yourName", "yourHp", "opponentName", "opponentHp"],
-};
+  export default {
+    name: "HPDisplay",
+    props: ["yourName", "yourHP", "opponentName", "opponentHP"],
+    data() {
+      return {
+        yourLife: 200,
+        opponentLife: 200,
+      };
+    },
+    mounted() {
+      const yours = document.getElementById("bar-you");
+      const opponents = document.getElementById("bar-opponent");
+      this.yourHP = yours.style.width;
+      this.opponentHP = opponents.style.width;
+      yours.style.width = this.yourLife / 2 + "%";
+      opponents.style.width = this.opponentLife / 2 + "%";
+    },
+    methods: {
+      alterYourLife: function (value) {
+        const lifeBar = document.getElementById("bar-you"); // ライフバー
+        const lifeMark = document.getElementById("mark-you"); // ライフの光部分
+        const increaseYou = document.getElementById("increase-you"); // + ボタン
+        const decreaseYou = document.getElementById("decrease-you");
+        this.place = lifeBar.style.width;
+
+        this.yourLife += value;
+        if (this.yourLife <= 0) {
+          this.yourLife = 0;
+          setTimeout(function () {
+            lifeMark.style.visibility = "hidden";
+          }, 300);
+        } else {
+          if (this.yourLife > 200) {
+            this.yourLife = 200;
+          }
+          lifeMark.style.visibility = "visible";
+        }
+        lifeBar.style.width = this.yourLife / 2 + "%";
+      },
+      alterOpponentLife: function (value) {
+        const lifeBar = document.getElementById("bar-opponent"); // ライフバー
+        const lifeMark = document.getElementById("mark-opponent"); // ライフの光部分
+        const increaseYou = document.getElementById("increase-opponent"); // + ボタン
+        const decreaseYou = document.getElementById("decrease-oppponent");
+        this.place = lifeBar.style.width;
+
+        this.opponentLife += value;
+        if (this.opponentLife <= 0) {
+          this.opponentLife = 0;
+          setTimeout(function () {
+            lifeMark.style.visibility = "hidden";
+          }, 300);
+        } else {
+          if (this.opponentLife > 200) {
+            this.opponentLife = 200;
+          }
+          lifeMark.style.visibility = "visible";
+        }
+        lifeBar.style.width = this.opponentLife / 2 + "%";
+      },
+    },
+  };
 </script>
 
-<style scoped>
-.wrapper {
-  margin: 1rem;
-  width: fit-content;
-}
-.display {
-  display: flex;
-  align-items: flex-start;
-  margin-bottom: 1rem;
-}
+<styled scoped lang="scss">
+.hp-monitor {
+  width: 70%;
+  letter-spacing: 0.1em;
+  text-shadow: 0 0 10px #d3fffd;
+  .you {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    .flex {
+      display: flex;
+      justify-content: space-between;
+      span {
+        flex-basis: 50%;
+        text-align: right;
+      }
+      .user-name {
+        text-align: left;
+      }
+    }
+  }
+  .opponent {
+    font-size: 1.25rem;
+    .flex {
+      display: flex;
+      span {
+        flex-basis: 50%;
+        text-align: right;
+      }
+      .user-name {
+        text-align: left;
+      }
+    }
+  }
+  #hp-frame {
+    background-color: #d3fffd;
+    height: 0.8rem;
+    display: flex;
+    align-items: center;
 
-.circle {
-  content: "";
-  margin-top: 0.5rem;
-  margin-right: 1rem;
-  background-color: azure;
-  border-radius: 50%;
-}
-.circle.you {
-  width: 40px;
-  height: 40px;
-}
-.circle.opponent {
-  width: 30px;
-  height: 30px;
-}
+    #bar-you {
+      height: 0.75rem;
+      background-color: rgb(0, 255, 255);
+      transition: 300ms;
+    }
 
-.content {
-  min-width: 180px;
-}
+    #mark-you {
+      width: 3px;
+      height: 3px;
+      border-radius: 3px;
+      background-color: rgb(255, 255, 255);
+      filter: saturate(300%);
+      box-shadow: 0 0 5px 3px rgb(200, 255, 255), 0 0 7px 7px rgb(100, 255, 255);
+    }
 
-.text {
-  display: flex;
-  justify-content: space-between;
-  font-style: italic;
-  text-shadow: 0 0 13px #d3fffd;
-}
+    #bar-opponent {
+      height: 0.75rem;
+      background-color: rgb(0, 255, 255);
+      transition: 300ms;
+    }
 
-.your {
-  font-size: 20px;
-}
+    #mark-opponent {
+      width: 3px;
+      height: 3px;
+      border-radius: 3px;
+      background-color: rgb(255, 255, 255);
+      filter: saturate(300%);
+      box-shadow: 0 0 5px 3px rgb(200, 255, 255), 0 0 7px 7px rgb(100, 255, 255);
+    }
+  }
 
-.opponent {
-  font-size: 15px;
-}
+  #btns-wrap {
+    width: 300px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-evenly;
 
-.progress-bar {
-  background-color: #1868838a;
-  width: 180px;
+    #increase-you,
+    #decrease-you {
+      margin-top: 10px;
+      width: 30px;
+      height: 30px;
+      border-radius: 5px;
+      background-color: dodgerblue;
+      text-align: center;
+      line-height: 30px;
+    }
+    #increase-you:active,
+    #decrease-you:active {
+      transform: translate(2px, 2px);
+    }
+    #increase-opponent,
+    #decrease-opponent {
+      margin-top: 10px;
+      width: 30px;
+      height: 30px;
+      border-radius: 5px;
+      background-color: #39b8bb;
+      text-align: center;
+      line-height: 30px;
+    }
+    #increase-opponent:active,
+    #decrease-opponent:active {
+      transform: translate(2px, 2px);
+    }
+  }
 }
-
-.progress-bar.you {
-  margin: 0.5rem 0;
-  height: 20px;
-}
-
-.progress-bar.opponent {
-  margin: 0.25rem 0;
-  height: 16px;
-}
-</style>
+</styled>
