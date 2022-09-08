@@ -130,25 +130,26 @@ export default {
           this.opponentTurn = true;
         }
       });
-    
   },
   methods: {
     // ターミナルuiに表示するために可能なコンボを取得
     attackOptions: function () {
-      let updatedData = this.selectedCardsData.map((obj) => obj.id);
-      let ableAttackData = updatedData.sort((a, b) => (a < b ? -1 : 1));
+      const updatedData = this.selectedCardsData.map((obj) => obj.id);
+      const ableAttackData = updatedData.sort((a, b) => (a < b ? -1 : 1));
       // 一致してるものがあるかを判定
       const isIncludes = (arr, target) =>
         arr.every((el) => target.includes(el));
       if (ableAttackData.length === 0) return [];
-      // updateddataにあるのと一致した攻撃だけを返す
+      // ２枚あってもターミナルに表示されてしまう問題
+      if (ableAttackData[0] === ableAttackData[1]) return [];
+      // ableAttackDataにあるのと一致した攻撃だけを返す
       return this.comboData.filter((comboData) => {
         return isIncludes(ableAttackData, comboData.idList);
       });
     },
     //発動できるかどうかを判定する
     isEnableAction: function () {
-      let updatedData = this.selectedCardsData.map((obj) => obj.id);
+      const updatedData = this.selectedCardsData.map((obj) => obj.id);
       updatedData.sort(function (first, second) {
         if (first > second) {
           return 1;
@@ -175,7 +176,7 @@ export default {
       } else if (updatedData.length === 1) {
         return true;
       } else {
-        let ableCombo = this.comboData.filter((comboData) => {
+        const ableCombo = this.comboData.filter((comboData) => {
           return isIncludes(updatedData, comboData.idList);
         });
         // 完全一致した攻撃だけを返す
@@ -194,7 +195,6 @@ export default {
         object.isCombined = true;
       };
       this.showActionCutIn = false;
-      this.effectImages.splice(this.index, this.effectImages.length);
       this.$axios
         .post("/cardDraw", {
           cardData: this.yourCardsData,
@@ -212,13 +212,13 @@ export default {
     handleAction: function () {
       this.actionSE.play();
       const searchParams = new URLSearchParams(window.location.search);
+      this.$axios.post("/controlTurn", { playerId: searchParams.get("id") });
       let cardValue = {
         selectedCardData: this.selectedCardsData,
         roomId: searchParams.get("room"),
       };
       this.socket.emit("cardValue", cardValue, searchParams.get("id"));
       this.selectedCardsData.splice(this.index, this.selectedCardsData.length);
-      this.effectImages.splice(this.index, this.effectImages.length);
       this.showActionCutIn = true;
     },
   },
@@ -252,9 +252,10 @@ export default {
     );
     this.socket.on("HPinfo", function (HPinfo) {
       anotherThis.actionType = HPinfo.actionType; //攻撃の種類
-      anotherThis.roundCount = HPinfo.nextTurnField; // 何ターン目かの情報
-      anotherThis.actionPoint = HPinfo.actionPoint;
-      console.log("round:" + anotherThis.roundCount);
+      anotherThis.roundCount = HPinfo.nextTurnField // 何ターン目かの情報
+      anotherThis.actionPoint = HPinfo.actionPoint
+      console.log("round:" + anotherThis.roundCount)
+      anotherThis.effectImages.splice(anotherThis.index, anotherThis.effectImages.length);
       // エフェクト用に画像を持ってくる
       for (let i = 0; i < HPinfo.usedCardIdList.length; i++) {
         let usedCard = "";
