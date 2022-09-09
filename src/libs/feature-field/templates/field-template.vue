@@ -31,10 +31,7 @@
           />
         </v-col>
         <v-col cols="4">
-          <span class="round">Round {{ roundCount }}</span>
-          <div class="turn-display">
-            <span>- Your Turn -</span>
-          </div>
+          <RoundCounter :roundCount="roundCount"/>
         </v-col>
         <v-col cols="4">
           <div class="flex">
@@ -131,6 +128,7 @@ import ActionCutIn from "../components/ActionCutIn.vue";
 import TerminalUI from "../components/TerminalUI.vue";
 import SimpleCard from "../components/SimpleCard.vue";
 import BattleOutcomeView from "../components/BattleOutcomeView.vue"
+import RoundCounter from "../components/RoundCounter.vue";
 
 export default {
   name: "FieldTemplate",
@@ -144,6 +142,7 @@ export default {
     TerminalUI,
     SimpleCard,
     BattleOutcomeView,
+    RoundCounter
 },
   props: [
     "message",
@@ -194,19 +193,6 @@ export default {
       margin-bottom: 2rem;
       text-align: center;
       height: 9rem;
-      .round {
-        font-size: 2rem;
-        font-weight: medium;
-        letter-spacing: 0.15em;
-        text-align: center;
-        padding: 0 3rem 0.5rem 3rem;
-        border-bottom: solid 2px #ff5c00;
-        text-shadow: 0 0 20px #ff5c00;
-      }
-      .turn-display {
-        padding-top: 0.5rem;
-        letter-spacing: 0.1em;
-      }
       .flex {
         display: flex;
 
