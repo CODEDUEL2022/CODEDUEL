@@ -268,6 +268,7 @@ export default {
   isPlayerAction: function (cardValue){
     this.effectImages.splice(this.index, this.effectImages.length);
     this.actionPoint = cardValue.damageValue;
+    console.log("length"+cardValue.usedCardIdList)
     for (let i = 0; i < cardValue.usedCardIdList.length; i++) {
       let usedCard = "";
       usedCard = this.cardData.find(

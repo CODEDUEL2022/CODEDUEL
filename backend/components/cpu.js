@@ -32,15 +32,15 @@ export const cpuLevel = function(req, res){
 export const cpuAttack = function () {
     let flag = Math.floor(Math.random() * 10);
     let cpuCard = []
-    //if (flag < 5) {
+    if (flag < 5) {
         console.log("1枚カードが返ります")
         const cardNumber = Number(Math.floor(Math.random() * cardDB.length));
         cpuCard.push(cardDB[cardNumber])
         return cpuCard
-    // } 
-    // const cardNumber = Number(Math.floor(Math.random() * comboDB.length));
-    // cpuCard.push(comboDB[cardNumber])
-    // return cpuCard
+    } 
+    const cardNumber = Number(Math.floor(Math.random() * comboDB.length));
+    cpuCard.push(comboDB[cardNumber])
+    return cpuCard
   
 };
 
@@ -59,15 +59,49 @@ export const cpuPostPlayerData = function (req, res) {
 }
 
 
+const decideUsedCombo = function (selectedData) {
+  const isEqualArray = function (array1, array2) {
+    if (array1.length != array2.length) return false;
+    for (let i = 0; i < array1.length; i++) {
+      if (array1[i] !== array2[i]) return false;
+    }
+    return true;
+  };
+  for (let i = 0; i < comboDB.length; i++) {
+    if (
+      isEqualArray(selectedData, comboDB[i].idList) &&
+      selectedData.length == comboDB[i].idList.length
+    )
+      return comboDB[i];
+  }
+};
+
+
 export const cpuCulculateHP = function (selectedCardData, playerId, isCPU) {
     const indexAttacked = cpuPlayerDB.findIndex((e) => e.playerId === playerId);
     let effect = "";
     let givenCard = []
-    for (let i = 0; i < selectedCardData.length; i++) {
-      givenCard.push(selectedCardData[i]);
+    let updatedData = []
+    if(selectedCardData[0].idList != undefined){
+      console.log("コンボです"+selectedCardData[0].idList)
+      updatedData = selectedCardData[0].idList
+    }else{
+      for (let i = 0; i < selectedCardData.length; i++) {
+        console.log(selectedCardData[i])
+        givenCard.push(selectedCardData[i]);
+      }
+      updatedData = givenCard.map((obj) => obj.id);
     }
-    let updatedData = givenCard.map((obj) => obj.id);
-
+    updatedData.sort(function (first, second) {
+      if (first > second) {
+        return 1;
+      } else if (first < second) {
+        return -1;
+      } else {
+        return 0;
+      }
+    });
+    console.log("givenCard"+givenCard)
 
     if(isCPU == 0){
       if (selectedCardData.length == 1) {
@@ -97,25 +131,19 @@ export const cpuCulculateHP = function (selectedCardData, playerId, isCPU) {
         console.log(HPinfo)
         return HPinfo
       } else {
-        effect += ableAttacks(givenCard)[0].nameEn;
-        const isIncludes = (arr, target) => arr.every((el) => target.includes(el));
-        comboDB.filter((comboDB) => {
-          if (isIncludes(updatedData, comboDB.idList)) {
-            if (updatedData.length == comboDB.idList.length) {
-              let damageValue = comboDB.actionValue;
-              cpuDB[indexAttacked].yourHP -= damageValue;
-              let HPinfo = {
-                action: effect,
-                damageValue: damageValue,
-                playerHP: cpuPlayerDB[indexAttacked].yourHP,
-                cpuHP: cpuDB[indexAttacked].yourHP,
-                usedCardIdList: updatedData,
-              };
-              console.log(HPinfo)
-              return HPinfo
-            }  
-          }
-        });
+        const usedCombo = decideUsedCombo(updatedData);
+        effect += usedCombo.nameEn;
+        let damageValue = usedCombo.actionValue;
+        cpuDB[indexAttacked].yourHP -= damageValue;      
+        let HPinfo = {
+          action: effect,
+          damageValue: damageValue,
+          playerHP: cpuPlayerDB[indexAttacked].yourHP,
+          cpuHP: cpuDB[indexAttacked].yourHP,
+          usedCardIdList: updatedData,
+        };
+        console.log(HPinfo)
+        return HPinfo
       }
     }
 
