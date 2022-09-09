@@ -39,7 +39,8 @@ export const cpuAttack = function () {
         return cpuCard
     // } 
     // const cardNumber = Number(Math.floor(Math.random() * comboDB.length));
-    // return comboDB[cardNumber];
+    // cpuCard.push(comboDB[cardNumber])
+    // return cpuCard
   
 };
 
@@ -86,6 +87,15 @@ export const cpuCulculateHP = function (selectedCardData, playerId, isCPU) {
           cpuDB[indexAttacked].yourHP -= damageValue;
           console.log(cpuDB[indexAttacked].yourHP)
         }
+        let HPinfo = {
+          action: effect,
+          damageValue: damageValue,
+          playerHP: cpuPlayerDB[indexAttacked].yourHP,
+          cpuHP: cpuDB[indexAttacked].yourHP,
+          usedCardIdList: updatedData,
+        };
+        console.log(HPinfo)
+        return HPinfo
       } else {
         effect += ableAttacks(givenCard)[0].nameEn;
         const isIncludes = (arr, target) => arr.every((el) => target.includes(el));
@@ -94,18 +104,19 @@ export const cpuCulculateHP = function (selectedCardData, playerId, isCPU) {
             if (updatedData.length == comboDB.idList.length) {
               let damageValue = comboDB.actionValue;
               cpuDB[indexAttacked].yourHP -= damageValue;
-            }
+              let HPinfo = {
+                action: effect,
+                damageValue: damageValue,
+                playerHP: cpuPlayerDB[indexAttacked].yourHP,
+                cpuHP: cpuDB[indexAttacked].yourHP,
+                usedCardIdList: updatedData,
+              };
+              console.log(HPinfo)
+              return HPinfo
+            }  
           }
         });
       }
-      let HPinfo = {
-        action: effect,
-        playerHP: cpuPlayerDB[indexAttacked].yourHP,
-        cpuHP: cpuDB[indexAttacked].yourHP,
-        usedCardIdList: updatedData,
-      };
-      console.log(HPinfo)
-      return HPinfo
     }
 
     if(isCPU == 1){
@@ -113,6 +124,15 @@ export const cpuCulculateHP = function (selectedCardData, playerId, isCPU) {
         let damageValue = selectedCardData[0].actionValue;
         effect += "attack"
         cpuPlayerDB[indexAttacked].yourHP -= damageValue;
+        let HPinfo = {
+          damageValue: damageValue,
+          action: effect,
+          playerHP: cpuPlayerDB[indexAttacked].yourHP,
+          cpuHP: cpuDB[indexAttacked].yourHP,
+          usedCardIdList: updatedData,
+        };
+        console.log(HPinfo)
+        return HPinfo
       }else{
         effect += ableAttacks(givenCard)[0].nameEn;
         const isIncludes = (arr, target) => arr.every((el) => target.includes(el));
@@ -121,20 +141,20 @@ export const cpuCulculateHP = function (selectedCardData, playerId, isCPU) {
             if (updatedData.length == comboDB.idList.length) {
               let damageValue = comboDB.actionValue;
               cpuPlayerDB[indexAttacked].yourHP -= damageValue;
+              let HPinfo = {
+                damageValue: damageValue,
+                action: effect,
+                playerHP: cpuPlayerDB[indexAttacked].yourHP,
+                cpuHP: cpuDB[indexAttacked].yourHP,
+                usedCardIdList: updatedData,
+              };
+              console.log(HPinfo)
+              return HPinfo
             }
           }
         });
       }
-      let HPinfo = {
-        action: effect,
-        playerHP: cpuPlayerDB[indexAttacked].yourHP,
-        cpuHP: cpuDB[indexAttacked].yourHP,
-        usedCardIdList: updatedData,
-      };
-      console.log(HPinfo)
-      return HPinfo
     }
-
   };
 
   const ableAttacks = function (selectedData) {
@@ -148,10 +168,13 @@ export const cpuCulculateHP = function (selectedCardData, playerId, isCPU) {
   };
 
 export const cpuAction = function(req,res){
-  cpuCulculateHP(req.body.cardValue.selectedCardData, req.body.cardValue.userId, 0)
   let cpuCard = cpuAttack()
   let cpuAction = cpuCulculateHP(cpuCard, req.body.cardValue.userId, 1)
   return cpuAction
+}
+export const cpuPlayerAction = function(req,res){
+  let cpuPlayerAction = cpuCulculateHP(req.body.cardValue.selectedCardData, req.body.cardValue.userId, 0)
+  return cpuPlayerAction
 }
   
 export const cpuHPReload = function(req,res){
@@ -183,7 +206,7 @@ export const cardDraw = function (selectId) {
 export const cpuPostCardDraw = function (req, res) {
     let selectId = cpuPlayerDB.findIndex((e) => e.playerId === req.body.playerId);
     if (req.body.cardData.length != 0) {
-      cpuPlayerDB.cardList = req.body.cardData;
+      cpuPlayerDB[selectId].cardList = req.body.cardData;
     }
     cardDraw(selectId);
     return cpuPlayerDB[selectId].cardList;

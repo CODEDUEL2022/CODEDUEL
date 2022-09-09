@@ -21,6 +21,9 @@
       <div class="play-btn" @click="$emit('handleAutoMatting')">
         <span>＞ AUTO MATTING</span>
       </div>
+      <div class="play-btn" @click="$emit('handleMoveCPUPage')">
+        <span>＞ CPU</span>
+      </div>
     </div>
   </div>
 </template>
