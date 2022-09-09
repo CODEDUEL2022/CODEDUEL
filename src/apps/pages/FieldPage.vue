@@ -244,6 +244,7 @@ export default {
         selectedCardData: this.selectedCardsData,
         roomId: searchParams.get("room"),
       };
+      console.log(cardValue.selectedCardData)
       this.socket.emit("cardValue", cardValue, searchParams.get("id"));
       this.selectedCardsData.splice(this.index, this.selectedCardsData.length);
       this.showActionCutIn = true;

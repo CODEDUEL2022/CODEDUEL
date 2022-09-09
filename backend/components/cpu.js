@@ -1,5 +1,6 @@
 import {cardDB} from "../DB.js";
 import {comboDB} from "../DB.js";
+import { fieldDB } from "../DB.js";
 
 export let cpuDB = [{
   playerId: "",
@@ -49,7 +50,11 @@ export const cpuPostPlayerData = function (req, res) {
     playerId: req.body.playerId,
     cardList: [],
     yourHP: 200,
-    turnFlag: 0
+    turnFlag: 0,
+    field: 0,
+    decList: [],
+    roundCount: 0,
+    decId: 0
   });
   cpuDB.push({
     playerId: req.body.playerId,
@@ -104,8 +109,20 @@ export const cpuCulculateHP = function (selectedCardData, playerId, isCPU) {
     console.log("givenCard"+givenCard)
 
     if(isCPU == 0){
+      let thisTurnField = cpuPlayerDB[indexAttacked].field;
+      changeField(indexAttacked);
+      let nextTurnField = cpuPlayerDB[indexAttacked].field;
+      let fieldBonus = 0;
+      let fieldBonusFlag = "false";
+      let nextRoundCount = cpuPlayerDB[indexAttacked].roundCount;
+  
+      changeRound(indexAttacked);
       if (selectedCardData.length == 1) {
-        let damageValue = selectedCardData[0].actionValue;
+        if (selectedCardData[0].field == fieldDB[thisTurnField]) {
+          fieldBonus = 10;
+          fieldBonusFlag = "true";
+        }
+        let damageValue = selectedCardData[0].actionValue + fieldBonus;
         if (selectedCardData[0].action == "enhancement") {
           effect += "enhancement";
           cpuPlayerDB[indexAttacked].yourHP += damageValue;
@@ -201,6 +218,7 @@ export const cpuAction = function(req,res){
   return cpuAction
 }
 export const cpuPlayerAction = function(req,res){
+  console.log("cpuPlayerに関するログ："+req.body.cardValue.selectedCardData[0].actionValue)
   let cpuPlayerAction = cpuCulculateHP(req.body.cardValue.selectedCardData, req.body.cardValue.userId, 0)
   return cpuPlayerAction
 }
@@ -249,3 +267,12 @@ export const cpuContorlTrun = function(req,res){
     let selectId = cpuPlayerDB.findIndex((e) => e.playerId === req.body.playerId);
     cpuPlayerDB[selectId].turnFlag += 1
 }
+
+
+const changeField = function (playerId) {
+  cpuPlayerDB[playerId].field = (cpuPlayerDB[playerId].field + 1) % 4;
+};
+
+const changeRound = function (playerId) {
+  cpuPlayerDB[playerId].roundCount = cpuPlayerDB[playerId].roundCount + 1;
+};

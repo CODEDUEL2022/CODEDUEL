@@ -91,6 +91,7 @@ export const postPlayerData = function (req, res, numClients) {
       cardListNumber: [],
       turnFlag: 1,
       decId: decId,
+      roundCount: 0,
       field: 0,
       decList: [],
     });
@@ -104,6 +105,7 @@ export const postPlayerData = function (req, res, numClients) {
       cardListNumber: [],
       turnFlag: 0,
       decId: decId,
+      roundCount: 0,
       field: 0,
       decList: [],
     });
