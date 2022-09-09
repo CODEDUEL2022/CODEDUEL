@@ -1,22 +1,40 @@
 <template>
 <div class="flex">
-    <div id="loading-content"></div>
+    <div id="loading-content">
+    </div>
+    <v-img
+    class="osTip"
+    height="48"
+    width="48"
+    :src="require(`../../ui/assets/OSfield_tip/${currentFieldImg}`)"
+    ></v-img>
     <div class="os-info">
-      <div class="name">Windows OS</div>
+      <div class="name">{{ currentFieldName }}</div>
       <div class="content">
         texttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttext
       </div>
-      <div>Next >> Mac OS</div>
+      <div>Next >> {{ nextFieldName }}</div>
     </div>
   </div>
 </template>
 
+<script>
+export default {
+    props: ["currentFieldName", "currentFieldImg", "nextFieldName"]
+}
+</script>
+
 <style scoped lang="scss">
         .flex {
           display: flex;
-  
+          position: relative;
           text-align: left;
           text-shadow: 0 0 7px #d3fffd;
+          .osTip {
+            position: absolute;
+            top: 16px;
+            left: 40px;
+          }
           .os-info {
             font-size: 1.15rem;
             .name {

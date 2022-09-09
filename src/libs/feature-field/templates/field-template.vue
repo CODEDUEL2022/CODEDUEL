@@ -34,7 +34,7 @@
           <RoundCounter :roundCount="roundCount"/>
         </v-col>
         <v-col cols="4">
-          <FieldDisplay/>
+          <FieldDisplay :currentFieldName="currentFieldName" :currentFieldImg="currentFieldImg" :nextFieldName="nextFieldName"/>
         </v-col>
       </v-row>
       <v-row class="second-row">
@@ -152,6 +152,7 @@ export default {
     "roundCount",
     "currentFieldName",
     "currentFieldImg",
+    "nextFieldName",
     "yourCardsData",
     "selectedCardsData",
     "yourGroup",

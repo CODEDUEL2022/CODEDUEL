@@ -14,6 +14,7 @@
     :roundCount="roundCount"
     :currentFieldName="currentFieldName"
     :currentFieldImg="currentFieldImg"
+    :nextFieldName="nextFieldName"
     :yourCardsData.sync="yourCardsData"
     :selectedCardsData.sync="selectedCardsData"
     :selectedId="selectedId"
@@ -54,6 +55,7 @@ export default {
       roundCount: 0,
       currentFieldName: "macOS",
       currentFieldImg: "",
+      nextFieldName: "",
       yourCardsData: [],
       selectedCardsData: [],
       comboData: [],
@@ -327,8 +329,9 @@ export default {
   updated() {
     // roundを受け取ってそこからfieldDBと照らし合わせる
     // room入室時にupdatedが発火されるがfieldDataがないのでエラーがでる。他の実装を考える
-    this.currentFieldName = this.fieldData[this.roundCount].name;
-    this.currentFieldImg = this.fieldData[this.roundCount].img;
+    this.currentFieldName = this.fieldData[this.roundCount % 4].name;
+    this.currentFieldImg = this.fieldData[this.roundCount % 4].img;
+    this.nextFieldName = this.fieldData[(this.roundCount + 1) % 4].name;
   },
 };
 </script>
