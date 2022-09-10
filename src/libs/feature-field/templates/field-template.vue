@@ -1,7 +1,6 @@
 <template>
   <div>
     <Header />
-    <v-tour name="myTour" :steps="steps"></v-tour>
     <div v-show="showGeneralCutIn">
       <GeneralCutIn :message="message" />
     </div>
@@ -96,7 +95,7 @@
             :isEnableAction="isEnableAction"
             @handleAction="$emit('handleAction')"
           ></ActionButton>
-          <div @click="$tours['myTour'].start()" class="card-list-btn">
+          <div @click="handleClick" class="card-list-btn">
             <span>Card List</span>
           </div>
         </v-col>
@@ -114,10 +113,15 @@
         @closeActionCutIn="$emit('closeActionCutIn')"
       />
     </div>
+
+    <Part1 />
+    <Part2 />
+    <Tour />
   </div>
 </template>
 
 <script>
+  import { Tour } from "vue-tour";
   import Header from "../../layout/Header.vue";
   import ActionButton from "../components/ActionButton.vue";
   import HPDisplay from "../components/HpDisplay.vue";
@@ -127,6 +131,9 @@
   import TerminalUI from "../components/TerminalUI.vue";
   import SimpleCard from "../components/SimpleCard.vue";
   import BattleOutcomeView from "../components/BattleOutcomeView.vue";
+  import Parts1 from "../components/Part1";
+  import Parts2 from "../components/Part2";
+  import tour from "../components/Tour";
 
   export default {
     name: "FieldTemplate",
@@ -140,6 +147,9 @@
       TerminalUI,
       SimpleCard,
       BattleOutcomeView,
+      Parts1,
+      Parts2,
+      Tour,
     },
     props: [
       "message",
@@ -169,35 +179,75 @@
     ],
     data() {
       return {
-        // drag&drop用のデータ
-        options: {
-          group: "yourGroup",
-          animation: 200,
-        },
         steps: [
           {
-            target: ".round", // We're using document.querySelector() under the hood
-            header: {
-              title: "Get Started",
-            },
+            target: "#v-step-0",
             content: `Discover <strong>Vue Tour</strong>!`,
           },
           {
-            target: ".turn-display",
+            target: "#v-step-1",
+            header: {
+              title: "Vue Tour",
+            },
             content: "An awesome plugin made with Vue.js!",
           },
           {
-            target: ".card-list-btn",
+            target: "#v-step-2",
             content:
               "Try it, you'll love it!<br>You can put HTML in the steps and completely customize the DOM to suit your needs.",
             params: {
-              placement: "top", // Any valid Popper.js placement. See https://popper.js.org/popper-documentation.html#Popper.placements
+              placement: "top",
+            },
+          },
+          {
+            target: "#v-step-3",
+            params: {
+              placement: "left",
             },
           },
         ],
+        callbacks: {
+          onPreviousStep: this.myCustomPreviousStepCallback,
+          onNextStep: this.myCustomNextStepCallback,
+        },
       };
     },
-    mounted() {},
+    mounted: function () {
+      this.$tours["myTour"].start();
+
+      // A dynamically added onStop callback
+      this.callbacks.onStop = () => {
+        document
+          .querySelector("#v-step-0")
+          .scrollIntoView({ behavior: "smooth" });
+      };
+    },
+    methods: {
+      nextStep() {
+        this.$tours["myTour"].nextStep();
+      },
+      showLastStep() {
+        this.$tours["myTour"].currentStep = this.steps.length - 1;
+      },
+      myCustomPreviousStepCallback(currentStep) {
+        console.log(
+          "[Vue Tour] A custom previousStep callback has been called on step " +
+            (currentStep + 1)
+        );
+      },
+      myCustomNextStepCallback(currentStep) {
+        console.log(
+          "[Vue Tour] A custom nextStep callback has been called on step " +
+            (currentStep + 1)
+        );
+
+        if (currentStep === 1) {
+          console.log(
+            "[Vue Tour] A custom nextStep callback has been called from step 2 to step 3"
+          );
+        }
+      },
+    },
   };
 </script>
 
