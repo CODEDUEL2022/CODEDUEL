@@ -1,14 +1,11 @@
 <template>
   <div class="overlay" @click.self="$emit('handleModalClose')">
     <div class="modal">
-      <div class="close-btn">
-        <span @click="$emit('handleModalClose')">×</span>
-      </div>
-      <!--step1: 人かcpuを選択-->
-      <div v-if="firstStep" class="contents">
-        <span>Choose Game Mode.</span>
+      <span class="close-btn" @click="$emit('handleModalClose')">×</span>
+      <div v-if="modalContent == 'selectGameMode'" class="contents">
+        <span class="modal-title">Choose Game Mode.</span>
         <div class="select">
-          <div class="select-icon" @click="changeModalContent('human')">
+          <div class="select-icon" @click="handleChangeFirstToSecond('human')">
             <span>
               <img src="../../ui/assets/bi_people-fill.svg" />
               <br />
@@ -16,7 +13,7 @@
             </span>
           </div>
           <span>or</span>
-          <div class="select-icon" @click="changeModalContent('cpu')">
+          <div class="select-icon" @click="handleStart('cpu')">
             <span>
               <img src="../../ui/assets/bi_robot.svg" />
               <br />
@@ -25,10 +22,29 @@
           </div>
         </div>
       </div>
+      <div v-if="modalContent == 'selectMatchType'" class="contents">
+        <span class="modal-title">Choose match type.</span>
+        <div class="select">
+          <div class="select-icon" @click="handleChangeSecondToThird('free')">
+            <span>
+              <img src="../../ui/assets/bi_people-fill.svg" />
+              <br />
+              free match
+            </span>
+          </div>
+          <span>or</span>
+          <div class="select-icon" @click="handleStart('random')">
+            <span>
+              <img src="../../ui/assets/bi_robot.svg" />
+              <br />
+              random match
+            </span>
+          </div>
+        </div>
+      </div>
 
-      <!--step2: roomIdの入力-->
-      <div v-if="secondStep" class="contents">
-        <span>Input room ID.</span>
+      <div v-else-if="modalContent == 'inputRoomId'" class="contents">
+        <span class="modal-title">Input room ID.</span>
         <span class="input-text">
           <input
             :value="roomId"
@@ -37,9 +53,9 @@
             @input="$emit('update:roomId', $event.target.value)"
           />
         </span>
-        <div class="start-btn" @click="handleStart(roomId)">
-          <span class="start-btn">＞ GAME START</span>
-        </div>
+        <span class="start-btn" @click="handleStart(roomId)"
+          >＞ GAME START</span
+        >
       </div>
     </div>
   </div>
@@ -48,31 +64,31 @@
 <script>
   export default {
     name: "StartModal",
-    props: ["isStartModalOpen", "roomId"],
+    props: ["roomId"],
     data() {
       return {
-        firstStep: true,
-        secondStep: false,
+        modalContent: "selectGameMode",
       };
     },
     methods: {
-      changeModalContent: function (gameMode) {
-        this.firstStep = false;
-        this.secondStep = true;
-        this.$emit("changeModalContent", gameMode);
+      handleChangeFirstToSecond: function (gameMode) {
+        this.modalContent = "selectMatchType";
+        this.$emit("handleChangeFirstToSecond", gameMode);
+      },
+      handleChangeSecondToThird: function (matchType) {
+        this.modalContent = "inputRoomId";
+        this.$emit("handleChangeSecondToThird", matchType);
       },
       handleStart: function (roomId) {
+        if (roomId == "cpu") {
+          alert("Play with CPU.");
+        }
+        if (roomId == "random") {
+          alert("Play random match.");
+        }
         this.$emit("handleStart", roomId);
       },
     },
-    // computed: {
-    //   // changeRoomId: function (roomId) {
-    //   //   return (this.roomId = roomId);
-    //   // },
-    //   changeGameMode: function (gameMode) {
-    //     return (this.gameMode = gameMode);
-    //   },
-    // },
   };
 </script>
 
@@ -92,11 +108,14 @@
     .modal {
       position: relative;
       width: 500px;
-      height: 400px;
+      min-height: 400px;
+      height: fit-content;
       padding: 1rem;
+      font-size: 1.25rem;
       border: 9px solid #d3fffd;
       background-color: #0e3145;
       box-shadow: 0px 0px 20px #d3fffd;
+      z-index: 10;
 
       &::before {
         background-color: #0e3145;
@@ -123,7 +142,6 @@
       span {
         position: relative;
         z-index: 10;
-        font-size: 28px;
         letter-spacing: 0.15em;
         @keyframes neon {
           0% {
@@ -137,20 +155,23 @@
       }
 
       .close-btn {
+        display: block;
+        padding: 0;
         cursor: pointer;
         text-align: right;
-        span {
-          z-index: 10;
-          font-size: 2rem;
-          text-shadow: none;
-          animation: none;
-        }
+        z-index: 10;
+        text-shadow: none;
+        animation: none;
       }
 
       .contents {
         display: flex;
         flex-direction: column;
         z-index: 10;
+
+        .modal-title {
+          font-size: 28px;
+        }
 
         .select {
           display: flex;
@@ -171,7 +192,7 @@
         }
 
         .input-text {
-          margin: 2rem 0;
+          margin: 1rem 0;
           cursor: text;
 
           input {
@@ -184,15 +205,22 @@
         }
 
         .start-btn {
-          margin-top: 1rem;
+          display: inline-block;
+          width: fit-content;
+          margin: 1rem auto;
           padding: 1rem;
           background-color: #186883;
-          font-size: 1.5rem;
+          font-size: 1.25rem;
 
           &:hover {
             background-color: #2d909e;
             cursor: pointer;
           }
+        }
+
+        .auto-matching {
+          font-size: 0.75rem;
+          padding: 0.75rem;
         }
       }
     }

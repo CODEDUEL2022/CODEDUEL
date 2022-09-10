@@ -13,14 +13,11 @@
       <StartModal
         v-if="isStartModalOpen"
         :roomId.sync="roomId"
-        :isStartModalOpen="isStartModalOpen"
         @handleModalClose="$emit('handleModalClose')"
         @handleStart="handleStart"
-        @changeModalContent="handleChangeModalContent"
+        @handleChangeFirstToSecond="handleChangeFirstToSecond"
+        @handleChangeSecondToThird="handleSecondToThird"
       />
-      <div class="play-btn" @click="$emit('handleAutoMatting')">
-        <span>＞ AUTO MATTING</span>
-      </div>
     </div>
   </div>
 </template>
@@ -36,8 +33,11 @@
     },
     props: ["isStartModalOpen", "roomId"],
     methods: {
-      handleChangeModalContent: function (gameMode) {
+      handleChangeFirstToSecond: function (gameMode) {
         this.$emit("handleChangeModalContent", gameMode);
+      },
+      handleChangeSecondToThird: function (matchType) {
+        this.$emit("handleChangeModalContent", matchType);
       },
       handleStart: function (roomId) {
         this.$emit("handleStart", roomId);

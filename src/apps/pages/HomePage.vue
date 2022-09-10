@@ -7,7 +7,8 @@
     @handleMoveCPUPage="onPushCPU()"
     @handleModalOpen="onStartModalOpen()"
     @handleModalClose="onStartModalClose()"
-    @handleChangeModalContent="onChangeModalContent"
+    @handleChangeFirstToSecond="onChangeFirstToSecond"
+    @handleChangeSecondToThird="onChangeSecondToThird"
     @handleAutoMatting="onPushAutoMatting()"
   />
 </template>
@@ -28,22 +29,23 @@
         playerId: "",
         isStartModalOpen: false,
         gameMode: null,
+        matchType: null,
         roomId: null,
         startSE: new Audio(require("/src/libs/ui/assets/sounds/piri.mp3")),
-      clickSE: new Audio(require("/src/libs/ui/assets/sounds/kako.mp3")),
+        clickSE: new Audio(require("/src/libs/ui/assets/sounds/kako.mp3")),
       };
     },
     mounted() {
       this.socket.on("logined");
     },
     methods: {
-    onSetId: function () {
-      // HACK: ID作る関数入れておく
-      this.roomId = Math.random().toString(32).substring(2);
-    },
+      onSetId: function () {
+        // HACK: ID作る関数入れておく
+        this.roomId = Math.random().toString(32).substring(2);
+      },
       //追加機能：クエリにplayer_Idを追加。同じルーム内でのプレイヤーを識別するのに利用。
       onSendRoomId: function (roomId) {
-      this.clickSE.play();
+        this.clickSE.play();
         this.playerId = Math.random().toString(32).substring(2);
         this.roomId = roomId;
         this.socket.emit("login", this.roomId);
@@ -71,7 +73,7 @@
       },
       //ページ遷移機能
       onPushField: function (value) {
-      this.startSE.play();
+        this.startSE.play();
         this.roomId = value;
         console.log(this.roomId);
         this.playerId = Math.random().toString(32).substring(2);
@@ -109,18 +111,22 @@
         console.log("onStartModalClose");
         this.isStartModalOpen = false;
       },
-      onChangeModalContent: function (value) {
+      onChangeFirstToSecond: function (value) {
         this.gameMode = value;
         console.log(this.gameMode);
       },
-      onPushAutoMatting: function (){
-      this.playerId = Math.random().toString(32).substring(2);
-      this.socket.emit("AutoMattingPreLogin", this.playerId);
-      this.$router.push({
-        name: "waitingroom",
-        query: { id: this.playerId },
-      });
-    },
+      onChangeSecondToThird: function (value) {
+        this.matchType = value;
+        console.log(this.matchType);
+      },
+      onPushAutoMatting: function () {
+        this.playerId = Math.random().toString(32).substring(2);
+        this.socket.emit("AutoMattingPreLogin", this.playerId);
+        this.$router.push({
+          name: "waitingroom",
+          query: { id: this.playerId },
+        });
+      },
     },
   };
 </script>
