@@ -1,10 +1,9 @@
 <template>
   <div>
     <Header />
+    <v-tour name="myTour" :steps="steps"></v-tour>
     <div v-show="showGeneralCutIn">
-      <GeneralCutIn
-        :message="message"
-      />
+      <GeneralCutIn :message="message" />
     </div>
     <div v-show="showActionCutIn">
       <ActionCutIn
@@ -15,10 +14,7 @@
       />
     </div>
     <div v-show="showBattleOutcome">
-      <BattleOutcomeView
-        :judgeWin="judgeWin"
-        @goHome="$emit('goHome')"
-      />
+      <BattleOutcomeView :judgeWin="judgeWin" @goHome="$emit('goHome')" />
     </div>
     <div class="field-container">
       <v-row class="first-row">
@@ -100,7 +96,7 @@
             :isEnableAction="isEnableAction"
             @handleAction="$emit('handleAction')"
           ></ActionButton>
-          <div @click="$emit()" class="card-list-btn">
+          <div @click="$tours['myTour'].start()" class="card-list-btn">
             <span>Card List</span>
           </div>
         </v-col>
@@ -122,65 +118,87 @@
 </template>
 
 <script>
-import Header from "../../layout/Header.vue";
-import ActionButton from "../components/ActionButton.vue";
-import HPDisplay from "../components/HpDisplay.vue";
-import VueDrag from "vuedraggable";
-import GeneralCutIn from "../components/GeneralCutIn.vue";
-import ActionCutIn from "../components/ActionCutIn.vue";
-import TerminalUI from "../components/TerminalUI.vue";
-import SimpleCard from "../components/SimpleCard.vue";
-import BattleOutcomeView from "../components/BattleOutcomeView.vue"
+  import Header from "../../layout/Header.vue";
+  import ActionButton from "../components/ActionButton.vue";
+  import HPDisplay from "../components/HpDisplay.vue";
+  import VueDrag from "vuedraggable";
+  import GeneralCutIn from "../components/GeneralCutIn.vue";
+  import ActionCutIn from "../components/ActionCutIn.vue";
+  import TerminalUI from "../components/TerminalUI.vue";
+  import SimpleCard from "../components/SimpleCard.vue";
+  import BattleOutcomeView from "../components/BattleOutcomeView.vue";
 
-export default {
-  name: "FieldTemplate",
-  components: {
-    Header,
-    ActionButton,
-    HPDisplay,
-    VueDrag,
-    GeneralCutIn,
-    ActionCutIn,
-    TerminalUI,
-    SimpleCard,
-    BattleOutcomeView,
-},
-  props: [
-    "message",
-    "showGeneralCutIn",
-    "showActionCutIn",
-    "showBattleOutcome",
-    "judgeWin",
-    "actionType",
-    "actionPoint",
-    "yourHP",
-    "yourName",
-    "opponentHP",
-    "opponentName",
-    "roundCount",
-    "currentFieldName",
-    "currentFieldImg",
-    "yourCardsData",
-    "selectedCardsData",
-    "yourGroup",
-    "yourId",
-    "effectImages",
-    "selectedId",
-    "comboData",
-    "isEnableAction",
-    "attackOptions",
-    "focusedCard",
-  ],
-  data() {
-    return {
-      // drag&drop用のデータ
-      options: {
-        group: "yourGroup",
-        animation: 200,
-      },
-    };
-  },
-};
+  export default {
+    name: "FieldTemplate",
+    components: {
+      Header,
+      ActionButton,
+      HPDisplay,
+      VueDrag,
+      GeneralCutIn,
+      ActionCutIn,
+      TerminalUI,
+      SimpleCard,
+      BattleOutcomeView,
+    },
+    props: [
+      "message",
+      "showGeneralCutIn",
+      "showActionCutIn",
+      "showBattleOutcome",
+      "judgeWin",
+      "actionType",
+      "actionPoint",
+      "yourHP",
+      "yourName",
+      "opponentHP",
+      "opponentName",
+      "roundCount",
+      "currentFieldName",
+      "currentFieldImg",
+      "yourCardsData",
+      "selectedCardsData",
+      "yourGroup",
+      "yourId",
+      "effectImages",
+      "selectedId",
+      "comboData",
+      "isEnableAction",
+      "attackOptions",
+      "focusedCard",
+    ],
+    data() {
+      return {
+        // drag&drop用のデータ
+        options: {
+          group: "yourGroup",
+          animation: 200,
+        },
+        steps: [
+          {
+            target: ".round", // We're using document.querySelector() under the hood
+            header: {
+              title: "Get Started",
+            },
+            content: `Discover <strong>Vue Tour</strong>!`,
+          },
+          {
+            target: ".turn-display",
+            content: "An awesome plugin made with Vue.js!",
+          },
+          {
+            target: ".card-list-btn",
+            content:
+              "Try it, you'll love it!<br>You can put HTML in the steps and completely customize the DOM to suit your needs.",
+            params: {
+              placement: "top", // Any valid Popper.js placement. See https://popper.js.org/popper-documentation.html#Popper.placements
+            },
+          },
+        ],
+      };
+    },
+    mounted() {},
+  };
 </script>
 
 <style scoped lang="scss">
