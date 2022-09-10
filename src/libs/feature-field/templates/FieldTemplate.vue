@@ -4,12 +4,7 @@
     <div class="field-container">
       <v-row class="first-row">
         <v-col cols="4">
-          <HPDisplay
-            :yourName="yourName"
-            :yourHP="yourHP"
-            :opponentName="opponentName"
-            :opponentHP="opponentHP"
-          />
+          <HPDisplay :yourHP="yourHP" :opponentHP="opponentHP" />
         </v-col>
         <v-col cols="4">
           <span class="round">Round {{ roundCount }}</span>
@@ -131,9 +126,7 @@
       "actionType",
       "actionPoint",
       "yourHP",
-      "yourName",
       "opponentHP",
-      "opponentName",
       "roundCount",
       "currentFieldName",
       "currentFieldImg",

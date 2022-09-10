@@ -2,7 +2,7 @@
   <div class="hp-monitor">
     <div class="you">
       <div class="flex">
-        <span class="user-name">You</span><span>HP:{{ yourLife }}</span>
+        <span class="user-name">You</span><span>HP:{{ yourHP }}</span>
       </div>
       <div id="hp-frame">
         <div id="bar-you"></div>
@@ -11,8 +11,7 @@
     </div>
     <div class="opponent">
       <div class="flex">
-        <span class="user-name">Opponent</span
-        ><span>HP:{{ opponentLife }}</span>
+        <span class="user-name">Opponent</span><span>HP:{{ opponentHP }}</span>
       </div>
       <div id="hp-frame">
         <div id="bar-opponent"></div>
@@ -23,64 +22,59 @@
 </template>
 
 <script>
-export default {
-  name: "HPDisplay",
-  props: ["yourName", "yourHP", "opponentName", "opponentHP"],
-  data() {
-    return {
-      yourLife: 200,
-      opponentLife: 200,
-    };
-  },
-  mounted() {
-    const yours = document.getElementById("bar-you");
-    const opponents = document.getElementById("bar-opponent");
-    this.yourHP = yours.style.width;
-    this.opponentHP = opponents.style.width;
-    yours.style.width = this.yourLife / 2 + "%";
-    opponents.style.width = this.opponentLife / 2 + "%";
-  },
-  methods: {
-    alterYourLife: function (value) {
-      const lifeBar = document.getElementById("bar-you");
-      const lifeMark = document.getElementById("mark-you");
-      this.place = lifeBar.style.width;
+  export default {
+    name: "HPDisplay",
+    props: ["yourHP", "opponentHP"],
+    mounted() {
+      const yours = document.getElementById("bar-you");
+      const opponents = document.getElementById("bar-opponent");
+      yours.style.width = this.yourHP / 2 + "%";
+      opponents.style.width = this.opponentHP / 2 + "%";
 
-      this.yourLife += value;
-      if (this.yourLife <= 0) {
-        this.yourLife = 0;
-        setTimeout(function () {
-          lifeMark.style.visibility = "hidden";
-        }, 300);
-      } else {
-        if (this.yourLife > 200) {
-          this.yourLife = 200;
-        }
-        lifeMark.style.visibility = "visible";
-      }
-      lifeBar.style.width = this.yourLife / 2 + "%";
+      console.log(yours.style.width);
+      console.log(opponents.style.width);
     },
-    alterOpponentLife: function (value) {
-      const lifeBar = document.getElementById("bar-opponent");
-      const lifeMark = document.getElementById("mark-opponent");
-      this.place = lifeBar.style.width;
+    methods: {
+      alterYourLife: function (value) {
+        const lifeBar = document.getElementById("bar-you");
+        const lifeMark = document.getElementById("mark-you");
+        this.yourHP = lifeBar.style.width;
 
-      this.opponentLife += value;
-      if (this.opponentLife <= 0) {
-        this.opponentLife = 0;
-        setTimeout(function () {
-          lifeMark.style.visibility = "hidden";
-        }, 300);
-      } else {
-        if (this.opponentLife > 200) {
-          this.opponentLife = 200;
+        this.yourLife += value;
+        if (this.yourHP <= 0) {
+          this.yourHP = 0;
+          setTimeout(function () {
+            lifeMark.style.visibility = "hidden";
+          }, 300);
+        } else {
+          if (this.yourHP > 200) {
+            this.yourHP = 200;
+          }
+          lifeMark.style.visibility = "visible";
         }
-        lifeMark.style.visibility = "visible";
-      }
-      lifeBar.style.width = this.opponentLife / 2 + "%";
+        lifeBar.style.width = this.yourHP / 2 + "%";
+      },
+      alterOpponentLife: function (value) {
+        const lifeBar = document.getElementById("bar-opponent");
+        const lifeMark = document.getElementById("mark-opponent");
+        this.opponentHP = lifeBar.style.width;
+
+        this.opponentHP += value;
+        if (this.opponentHP <= 0) {
+          this.opponentHP = 0;
+          setTimeout(function () {
+            lifeMark.style.visibility = "hidden";
+          }, 300);
+        } else {
+          if (this.opponentHP > 200) {
+            this.opponentHP = 200;
+          }
+          lifeMark.style.visibility = "visible";
+        }
+        lifeBar.style.width = this.opponentHP / 2 + "%";
+      },
     },
-  },
-};
+  };
 </script>
 
 <styled scoped lang="scss">
@@ -119,6 +113,7 @@ export default {
   #hp-frame {
     background-color: #d3fffd;
     height: 0.8rem;
+    width: 100%;
     display: flex;
     align-items: center;
 
