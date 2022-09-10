@@ -11,24 +11,24 @@ Vue.use(VueRouter);
 const routes = [
   {
     path: "/",
-    name: "home",
+    name: "HomePage",
     component: HomePage,
   },
   {
     path: "/field",
-    name: "field",
+    name: "FieldPage",
     component: FieldPage,
   },
   {
     path: "/cpu",
-    name: "cpu",
+    name: "CPUPage",
     component: CPUPage,
   },
   {
     path: "/waitingroom",
-    name: "waitingroom",
-    component: WaitingRoom
-  }
+    name: "WaitingRoom",
+    component: WaitingRoom,
+  },
 ];
 
 const router = new VueRouter({

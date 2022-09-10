@@ -16,7 +16,6 @@
   import io from "socket.io-client";
 
   export default {
-    name: "home",
     components: {
       HomeTemplate,
     },
@@ -30,20 +29,20 @@
         gameMode: null,
         roomId: null,
         startSE: new Audio(require("/src/libs/ui/assets/sounds/piri.mp3")),
-      clickSE: new Audio(require("/src/libs/ui/assets/sounds/kako.mp3")),
+        clickSE: new Audio(require("/src/libs/ui/assets/sounds/kako.mp3")),
       };
     },
     mounted() {
       this.socket.on("logined");
     },
     methods: {
-    onSetId: function () {
-      // HACK: ID作る関数入れておく
-      this.roomId = Math.random().toString(32).substring(2);
-    },
+      onSetId: function () {
+        // HACK: ID作る関数入れておく
+        this.roomId = Math.random().toString(32).substring(2);
+      },
       //追加機能：クエリにplayer_Idを追加。同じルーム内でのプレイヤーを識別するのに利用。
       onSendRoomId: function (roomId) {
-      this.clickSE.play();
+        this.clickSE.play();
         this.playerId = Math.random().toString(32).substring(2);
         this.roomId = roomId;
         this.socket.emit("login", this.roomId);
@@ -71,7 +70,7 @@
       },
       //ページ遷移機能
       onPushField: function (value) {
-      this.startSE.play();
+        this.startSE.play();
         this.roomId = value;
         console.log(this.roomId);
         this.playerId = Math.random().toString(32).substring(2);
@@ -87,7 +86,7 @@
             console.log(res.data);
           });
         this.$router.push({
-          name: "field",
+          name: "FieldPage",
           query: { room: this.roomId, id: this.playerId },
         });
       },
@@ -98,7 +97,7 @@
           decId: 0, //仮においている。本来はデッキ選択用
         });
         this.$router.push({
-          name: "cpu",
+          name: "CPUPage",
           query: { id: this.playerId },
         });
       },
@@ -113,14 +112,14 @@
         this.gameMode = value;
         console.log(this.gameMode);
       },
-      onPushAutoMatting: function (){
-      this.playerId = Math.random().toString(32).substring(2);
-      this.socket.emit("AutoMattingPreLogin", this.playerId);
-      this.$router.push({
-        name: "waitingroom",
-        query: { id: this.playerId },
-      });
-    },
+      onPushAutoMatting: function () {
+        this.playerId = Math.random().toString(32).substring(2);
+        this.socket.emit("AutoMattingPreLogin", this.playerId);
+        this.$router.push({
+          name: "WaitingRoom",
+          query: { id: this.playerId },
+        });
+      },
     },
   };
 </script>
