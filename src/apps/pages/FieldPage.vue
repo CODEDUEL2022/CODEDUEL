@@ -14,6 +14,7 @@
     :roundCount="roundCount"
     :currentFieldName="currentFieldName"
     :currentFieldImg="currentFieldImg"
+    :nextFieldName="nextFieldName"
     :yourCardsData.sync="yourCardsData"
     :selectedCardsData.sync="selectedCardsData"
     :selectedId="selectedId"
@@ -52,8 +53,9 @@ export default {
       opponentHP: 200,
       opponentName: "User2",
       roundCount: 0,
-      currentFieldName: "macOS",
-      currentFieldImg: "",
+      currentFieldName: "iOS,macOS",
+      currentFieldImg: "Apple.svg",
+      nextFieldName: "AndroidOS",
       yourCardsData: [],
       selectedCardsData: [],
       comboData: [],
@@ -223,6 +225,9 @@ export default {
             this.yourCardsData.push(res.data[i]);
           }
         });
+      this.currentFieldName = this.fieldData[this.roundCount % 4].name;
+      this.currentFieldImg = this.fieldData[this.roundCount % 4].img;
+      this.nextFieldName = this.fieldData[(this.roundCount + 1) % 4].name;
       // 負け！
       if (this.yourHP <= 0) {
         this.showGeneralCutIn = false;
@@ -334,12 +339,6 @@ export default {
         anotherThis.showActionCutIn = true;
       }
     });
-  },
-  updated() {
-    // roundを受け取ってそこからfieldDBと照らし合わせる
-    // room入室時にupdatedが発火されるがfieldDataがないのでエラーがでる。他の実装を考える
-    this.currentFieldName = this.fieldData[this.roundCount].name;
-    this.currentFieldImg = this.fieldData[this.roundCount].img;
   },
 };
 </script>
