@@ -92,8 +92,10 @@ export const postPlayerData = function (req, res, numClients) {
       opponentHP: 200,
       cardListNumber: [],
       turnFlag: 1,
+      roundCount: 0,
       decId: decId,
       field: "iOS,macOS",
+
       decList: [],
     });
   } else {
@@ -107,6 +109,7 @@ export const postPlayerData = function (req, res, numClients) {
       cardListNumber: [],
       turnFlag: 0,
       decId: decId,
+      roundCount: 0,
       field: "iOS,macOS",
       decList: [],
     });

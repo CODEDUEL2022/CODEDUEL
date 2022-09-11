@@ -1,3 +1,4 @@
+
 import { cardDB } from "./DB.js";
 import { comboDB } from "./DB.js";
 import { fieldDB } from "./DB.js";
@@ -20,6 +21,7 @@ import {
   cpuContorlTrun,
   cpuAction,
   cpuPostPlayerData,
+  cpuPlayerAction
 } from "./components/cpu.js";
 import path from "path";
 import { fileURLToPath } from "url";
@@ -227,6 +229,9 @@ app.post("/api/cpuControlTurn", (req, res) => {
 app.post("/api/cpuAction", (req, res) => {
   res.send(cpuAction(req, res));
 });
+app.post("/api/cpuPlayerAction", (req,res) => {
+  res.send(cpuPlayerAction(req,res))
+})
 
 http.listen(PORT, function () {
   console.log("server listening. Port:" + PORT);
