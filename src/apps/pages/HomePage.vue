@@ -7,7 +7,7 @@
     @handleStart="onPushField"
     @handleSetIssue="onSetId()"
     @handlePushCPUPage="onPushCPU()"
-    @handleAutoMatching="onPushAutoMatching()"
+    @handlePushAutoMatching="onPushAutoMatching()"
     @handleModalOpen="onStartModalOpen"
     @handleModalClose="onStartModalClose()"
   />
