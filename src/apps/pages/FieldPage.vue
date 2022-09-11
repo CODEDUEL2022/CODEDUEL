@@ -30,6 +30,7 @@
 <script>
 import FieldTemplate from "/src/libs/feature-field/templates/field-template.vue";
 import io from "socket.io-client";
+import nonNumericOnlyHash from "webpack/lib/util/nonNumericOnlyHash";
 
 export default {
   name: "field",
@@ -103,6 +104,15 @@ export default {
         console.log(res.data);
         this.yourHP = res.data.yourHP;
         this.opponentHP = res.data.opponentHP;
+        if(this.yourHP <= 0) {
+          this.showGeneralCutIn= false;
+          this.judgeWin = false;
+          this.showBattleOutcome = true;
+        }
+        if(this.opponentHP <= 0) {
+          this.showGeneralCutIn= false;
+          this.showBattleOutcome = true;
+        }
       });
     // カードをドローする処理
     this.$axios
