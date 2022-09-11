@@ -302,7 +302,7 @@ export default {
           anotherThis.roundCount = res.data - 2;
         });
       anotherThis.actionType = HPinfo.actionType; //攻撃の種類
-      anotherThis.roundCount = HPinfo.nextTurnField; // 何ターン目かの情報
+      anotherThis.roundCount = HPinfo.roundCount; // 何ターン目かの情報
       anotherThis.actionPoint = HPinfo.actionPoint;
       console.log("round:" + anotherThis.roundCount);
       anotherThis.effectImages.splice(
