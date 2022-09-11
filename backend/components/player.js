@@ -15,6 +15,7 @@ let playerDB = [
   {
     RoomId: "",
     playerId: "",
+    playerName: "",
     cardList: [],
     yourHP: 200,
     opponentHP: 200,
@@ -85,6 +86,8 @@ export const postPlayerData = function (req, res, numClients) {
     playerDB.push({
       RoomId: req.body.RoomId,
       playerId: req.body.playerId,
+      // playerName: req.body.playerName,
+      playerName: "hogehoge",
       cardList: [],
       yourHP: 200,
       opponentHP: 200,
@@ -98,6 +101,8 @@ export const postPlayerData = function (req, res, numClients) {
     playerDB.push({
       RoomId: req.body.RoomId,
       playerId: req.body.playerId,
+      // playerName: req.body.playerName,
+      playerName: "hogehoge",
       cardList: [],
       yourHP: 200,
       opponentHP: 200,
@@ -277,4 +282,21 @@ const changeField = function (playerId) {
 
 const changeRound = function (playerId) {
   playerDB[playerId].roundCount = playerDB[playerId].roundCount + 1;
+};
+
+export const getPlayersName = function (roomId, playerId) {
+  const yourIndex = playerDB.findIndex((e) => e.playerId === playerId);
+  const opponent = playerDB.filter((e) => {
+    if (e.RoomId === roomId && e.playerId != playerId) {
+      return true;
+    }
+  });
+  const opponentIndex = playerDB.findIndex(
+    (e) => e.playerId === opponent[0].playerId
+  );
+  const playersName = {
+    yourName: playerDB[yourIndex].playerName,
+    opponentName: playerDB[opponentIndex].playerName,
+  };
+  return playersName;
 };
