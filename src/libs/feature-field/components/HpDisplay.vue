@@ -23,64 +23,64 @@
 </template>
 
 <script>
-export default {
-  name: "HPDisplay",
-  props: ["yourName", "yourHP", "opponentName", "opponentHP"],
-  data() {
-    return {
-      yourLife: 200,
-      opponentLife: 200,
-    };
-  },
-  mounted() {
-    const yours = document.getElementById("bar-you");
-    const opponents = document.getElementById("bar-opponent");
-    this.yourHP = yours.style.width;
-    this.opponentHP = opponents.style.width;
-    yours.style.width = this.yourLife / 2 + "%";
-    opponents.style.width = this.opponentLife / 2 + "%";
-  },
-  methods: {
-    alterYourLife: function (value) {
-      const lifeBar = document.getElementById("bar-you");
-      const lifeMark = document.getElementById("mark-you");
-      this.place = lifeBar.style.width;
-
-      this.yourLife += value;
-      if (this.yourLife <= 0) {
-        this.yourLife = 0;
-        setTimeout(function () {
-          lifeMark.style.visibility = "hidden";
-        }, 300);
-      } else {
-        if (this.yourLife > 200) {
-          this.yourLife = 200;
-        }
-        lifeMark.style.visibility = "visible";
-      }
-      lifeBar.style.width = this.yourLife / 2 + "%";
+  export default {
+    name: "HPDisplay",
+    props: ["yourName", "yourHP", "opponentName", "opponentHP"],
+    data() {
+      return {
+        yourLife: 200,
+        opponentLife: 200,
+      };
     },
-    alterOpponentLife: function (value) {
-      const lifeBar = document.getElementById("bar-opponent");
-      const lifeMark = document.getElementById("mark-opponent");
-      this.place = lifeBar.style.width;
-
-      this.opponentLife += value;
-      if (this.opponentLife <= 0) {
-        this.opponentLife = 0;
-        setTimeout(function () {
-          lifeMark.style.visibility = "hidden";
-        }, 300);
-      } else {
-        if (this.opponentLife > 200) {
-          this.opponentLife = 200;
-        }
-        lifeMark.style.visibility = "visible";
-      }
-      lifeBar.style.width = this.opponentLife / 2 + "%";
+    mounted() {
+      const yours = document.getElementById("bar-you");
+      const opponents = document.getElementById("bar-opponent");
+      this.yourHP = yours.style.width;
+      this.opponentHP = opponents.style.width;
+      yours.style.width = this.yourLife / 2 + "%";
+      opponents.style.width = this.opponentLife / 2 + "%";
     },
-  },
-};
+    methods: {
+      alterYourLife: function (value) {
+        const lifeBar = document.getElementById("bar-you");
+        const lifeMark = document.getElementById("mark-you");
+        this.place = lifeBar.style.width;
+
+        this.yourLife += value;
+        if (this.yourLife <= 0) {
+          this.yourLife = 0;
+          setTimeout(function () {
+            lifeMark.style.visibility = "hidden";
+          }, 300);
+        } else {
+          if (this.yourLife > 200) {
+            this.yourLife = 200;
+          }
+          lifeMark.style.visibility = "visible";
+        }
+        lifeBar.style.width = this.yourLife / 2 + "%";
+      },
+      alterOpponentLife: function (value) {
+        const lifeBar = document.getElementById("bar-opponent");
+        const lifeMark = document.getElementById("mark-opponent");
+        this.place = lifeBar.style.width;
+
+        this.opponentLife += value;
+        if (this.opponentLife <= 0) {
+          this.opponentLife = 0;
+          setTimeout(function () {
+            lifeMark.style.visibility = "hidden";
+          }, 300);
+        } else {
+          if (this.opponentLife > 200) {
+            this.opponentLife = 200;
+          }
+          lifeMark.style.visibility = "visible";
+        }
+        lifeBar.style.width = this.opponentLife / 2 + "%";
+      },
+    },
+  };
 </script>
 
 <styled scoped lang="scss">
@@ -124,7 +124,7 @@ export default {
 
     #bar-you {
       height: 0.75rem;
-      background-color: rgb(0, 255, 255);
+      background-color: #00fff2;
       transition: 300ms;
     }
 
@@ -132,14 +132,14 @@ export default {
       width: 3px;
       height: 3px;
       border-radius: 3px;
-      background-color: rgb(255, 255, 255);
+      background-color: #ffffff;
       filter: saturate(300%);
-      box-shadow: 0 0 5px 3px rgb(200, 255, 255), 0 0 7px 7px rgb(100, 255, 255);
+      box-shadow: 0 0 5px 3px #d3fffd, 0 0 7px 7px #00fff2;
     }
 
     #bar-opponent {
       height: 0.75rem;
-      background-color: rgb(0, 255, 255);
+      background-color: #00fff2;
       transition: 300ms;
     }
 
@@ -147,9 +147,9 @@ export default {
       width: 3px;
       height: 3px;
       border-radius: 3px;
-      background-color: rgb(255, 255, 255);
+      background-color: #ffffff;
       filter: saturate(300%);
-      box-shadow: 0 0 5px 3px rgb(200, 255, 255), 0 0 7px 7px rgb(100, 255, 255);
+      box-shadow: 0 0 5px 3px #d3fffd, 0 0 7px 7px #00fff2;
     }
   }
 }
