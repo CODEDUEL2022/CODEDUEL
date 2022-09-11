@@ -7,7 +7,7 @@
     >
       <span>発動</span>
     </div>
-    <div v-else class="action-button disable">
+    <div v-else class="action-button disable" @click="errorSE.play()">
       <span>ERROR : Select cards.</span>
     </div>
   </div>
@@ -17,6 +17,11 @@
   export default {
     name: "ActionButton",
     props: ["isEnableAction"],
+    data() {
+      return {
+        errorSE: new Audio(require("/src/libs/ui/assets/sounds/error.mp3")),
+      };
+    },
   };
 </script>
 
@@ -70,7 +75,7 @@
   }
 
   .action-button.able span {
-    animation: neon_blink_text 1.5s infinite alternate;
+    color: #d3fffd;
     font-size: 1.5rem;
     text-shadow: 0 0 10px #d3fffd;
   }
@@ -89,27 +94,26 @@
     cursor: pointer;
   }
 
-  @keyframes neon_blink_text {
-    0% {
-      color: #d3fffd;
-    }
-    100% {
-      color: #d3fffd;
-    }
-  }
-
   @keyframes neon_blink {
     0% {
-      background-color: #186883;
+      background-color: #134e61;
     }
     100% {
-      background-color: #2d909e;
+      background-color: #1a849b;
     }
   }
 
   .action-button.able:hover,
   .action-button.able:hover:before,
   .action-button.able:hover:after {
-    background-color: #39b8bb !important;
+    animation: fadein 0.5s forwards;
+  }
+  @keyframes fadein {
+    0% {
+      background-color: #1a849b;
+    }
+    100% {
+      background-color: #30a4a7;
+    }
   }
 </style>

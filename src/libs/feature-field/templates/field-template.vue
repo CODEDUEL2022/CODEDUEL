@@ -2,9 +2,7 @@
   <div>
     <Header />
     <div v-show="showGeneralCutIn">
-      <GeneralCutIn
-        :message="message"
-      />
+      <GeneralCutIn :message="message" />
     </div>
     <div v-show="showActionCutIn">
       <ActionCutIn
@@ -15,10 +13,7 @@
       />
     </div>
     <div v-show="showBattleOutcome">
-      <BattleOutcomeView
-        :judgeWin="judgeWin"
-        @goHome="$emit('goHome')"
-      />
+      <BattleOutcomeView :judgeWin="judgeWin" @goHome="$emit('goHome')" />
     </div>
     <div class="field-container">
       <v-row class="first-row">
@@ -31,10 +26,14 @@
           />
         </v-col>
         <v-col cols="4">
-          <RoundCounter :roundCount="roundCount"/>
+          <RoundCounter :roundCount="roundCount" />
         </v-col>
         <v-col cols="4">
-          <FieldDisplay :currentFieldName="currentFieldName" :currentFieldImg="currentFieldImg" :nextFieldName="nextFieldName"/>
+          <FieldDisplay
+            :currentFieldName="currentFieldName"
+            :currentFieldImg="currentFieldImg"
+            :nextFieldName="nextFieldName"
+          />
         </v-col>
       </v-row>
       <v-row class="second-row">
@@ -110,70 +109,70 @@
 </template>
 
 <script>
-import Header from "../../layout/Header.vue";
-import ActionButton from "../components/ActionButton.vue";
-import HPDisplay from "../components/HpDisplay.vue";
-import VueDrag from "vuedraggable";
-import GeneralCutIn from "../components/GeneralCutIn.vue";
-import ActionCutIn from "../components/ActionCutIn.vue";
-import TerminalUI from "../components/TerminalUI.vue";
-import SimpleCard from "../components/SimpleCard.vue";
-import BattleOutcomeView from "../components/BattleOutcomeView.vue"
-import RoundCounter from "../components/RoundCounter.vue";
-import FieldDisplay from "../components/FieldDisplay.vue";
+  import Header from "../../layout/Header.vue";
+  import ActionButton from "../components/ActionButton.vue";
+  import HPDisplay from "../components/HpDisplay.vue";
+  import VueDrag from "vuedraggable";
+  import GeneralCutIn from "../components/GeneralCutIn.vue";
+  import ActionCutIn from "../components/ActionCutIn.vue";
+  import TerminalUI from "../components/TerminalUI.vue";
+  import SimpleCard from "../components/SimpleCard.vue";
+  import BattleOutcomeView from "../components/BattleOutcomeView.vue";
+  import RoundCounter from "../components/RoundCounter.vue";
+  import FieldDisplay from "../components/FieldDisplay.vue";
 
-export default {
-  name: "FieldTemplate",
-  components: {
-    Header,
-    ActionButton,
-    HPDisplay,
-    VueDrag,
-    GeneralCutIn,
-    ActionCutIn,
-    TerminalUI,
-    SimpleCard,
-    BattleOutcomeView,
-    RoundCounter,
-    FieldDisplay
-},
-  props: [
-    "message",
-    "showGeneralCutIn",
-    "showActionCutIn",
-    "showBattleOutcome",
-    "judgeWin",
-    "actionType",
-    "actionPoint",
-    "yourHP",
-    "yourName",
-    "opponentHP",
-    "opponentName",
-    "roundCount",
-    "currentFieldName",
-    "currentFieldImg",
-    "nextFieldName",
-    "yourCardsData",
-    "selectedCardsData",
-    "yourGroup",
-    "yourId",
-    "effectImages",
-    "selectedId",
-    "comboData",
-    "isEnableAction",
-    "attackOptions",
-    "focusedCard",
-  ],
-  data() {
-    return {
-      // drag&drop用のデータ
-      options: {
-        group: "yourGroup",
-        animation: 200,
-      },
-    };
-  },
-};
+  export default {
+    name: "FieldTemplate",
+    components: {
+      Header,
+      ActionButton,
+      HPDisplay,
+      VueDrag,
+      GeneralCutIn,
+      ActionCutIn,
+      TerminalUI,
+      SimpleCard,
+      BattleOutcomeView,
+      RoundCounter,
+      FieldDisplay,
+    },
+    props: [
+      "message",
+      "showGeneralCutIn",
+      "showActionCutIn",
+      "showBattleOutcome",
+      "judgeWin",
+      "actionType",
+      "actionPoint",
+      "yourHP",
+      "yourName",
+      "opponentHP",
+      "opponentName",
+      "roundCount",
+      "currentFieldName",
+      "currentFieldImg",
+      "nextFieldName",
+      "yourCardsData",
+      "selectedCardsData",
+      "yourGroup",
+      "yourId",
+      "effectImages",
+      "selectedId",
+      "comboData",
+      "isEnableAction",
+      "attackOptions",
+      "focusedCard",
+    ],
+    data() {
+      return {
+        // drag&drop用のデータ
+        options: {
+          group: "yourGroup",
+          animation: 200,
+        },
+      };
+    },
+  };
 </script>
 
 <style scoped lang="scss">
@@ -181,7 +180,7 @@ export default {
     font-family: "Gill Sans", sans-serif;
     font-weight: 200;
     font-size: 1.5rem;
-    margin: 1rem 2rem;
+    margin: 0.25rem 2rem;
 
     .first-row {
       margin-bottom: 2rem;

@@ -27,6 +27,7 @@
   />
 </template>
 <script>
+
 import FieldTemplate from "/src/libs/feature-field/templates/field-template.vue";
 export default {
   name: "cpu",
@@ -118,11 +119,33 @@ export default {
       })
       .then((res) => {
         console.log(res.data);
+
         for (let i = 0; i < res.data.length; i++) {
-          this.yourCardsData.push(res.data[i]);
+          this.comboData.push(res.data[i]);
         }
-        console.log(this.yourCardsData);
       });
+      this.$axios
+        .post("/cpuHPReload", {
+          playerId: searchParams.get("id"),
+        })
+        .then((res) => {
+          console.log(res.data);
+          this.yourHP = res.data.yourHP;
+          this.opponentHP = res.data.oponentHP;
+        });
+      this.$axios
+        .post("/cpuCardDraw", {
+          cardData: this.yourCardsData,
+          playerId: searchParams.get("id"),
+        })
+        .then((res) => {
+          console.log(res.data);
+          for (let i = 0; i < res.data.length; i++) {
+            this.yourCardsData.push(res.data[i]);
+          }
+          console.log(this.yourCardsData);
+        });
+
 
     this.$axios
       .post("/cpuGetTurn", { playerId: searchParams.get("id") })
@@ -324,5 +347,6 @@ export default {
   mounted() {
   },
 };
+
 </script>
 <style scoped></style>
