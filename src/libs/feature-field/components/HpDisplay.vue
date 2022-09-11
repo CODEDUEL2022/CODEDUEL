@@ -34,10 +34,12 @@ export default {
       yoursHPbar.style.width = this.yourHP / 2 + "%";
       opponentHPbar.style.width = this.opponentHP / 2 + "%";
       if(this.yourHP <= 0) {
+        yoursHPbar.style.width = 0
         yoursBarMark.style.width = 0
         yoursBarMark.style.boxShadow = "none"
       };
       if(this.opponentHP <= 0) {
+        opponentHPbar.style.width = 0
         opponentBarMark.style.width = 0
         opponentBarMark.style.boxShadow = "none"
       };
