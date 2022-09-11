@@ -14,6 +14,7 @@
     :roundCount="roundCount"
     :currentFieldName="currentFieldName"
     :currentFieldImg="currentFieldImg"
+    :nextFieldName="nextFieldName"
     :yourCardsData.sync="yourCardsData"
     :selectedCardsData.sync="selectedCardsData"
     :selectedId="selectedId"
@@ -29,6 +30,7 @@
 <script>
   import FieldTemplate from "/src/libs/feature-field/templates/field-template.vue";
   import io from "socket.io-client";
+  import nonNumericOnlyHash from "webpack/lib/util/nonNumericOnlyHash";
 
   export default {
     name: "field",
@@ -43,8 +45,7 @@
         damageSE: new Audio(
           require("/src/libs/ui/assets/sounds/damage_se.mp3")
         ),
-        clickSE: new Audio(require("/src/libs/ui/assets/sounds/click.mp3")),
-        bgm: new Audio(require("/src/libs/ui/assets/sounds/Reflect.mp3")),
+        clickSE: new Audio(require("/src/libs/ui/assets/sounds/kako.mp3")),
         message: "",
         showGeneralCutIn: true,
         showActionCutIn: false,
@@ -57,8 +58,9 @@
         opponentHP: 200,
         opponentName: "User2",
         roundCount: 0,
-        currentFieldName: "macOS",
-        currentFieldImg: "",
+        currentFieldName: "iOS,macOS",
+        currentFieldImg: "Apple.svg",
+        nextFieldName: "AndroidOS",
         yourCardsData: [],
         selectedCardsData: [],
         comboData: [],
@@ -106,6 +108,15 @@
           console.log(res.data);
           this.yourHP = res.data.yourHP;
           this.opponentHP = res.data.opponentHP;
+          if (this.yourHP <= 0) {
+            this.showGeneralCutIn = false;
+            this.judgeWin = false;
+            this.showBattleOutcome = true;
+          }
+          if (this.opponentHP <= 0) {
+            this.showGeneralCutIn = false;
+            this.showBattleOutcome = true;
+          }
         });
       // カードをドローする処理
       this.$axios
@@ -228,6 +239,9 @@
               this.yourCardsData.push(res.data[i]);
             }
           });
+        this.currentFieldName = this.fieldData[this.roundCount % 4].name;
+        this.currentFieldImg = this.fieldData[this.roundCount % 4].img;
+        this.nextFieldName = this.fieldData[(this.roundCount + 1) % 4].name;
         // 負け！
         if (this.yourHP <= 0) {
           this.showGeneralCutIn = false;
@@ -258,8 +272,6 @@
       },
     },
     mounted() {
-      this.bgm;
-      this.bgm.play();
       const searchParams = new URLSearchParams(window.location.search);
       let playerId = searchParams.get("id");
       let anotherThis = this;
@@ -312,7 +324,7 @@
             anotherThis.roundCount = res.data - 2;
           });
         anotherThis.actionType = HPinfo.actionType; //攻撃の種類
-        anotherThis.roundCount = HPinfo.nextTurnField; // 何ターン目かの情報
+        anotherThis.roundCount = HPinfo.roundCount; // 何ターン目かの情報
         anotherThis.actionPoint = HPinfo.actionPoint;
         console.log("round:" + anotherThis.roundCount);
         anotherThis.effectImages.splice(
@@ -344,12 +356,6 @@
           anotherThis.showActionCutIn = true;
         }
       });
-    },
-    updated() {
-      // roundを受け取ってそこからfieldDBと照らし合わせる
-      // room入室時にupdatedが発火されるがfieldDataがないのでエラーがでる。他の実装を考える
-      this.currentFieldName = this.fieldData[this.roundCount].name;
-      this.currentFieldImg = this.fieldData[this.roundCount].img;
     },
   };
 </script>

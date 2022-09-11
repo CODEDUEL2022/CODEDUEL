@@ -6,7 +6,9 @@
         v-for="effectImage in effectImages"
         :key="effectImage.index"
       >
-        <v-img :src="require(`../../ui/assets/cards/${effectImage}`)"></v-img>
+        <v-img
+          :src="require(`../../ui/assets/new-cards/${effectImage}`)"
+        ></v-img>
       </div>
     </div>
     <div class="dalayEffect">{{ actionType }} {{ actionPoint }} pt</div>

@@ -23,7 +23,7 @@ let playerDB = [
     turnFlag: 0,
     decId: 0, //デッキの種類を選ぶ　初期は0で、ルームに入る際に選択&フロントエンドから送信してもらいたい
     roundCount: 0,
-    field: 0,
+    field: "",
     decList: [],
   },
 ];
@@ -33,7 +33,7 @@ export const cardDraw = function (selectId) {
   if (playerDB[selectId].decList.length == 0) {
     console.log("デッキ指定がない為、全てのカードを参照してドローをします");
     for (let j = playerDB[selectId].cardList.length; j < 6; ) {
-      const tmp = Number(Math.floor(Math.random() * 56));
+      const tmp = Number(Math.floor(Math.random() * 64));
       playerDB[selectId].cardList.push(cardDB[tmp]);
       j++;
     }
@@ -93,7 +93,7 @@ export const postPlayerData = function (req, res, numClients) {
       cardListNumber: [],
       turnFlag: 1,
       decId: decId,
-      field: 0,
+      field: "iOS,macOS",
       decList: [],
     });
   } else {
@@ -107,7 +107,7 @@ export const postPlayerData = function (req, res, numClients) {
       cardListNumber: [],
       turnFlag: 0,
       decId: decId,
-      field: 0,
+      field: "iOS,macOS",
       decList: [],
     });
   }
@@ -228,7 +228,7 @@ export const calculateHP = function (cardValue, playerId) {
   changeRound(indexDamaged);
   let nextRoundCount = playerDB[indexAttacked].roundCount;
   if (cardValue.selectedCardData.length == 1) {
-    if (cardValue.selectedCardData[0].field == fieldDB[thisTurnField]) {
+    if (cardValue.selectedCardData[0].field == thisTurnField) {
       fieldBonus = 10;
       fieldBonusFlag = "true";
     }
@@ -275,7 +275,16 @@ export const calculateHP = function (cardValue, playerId) {
 };
 
 const changeField = function (playerId) {
-  playerDB[playerId].field = (playerDB[playerId].field + 1) % 4;
+  const roundCount = playerDB[playerId].roundCount % 8;
+  if (roundCount == 0 || roundCount == 1) {
+    playerDB[playerId].field = "iOS,macOS";
+  } else if (roundCount == 2 || roundCount == 3) {
+    playerDB[playerId].field = "AndroidOS";
+  } else if (roundCount == 4 || roundCount == 5) {
+    playerDB[playerId].field = "WindowsOS";
+  } else if (roundCount == 6 || roundCount == 7) {
+    playerDB[playerId].field = "linuxOS";
+  }
 };
 
 const changeRound = function (playerId) {
