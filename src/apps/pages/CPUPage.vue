@@ -27,7 +27,6 @@
   />
 </template>
 <script>
-
 import FieldTemplate from "/src/libs/feature-field/templates/field-template.vue";
 export default {
   name: "cpu",
@@ -38,7 +37,7 @@ export default {
     return {
       actionSE: new Audio(require("/src/libs/ui/assets/sounds/action_se.mp3")),
       damageSE: new Audio(require("/src/libs/ui/assets/sounds/damage_se.mp3")),
-      clickSE: new Audio(require("/src/libs/ui/assets/sounds/kako.mp3")),
+      clickSE: new Audio(require("/src/libs/ui/assets/sounds/click.mp3")),
       cardsList: [],
       message: "準備が完了するまでしばらくお待ちください",
       showGeneralCutIn: true,
@@ -119,33 +118,11 @@ export default {
       })
       .then((res) => {
         console.log(res.data);
-
         for (let i = 0; i < res.data.length; i++) {
-          this.comboData.push(res.data[i]);
+          this.yourCardsData.push(res.data[i]);
         }
+        console.log(this.yourCardsData);
       });
-      this.$axios
-        .post("/cpuHPReload", {
-          playerId: searchParams.get("id"),
-        })
-        .then((res) => {
-          console.log(res.data);
-          this.yourHP = res.data.yourHP;
-          this.opponentHP = res.data.oponentHP;
-        });
-      this.$axios
-        .post("/cpuCardDraw", {
-          cardData: this.yourCardsData,
-          playerId: searchParams.get("id"),
-        })
-        .then((res) => {
-          console.log(res.data);
-          for (let i = 0; i < res.data.length; i++) {
-            this.yourCardsData.push(res.data[i]);
-          }
-          console.log(this.yourCardsData);
-        });
-
 
     this.$axios
       .post("/cpuGetTurn", { playerId: searchParams.get("id") })
@@ -261,6 +238,18 @@ export default {
       });
 
     this.showActionCutIn = false;
+    if(this.yourHP <= 0) {
+      this.showActionCutIn = false;
+      this.showGeneralCutIn = false;
+      this.judgeWin = false;
+      this.showBattleOutcome = true;
+    }
+    // 勝ち！
+    if(this.opponentHP <= 0) {
+      this.showActionCutIn = false;
+      this.showGeneralCutIn = false;
+      this.showBattleOutcome = true;
+    }
     this.$axios
       .post("/cpuCardDraw", {
         cardData: this.yourCardsData,
@@ -275,18 +264,7 @@ export default {
         }
       });
     // 負け！
-    if(this.yourHP <= 0) {
-      this.showActionCutIn = false;
-      this.showGeneralCutIn = false;
-      this.judgeWin = false;
-      this.showBattleOutcome = true;
-    }
-    // 勝ち！
-    if(this.opponentHP <= 0) {
-      this.showActionCutIn = false;
-      this.showGeneralCutIn = false;
-      this.showBattleOutcome = true;
-    }
+    
   },
   isPlayerAction: function (cardValue){
     this.effectImages.splice(this.index, this.effectImages.length);
@@ -347,6 +325,5 @@ export default {
   mounted() {
   },
 };
-
 </script>
 <style scoped></style>

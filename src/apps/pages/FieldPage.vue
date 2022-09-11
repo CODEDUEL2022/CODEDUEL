@@ -30,59 +30,62 @@
 <script>
 import FieldTemplate from "/src/libs/feature-field/templates/field-template.vue";
 import io from "socket.io-client";
-
-export default {
-  name: "field",
-  components: {
-    FieldTemplate,
-  },
-  data() {
-    return {
-      actionSE: new Audio(require("/src/libs/ui/assets/sounds/action_se.mp3")),
-      damageSE: new Audio(require("/src/libs/ui/assets/sounds/damage_se.mp3")),
-      clickSE: new Audio(require("/src/libs/ui/assets/sounds/kako.mp3")),
-      message: "",
-      showGeneralCutIn: true,
-      showActionCutIn: false,
-      showBattleOutcome: false,
-      judgeWin: true,
-      actionType: "",
-      actionPoint: "",
-      yourHP: 200,
-      yourName: "User1",
-      opponentHP: 200,
-      opponentName: "User2",
-      roundCount: 0,
-      currentFieldName: "iOS,macOS",
-      currentFieldImg: "Apple.svg",
-      nextFieldName: "AndroidOS",
-      yourCardsData: [],
-      selectedCardsData: [],
-      comboData: [],
-      cardData: [],
-      fieldData: [],
-      yourId: "",
-      roomId: "",
-      selectedId: "",
-      attackSignal: 0,
-      opponentTurn: false,
-      isAlone: false,
-      usedCardIdList: [], //攻撃された、攻撃したカードのIDのリスト
-      effectImages: [],
-      socket: io("localhost:3000"),
-    };
-  },
-  created() {
-    this.yourCardsData = [];
-    const searchParams = new URLSearchParams(window.location.search);
-    const giveNewProperty = function (object) {
-      object.isCombined = true;
-    };
-    console.log(this.yourCardsData);
-    this.$axios.get("/getComboDb").then((res) => {
-      for (let i = 0; i < res.data.length; i++) {
-        this.comboData.push(res.data[i]);
-      }
+  export default {
+    name: "field",
+    components: {
+      FieldTemplate,
+    },
+    data() {
+      return {
+        actionSE: new Audio(
+          require("/src/libs/ui/assets/sounds/action_se.mp3")
+        ),
+        damageSE: new Audio(
+          require("/src/libs/ui/assets/sounds/damage_se.mp3")
+        ),
+        clickSE: new Audio(require("/src/libs/ui/assets/sounds/click.mp3")),
+        message: "",
+        showGeneralCutIn: true,
+        showActionCutIn: false,
+        showBattleOutcome: false,
+        judgeWin: true,
+        actionType: "",
+        actionPoint: "",
+        yourHP: 200,
+        yourName: "User1",
+        opponentHP: 200,
+        opponentName: "User2",
+        roundCount: 0,
+        currentFieldName: "iOS,macOS",
+        currentFieldImg: "Apple.svg",
+        nextFieldName: "AndroidOS",
+        yourCardsData: [],
+        selectedCardsData: [],
+        comboData: [],
+        cardData: [],
+        fieldData: [],
+        yourId: "",
+        roomId: "",
+        selectedId: "",
+        attackSignal: 0,
+        opponentTurn: false,
+        isAlone: false,
+        usedCardIdList: [], //攻撃された、攻撃したカードのIDのリスト
+        effectImages: [],
+        socket: io("localhost:3000"),
+      };
+    },
+    created() {
+      this.yourCardsData = [];
+      const searchParams = new URLSearchParams(window.location.search);
+      const giveNewProperty = function (object) {
+        object.isCombined = true;
+      };
+      console.log(this.yourCardsData);
+      this.$axios.get("/getComboDb").then((res) => {
+        for (let i = 0; i < res.data.length; i++) {
+          this.comboData.push(res.data[i]);
+        }
     });
     this.$axios.get("/getCardDB").then((res) => {
       for (let i = 0; i < res.data.length; i++) {
