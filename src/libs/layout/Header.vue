@@ -1,34 +1,47 @@
 <template>
   <header class="header-menu">
-    <v-app-bar elevation="1" color="#263238">
-      <!-- <v-toolbar-title color="#E8EAF6">PLbattle</v-toolbar-title>-->
-      <span class="title">CODE DUEL</span>
-      <v-spacer></v-spacer>
-      <v-btn outlined class="btn">遊び方</v-btn>
-    </v-app-bar>
+    <span class="title">CODE DUEL</span>
+    <v-spacer></v-spacer>
+    <v-btn class="btn">遊び方</v-btn>
   </header>
 </template>
 <script>
-export default {
-  name: "Header",
-};
+  export default {
+    name: "Header",
+  };
 </script>
-<style scoped>
-.header-menu {
-  background: #102335;
-}
+<style scoped lang="scss">
+  .header-menu {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 2rem;
+    background-color: transparent;
+    @keyframes neon {
+      0% {
+        text-shadow: 0 0 10px #00fff2, 0 0 5px #fff, 0 0 13px #d3fffd;
+      }
+      100% {
+        text-shadow: 0 0 10px #00fff2, 0 0 10px #fff, 0 0 0px #d3fffd;
+      }
+    }
+    animation: neon 2s infinite alternate;
+    .title {
+      font-family: "Gill Sans", sans-serif;
+      font-weight: 200;
+      letter-spacing: 0.15em;
+    }
 
-.title {
-  color: #ffffff;
-}
-
-.btn {
-  color: #ffffff;
-  text-align: center;
-  text-decoration: none;
-  text-decoration-color: transparent;
-  margin: 1rem;
-  justify-content: center;
-  box-shadow: 0 0 0.75rem #d3fffd;
-}
+    .btn {
+      background-color: #0e3145;
+      color: #ffff;
+      text-align: center;
+      text-decoration: none;
+      text-decoration-color: transparent;
+      margin: 1rem;
+      justify-content: center;
+      border: none;
+      border-radius: 0;
+    }
+  }
 </style>

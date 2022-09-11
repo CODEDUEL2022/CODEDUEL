@@ -86,7 +86,7 @@ let standByPlayer = [];
 io.sockets.on("connection", function (socket) {
   console.log("connected");
   //オートマッチング機能
-  socket.on("AutoMattingPreLogin", function (playerId) {
+  socket.on("AutoMatchingPreLogin", function (playerId) {
     standByPlayer.push(playerId);
     console.log("現在の待機プレイヤー：" + standByPlayer.length + "名");
     function joinRoom(player1, player2) {
