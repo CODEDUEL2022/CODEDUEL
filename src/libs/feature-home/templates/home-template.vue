@@ -102,7 +102,6 @@
         width: fit-content;
         padding: 0 0 2rem;
         font-weight: light;
-        border-bottom: solid 2px linear-gradient(#0e3145, #186883);
         animation: blurAnime 3s forwards;
 
         hr {
@@ -125,7 +124,8 @@
         }
       }
       .line {
-        margin: 1rem;
+        margin-top: 1rem;
+        margin-bottom: 3rem;
         height: 2px;
         background-image: linear-gradient(
           to left,
@@ -136,7 +136,6 @@
       }
     }
     .input-text {
-      margin-top: 4rem;
       cursor: text;
 
       p {
@@ -144,7 +143,7 @@
       }
 
       input {
-        width: 300px;
+        width: 220px;
         padding: 0.5rem;
         border-top: solid 1px #d3fffd;
         border-bottom: solid 2px #d3fffd;
@@ -153,14 +152,27 @@
       }
     }
     .play-btn {
-      margin: 4rem;
+      margin: 5rem;
       width: fit-content;
-      padding: 1rem 3rem;
+      padding: 0.75rem 3rem;
       position: relative;
       border: 4px solid #d3fffd;
       background-color: transparent;
       box-shadow: 0px 0px 20px #d3fffd;
       cursor: pointer;
+
+      &:hover {
+        cursor: pointer;
+        animation: fadein 0.5s forwards;
+        @keyframes fadein {
+          0% {
+            background-color: transparent;
+          }
+          100% {
+            background-color: #134e61;
+          }
+        }
+      }
 
       &::before {
         background-color: #0e3145;
@@ -198,6 +210,21 @@
           }
         }
         animation: neon 2s infinite alternate;
+      }
+    }
+
+    .play-btn:hover,
+    .play-btn:hover:before,
+    .play-btn:hover:after {
+      cursor: pointer;
+      animation: fadein 0.5s forwards !important;
+      @keyframes fadein {
+        0% {
+          background-color: #0e3145;
+        }
+        100% {
+          background-color: #134e61;
+        }
       }
     }
 

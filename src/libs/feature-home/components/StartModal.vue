@@ -129,7 +129,7 @@
     align-items: center;
     justify-content: center;
     width: 100%;
-    height: 91vh;
+    height: 100vh;
     background-color: rgba(0, 0, 0, 0.5);
     z-index: 100;
 
@@ -197,6 +197,8 @@
         .contents {
           display: grid;
           place-items: center;
+          align-items: top;
+          min-height: 325px;
           z-index: 10;
 
           .modal-title {
@@ -235,6 +237,7 @@
             display: flex;
             align-items: center;
             padding: 1rem;
+            z-index: 100;
 
             .select-icon {
               margin: 1rem;
@@ -243,15 +246,24 @@
                 padding: 1.25rem 0;
                 font-size: 1.15rem;
               }
+
               &:hover {
                 cursor: pointer;
-                background-color: #186883;
+                animation: fadein 0.5s forwards;
+                @keyframes fadein {
+                  0% {
+                    background-color: transparent;
+                  }
+                  100% {
+                    background-color: #134e61;
+                  }
+                }
               }
             }
           }
 
           .input-text {
-            margin-top: 4rem;
+            margin-top: 3rem;
             cursor: text;
 
             input {
@@ -268,12 +280,20 @@
             width: fit-content;
             margin: 3rem auto 2rem auto;
             padding: 1rem;
-            background-color: #186883;
+            background-color: #0e3145;
             font-size: 1.25rem;
 
             &:hover {
-              background-color: #2d909e;
               cursor: pointer;
+              animation: fadein 0.5s forwards !important;
+              @keyframes fadein {
+                0% {
+                  background-color: #0e3145;
+                }
+                100% {
+                  background-color: #134e61;
+                }
+              }
             }
           }
 

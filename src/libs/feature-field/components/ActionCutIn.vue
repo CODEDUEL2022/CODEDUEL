@@ -56,7 +56,7 @@
       font-size: 7rem;
       letter-spacing: 1.1rem;
       text-shadow: 0 0 20px #d3fffd;
-      background: radial-gradient(#2d909e, #102335);
+      background: radial-gradient(#186883, #020508);
       opacity: 0;
       z-index: 3;
       animation: SlideIn 0.4s;

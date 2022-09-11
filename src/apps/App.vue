@@ -9,17 +9,14 @@
 
 <style scoped>
   #app {
-    font-family: "Chakra Petch", sanserif;
+    font-family: "Gill Sans", sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-align: left;
     height: 100vh;
     color: #ffffff;
     background-image: url("/src/libs/ui/assets/Component 72.png");
-    background-color: radial-gradient(#134e61, #020508);
-  }
-  .header-menu {
-    background: #102335;
+    background-color: radial-gradient(#144f61, #020508);
   }
   v-main {
     margin: 0;
