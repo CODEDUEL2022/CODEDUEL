@@ -27,12 +27,20 @@ export default {
   name: "HPDisplay",
   props: ["yourName", "yourHP", "opponentName", "opponentHP"],
   updated() {
-      const yours = document.getElementById("bar-you");
-      const opponents = document.getElementById("bar-opponent");
-      yours.style.width = this.yourHP / 2 + "%";
-      opponents.style.width = this.opponentHP / 2 + "%";
-      console.log(yours.style.width);
-      console.log(opponents.style.width);
+      const yoursHPbar = document.getElementById("bar-you");
+      const opponentHPbar = document.getElementById("bar-opponent");
+      const yoursBarMark = document.getElementById("mark-you");
+      const opponentBarMark = document.getElementById("mark-opponent");
+      yoursHPbar.style.width = this.yourHP / 2 + "%";
+      opponentHPbar.style.width = this.opponentHP / 2 + "%";
+      if(this.yourHP <= 0) {
+        yoursBarMark.style.width = 0
+        yoursBarMark.style.boxShadow = "none"
+      };
+      if(this.opponentHP <= 0) {
+        opponentBarMark.style.width = 0
+        opponentBarMark.style.boxShadow = "none"
+      };
     },
   };
 </script>
