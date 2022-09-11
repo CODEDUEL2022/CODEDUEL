@@ -399,6 +399,14 @@ export const comboDB = [
     idList: [24, 50],
     nameList: ["JavaScript", "Svelte"],
   },
+  {
+    comboId: 51,
+    nameEn: "Pair",
+    nameJa: "ペア",
+    actionValue: 60,
+    idList: [13, 65],
+    nameList: ["Elixir", "phoenix"],
+  },
 ];
 
 export const cardDB = [
@@ -976,6 +984,15 @@ export const cardDB = [
     img: "hacker.svg",
     action: "steal",
     actionValue: 30,
+    field: "",
+  },
+  {
+    id: 65,
+    name: "phoenix",
+    type: "language",
+    img: "phoenix.svg",
+    action: "attack",
+    actionValue: 20,
     field: "",
   },
 ];
