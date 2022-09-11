@@ -7,7 +7,7 @@
     >
       <span>発動</span>
     </div>
-    <div v-else class="action-button disable">
+    <div v-else class="action-button disable" @click="errorSE.play()">
       <span>ERROR : Select cards.</span>
     </div>
   </div>
@@ -17,6 +17,11 @@
   export default {
     name: "ActionButton",
     props: ["isEnableAction"],
+    data() {
+      return {
+        errorSE: new Audio(require("/src/libs/ui/assets/sounds/error.mp3")),
+      };
+    },
   };
 </script>
 

@@ -112,7 +112,7 @@
         this.modalContent = "selectGameMode";
       },
       handleBackToSecond: function () {
-        this.back2SE.play();
+        this.back1SE.play();
         this.modalContent = "selectMatchType";
       },
     },
