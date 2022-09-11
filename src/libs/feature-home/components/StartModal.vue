@@ -1,61 +1,71 @@
 <template>
   <div class="overlay" @click.self="$emit('handleModalClose')">
-    <div class="modal">
-      <span class="close-btn" @click="$emit('handleModalClose')">×</span>
-      <div v-if="modalContent == 'selectGameMode'" class="contents">
-        <span class="modal-title">Choose Game Mode.</span>
-        <div class="select">
-          <div class="select-icon" @click="handleChangeFirstToSecond('human')">
-            <span>
-              <img src="../../ui/assets/bi_people-fill.svg" />
-              <br />
-              Play with Human
-            </span>
+    <div class="animation">
+      <div class="modal">
+        <span class="close-btn" @click="$emit('handleModalClose')">×</span>
+        <div v-if="modalContent == 'selectGameMode'" class="contents">
+          <span class="modal-title gameMode">Choose Game Mode.</span>
+          <div class="select">
+            <div
+              class="select-icon"
+              @click="handleChangeFirstToSecond('human')"
+            >
+              <span>
+                <img src="../../ui/assets/people.svg" />
+                <br />
+                <span>Play against Human</span>
+              </span>
+            </div>
+            <span>or</span>
+            <div class="select-icon" @click="handlePushCPUPage()">
+              <span>
+                <img src="../../ui/assets/cpu.svg" />
+                <br />
+                <span>Play against CPU</span>
+              </span>
+            </div>
           </div>
-          <span>or</span>
-          <div class="select-icon" @click="handleStart('cpu')">
-            <span>
-              <img src="../../ui/assets/bi_robot.svg" />
-              <br />
-              Play with CPU
-            </span>
-          </div>
+          <span class="back-btn" @click="$emit('handleModalClose')"
+            >＜ back</span
+          >
         </div>
-      </div>
-      <div v-if="modalContent == 'selectMatchType'" class="contents">
-        <span class="modal-title">Choose match type.</span>
-        <div class="select">
-          <div class="select-icon" @click="handleChangeSecondToThird('free')">
-            <span>
-              <img src="../../ui/assets/bi_people-fill.svg" />
-              <br />
-              free match
-            </span>
+        <div v-if="modalContent == 'selectMatchType'" class="contents">
+          <span class="modal-title matchType">Choose match type.</span>
+          <div class="select">
+            <div class="select-icon" @click="handleChangeSecondToThird('free')">
+              <span>
+                <img src="../../ui/assets/custom-match.svg" />
+                <br />
+                <span>Custom match</span>
+              </span>
+            </div>
+            <span>or</span>
+            <div class="select-icon" @click="handlePushAutoMatching()">
+              <span>
+                <img src="../../ui/assets/random-match.svg" />
+                <br />
+                <span>Random match</span>
+              </span>
+            </div>
           </div>
-          <span>or</span>
-          <div class="select-icon" @click="handleStart('random')">
-            <span>
-              <img src="../../ui/assets/bi_robot.svg" />
-              <br />
-              random match
-            </span>
-          </div>
+          <span class="back-btn" @click="handleBackToFirst">＜ back</span>
         </div>
-      </div>
 
-      <div v-else-if="modalContent == 'inputRoomId'" class="contents">
-        <span class="modal-title">Input room ID.</span>
-        <span class="input-text">
-          <input
-            :value="roomId"
-            type="text"
-            placeholder="room ID:"
-            @input="$emit('update:roomId', $event.target.value)"
-          />
-        </span>
-        <span class="start-btn" @click="handleStart(roomId)"
-          >＞ GAME START</span
-        >
+        <div v-if="modalContent == 'inputRoomId'" class="contents">
+          <span class="modal-title roomId">Input room ID.</span>
+          <span class="input-text">
+            <input
+              :value="roomId"
+              type="text"
+              placeholder="room ID:"
+              @input="$emit('update:roomId', $event.target.value)"
+            />
+          </span>
+          <span class="start-btn" @click="handleStart(roomId)"
+            >＞ GAME START</span
+          >
+          <span class="back-btn" @click="handleBackToSecond">＜ back</span>
+        </div>
       </div>
     </div>
   </div>
@@ -68,16 +78,19 @@
     data() {
       return {
         modalContent: "selectGameMode",
+        clickSE: new Audio(require("/src/libs/ui/assets/sounds/click.mp3")),
+        back1SE: new Audio(require("/src/libs/ui/assets/sounds/back1.mp3")),
+        back2SE: new Audio(require("/src/libs/ui/assets/sounds/back2.mp3")),
       };
     },
     methods: {
       handleChangeFirstToSecond: function (gameMode) {
+        this.clickSE.play();
         this.modalContent = "selectMatchType";
-        this.$emit("handleChangeFirstToSecond", gameMode);
       },
       handleChangeSecondToThird: function (matchType) {
+        this.clickSE.play();
         this.modalContent = "inputRoomId";
-        this.$emit("handleChangeSecondToThird", matchType);
       },
       handleStart: function (roomId) {
         if (roomId == "cpu") {
@@ -88,6 +101,20 @@
         }
         this.$emit("handleStart", roomId);
       },
+      handlePushCPUPage: function () {
+        this.$emit("handlePushCPUPage");
+      },
+      handlePushAutoMatching: function () {
+        this.$emit("handlePushAutoMatching");
+      },
+      handleBackToFirst: function () {
+        this.back1SE.play();
+        this.modalContent = "selectGameMode";
+      },
+      handleBackToSecond: function () {
+        this.back2SE.play();
+        this.modalContent = "selectMatchType";
+      },
     },
   };
 </script>
@@ -96,131 +123,164 @@
   .overlay {
     position: fixed;
     top: 0;
+    bottom: 0;
     left: 0;
     display: flex;
     align-items: center;
     justify-content: center;
     width: 100%;
-    height: 100%;
+    height: 91vh;
     background-color: rgba(0, 0, 0, 0.5);
-    z-index: 1;
+    z-index: 100;
 
-    .modal {
-      position: relative;
-      width: 500px;
-      min-height: 400px;
-      height: fit-content;
-      padding: 1rem;
-      font-size: 1.25rem;
-      border: 9px solid #d3fffd;
-      background-color: #0e3145;
-      box-shadow: 0px 0px 20px #d3fffd;
-      z-index: 10;
-
-      &::before {
-        background-color: #0e3145;
-        position: absolute;
-        content: "";
-        display: block;
-        top: -8px;
-        bottom: -8px;
-        left: 40px;
-        right: 40px;
-      }
-
-      &::after {
-        background-color: #0e3145;
-        position: absolute;
-        content: "";
-        display: block;
-        top: 40px;
-        bottom: 40px;
-        left: -8px;
-        right: -8px;
-      }
-
-      span {
+    .animation {
+      .modal {
         position: relative;
-        z-index: 10;
-        letter-spacing: 0.15em;
-        @keyframes neon {
-          0% {
-            text-shadow: 0 0 10px #00fff2, 0 0 5px #fff, 0 0 13px #d3fffd;
-          }
-          100% {
-            text-shadow: 0 0 30px #00fff2, 0 0 15px #fff, 0 0 0px #d3fffd;
-          }
-        }
-        animation: neon 2s infinite alternate;
-      }
-
-      .close-btn {
-        display: block;
-        padding: 0;
-        cursor: pointer;
-        text-align: right;
-        z-index: 10;
-        text-shadow: none;
-        animation: none;
-      }
-
-      .contents {
-        display: flex;
-        flex-direction: column;
+        width: 500px;
+        min-height: 400px;
+        height: fit-content;
+        margin: 5rem auto;
+        padding: 1rem;
+        font-size: 1.25rem;
+        border: 9px solid #d3fffd;
+        background-color: #0e3145;
+        box-shadow: 0px 0px 20px #d3fffd;
         z-index: 10;
 
-        .modal-title {
-          font-size: 28px;
+        &::before {
+          background-color: #0e3145;
+          position: absolute;
+          content: "";
+          display: block;
+          top: -8px;
+          bottom: -8px;
+          left: 40px;
+          right: 40px;
         }
 
-        .select {
-          display: flex;
-          align-items: center;
-          padding: 1rem;
+        &::after {
+          background-color: #0e3145;
+          position: absolute;
+          content: "";
+          display: block;
+          top: 40px;
+          bottom: 40px;
+          left: -8px;
+          right: -8px;
+        }
 
-          .select-icon {
-            margin: 1rem;
-            min-width: 165px;
-            span {
-              font-size: 1.15rem;
+        span {
+          position: relative;
+          z-index: 10;
+          letter-spacing: 0.15em;
+          @keyframes neon {
+            0% {
+              text-shadow: 0 0 10px #00fff2, 0 0 5px #fff, 0 0 13px #d3fffd;
             }
+            100% {
+              text-shadow: 0 0 30px #00fff2, 0 0 15px #fff, 0 0 0px #d3fffd;
+            }
+          }
+          animation: neon 2s infinite alternate;
+        }
+
+        .close-btn {
+          display: block;
+          padding: 0;
+          cursor: pointer;
+          text-align: right;
+          z-index: 10;
+          text-shadow: none;
+          animation: none;
+        }
+
+        .contents {
+          display: grid;
+          place-items: center;
+          z-index: 10;
+
+          .modal-title {
+            &.gameMode {
+              width: 23ch;
+            }
+
+            &.matchType {
+              width: 22ch;
+            }
+            &.roomId {
+              width: 16ch;
+            }
+            text-align: center !important;
+            font-size: 28px;
+            display: block;
+            overflow: hidden;
+            white-space: nowrap;
+            animation: typing 2s steps(23), caret 1s steps(1) infinite,
+              neon 2s infinite alternate;
+            border-right: 1px solid transparent;
+
+            @keyframes typing {
+              from {
+                width: 0;
+              }
+            }
+            @keyframes caret {
+              50% {
+                border-right-color: #ffffff;
+              }
+            }
+          }
+
+          .select {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+
+            .select-icon {
+              margin: 1rem;
+              min-width: 165px;
+              span {
+                padding: 1.25rem 0;
+                font-size: 1.15rem;
+              }
+              &:hover {
+                cursor: pointer;
+                background-color: #186883;
+              }
+            }
+          }
+
+          .input-text {
+            margin-top: 4rem;
+            cursor: text;
+
+            input {
+              padding: 0.5rem;
+              border-top: solid 1px #d3fffd;
+              border-bottom: solid 2px #d3fffd;
+              font-size: 1rem;
+              color: #ffffff;
+            }
+          }
+
+          .start-btn {
+            display: inline-block;
+            width: fit-content;
+            margin: 3rem auto 2rem auto;
+            padding: 1rem;
+            background-color: #186883;
+            font-size: 1.25rem;
+
             &:hover {
+              background-color: #2d909e;
               cursor: pointer;
-              background-color: #186883;
             }
           }
-        }
 
-        .input-text {
-          margin: 1rem 0;
-          cursor: text;
-
-          input {
-            padding: 0.5rem;
-            border-top: solid 1px #d3fffd;
-            border-bottom: solid 2px #d3fffd;
-            font-size: 1rem;
-            color: #ffffff;
+          .auto-matching {
+            font-size: 0.75rem;
+            padding: 0.75rem;
           }
-        }
-
-        .start-btn {
-          display: inline-block;
-          width: fit-content;
-          margin: 1rem auto;
-          padding: 1rem;
-          background-color: #186883;
-          font-size: 1.25rem;
-
-          &:hover {
-            background-color: #2d909e;
-            cursor: pointer;
-          }
-        }
-
-        .auto-matching {
-          font-size: 0.75rem;
-          padding: 0.75rem;
         }
       }
     }

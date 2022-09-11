@@ -7,7 +7,18 @@
         <br />
         <div class="line"></div>
       </div>
-      <div class="play-btn" @click="$emit('handleModalOpen')">
+      <div>
+        <span class="input-text">
+          <p>Input your name</p>
+          <input
+            :value="userName"
+            type="text"
+            placeholder="user name:"
+            @input="$emit('update:userName', $event.target.value)"
+          />
+        </span>
+      </div>
+      <div class="play-btn" @click="handleModalOpen(userName)">
         <span>＞ PLAY</span>
       </div>
       <StartModal
@@ -15,8 +26,8 @@
         :roomId.sync="roomId"
         @handleModalClose="$emit('handleModalClose')"
         @handleStart="handleStart"
-        @handleChangeFirstToSecond="handleChangeFirstToSecond"
-        @handleChangeSecondToThird="handleSecondToThird"
+        @handlePushCPUPage="handlePushCPUPage"
+        @handlePushAutoMatching="handlePushAutoMatching"
       />
     </div>
   </div>
@@ -31,16 +42,24 @@
       Header,
       StartModal,
     },
-    props: ["isStartModalOpen", "roomId"],
+    props: ["isStartModalOpen", "roomId", "userName"],
     methods: {
-      handleChangeFirstToSecond: function (gameMode) {
-        this.$emit("handleChangeModalContent", gameMode);
-      },
-      handleChangeSecondToThird: function (matchType) {
-        this.$emit("handleChangeModalContent", matchType);
+      handleModalOpen: function (userName) {
+        if (!userName) {
+          alert("ERROR! : Input your name.");
+          return;
+        }
+        console.log(userName);
+        this.$emit("handleModalOpen", userName);
       },
       handleStart: function (roomId) {
         this.$emit("handleStart", roomId);
+      },
+      handlePushCPUPage: function () {
+        this.$emit("handlePushCPUPage");
+      },
+      handlePushAutoMatching: function () {
+        this.$emit("handlePushAutoMatching");
       },
     },
   };
@@ -52,9 +71,17 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin: 2rem;
     padding-top: 10rem;
     text-align: center;
+    animation: neon 2s infinite alternate;
+    @keyframes neon {
+      0% {
+        text-shadow: 0 0 10px #00fff2, 0 0 5px #fff, 0 0 13px #d3fffd;
+      }
+      100% {
+        text-shadow: 0 0 12px #00fff2, 0 0 10px #fff, 0 0 0px #d3fffd;
+      }
+    }
 
     .code-duel {
       margin-bottom: 2rem;
@@ -76,18 +103,25 @@
         padding: 0 0 2rem;
         font-weight: light;
         border-bottom: solid 2px linear-gradient(#0e3145, #186883);
-        @keyframes neon {
-          0% {
-            text-shadow: 0 0 10px #00fff2, 0 0 5px #fff, 0 0 13px #d3fffd;
-          }
-          100% {
-            text-shadow: 0 0 30px #00fff2, 0 0 15px #fff, 0 0 0px #d3fffd;
-          }
-        }
-        animation: neon 2s infinite alternate;
+        animation: blurAnime 3s forwards;
+
         hr {
           width: 50%;
           color: #ffffff;
+        }
+
+        @keyframes blurAnime {
+          from {
+            filter: blur(10px);
+            transform: scale(1.02);
+            opacity: 0;
+          }
+
+          to {
+            filter: blur(0);
+            transform: scale(1);
+            opacity: 1;
+          }
         }
       }
       .line {
@@ -101,8 +135,25 @@
         );
       }
     }
+    .input-text {
+      margin-top: 4rem;
+      cursor: text;
+
+      p {
+        font-size: 1.5rem;
+      }
+
+      input {
+        width: 300px;
+        padding: 0.5rem;
+        border-top: solid 1px #d3fffd;
+        border-bottom: solid 2px #d3fffd;
+        font-size: 1rem;
+        color: #ffffff;
+      }
+    }
     .play-btn {
-      margin: 5rem;
+      margin: 4rem;
       width: fit-content;
       padding: 1rem 3rem;
       position: relative;

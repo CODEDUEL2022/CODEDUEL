@@ -1,15 +1,14 @@
 <template>
   <HomeTemplate
+    :userName.sync="userName"
     :roomId.sync="roomId"
     :isStartModalOpen="isStartModalOpen"
     @handleStart="onPushField"
     @handleSetIssue="onSetId()"
-    @handleMoveCPUPage="onPushCPU()"
-    @handleModalOpen="onStartModalOpen()"
+    @handlePushCPUPage="onPushCPU()"
+    @handleAutoMatching="onPushAutoMatching()"
+    @handleModalOpen="onStartModalOpen"
     @handleModalClose="onStartModalClose()"
-    @handleChangeFirstToSecond="onChangeFirstToSecond"
-    @handleChangeSecondToThird="onChangeSecondToThird"
-    @handleAutoMatting="onPushAutoMatting()"
   />
 </template>
 <script>
@@ -24,55 +23,22 @@
     data() {
       return {
         number: "",
+        userName: null,
         socket: io("localhost:3000"),
         turn_flag: 0,
         playerId: "",
         isStartModalOpen: false,
-        gameMode: null,
-        matchType: null,
         roomId: null,
-        startSE: new Audio(require("/src/libs/ui/assets/sounds/piri.mp3")),
-        clickSE: new Audio(require("/src/libs/ui/assets/sounds/kako.mp3")),
+        startSE: new Audio(require("/src/libs/ui/assets/sounds/start.mp3")),
+        back1SE: new Audio(require("/src/libs/ui/assets/sounds/back1.mp3")),
       };
     },
     mounted() {
       this.socket.on("logined");
     },
     methods: {
-      onSetId: function () {
-        // HACK: ID作る関数入れておく
-        this.roomId = Math.random().toString(32).substring(2);
-      },
-      //追加機能：クエリにplayer_Idを追加。同じルーム内でのプレイヤーを識別するのに利用。
-      onSendRoomId: function (roomId) {
-        this.clickSE.play();
-        this.playerId = Math.random().toString(32).substring(2);
-        this.roomId = roomId;
-        this.socket.emit("login", this.roomId);
-        this.$axios
-          .post("/playerData", {
-            RoomId: this.roomId,
-            playerId: this.playerId,
-            decId: 0, //仮においている。本来はデッキ選択用
-          })
-          .then((res) => {
-            //res.dataがRoomにいる人数ここで場合分けすればOK
-            console.log(res.data);
-          });
-
-        //デッキを自作する機能を実装。
-        //decIdにカードのidをリストとして入れれば成功するように設計
-        this.$axios
-          .post("/dec", {
-            playerId: this.playerId,
-            decIdList: [0, 1, 2, 3, 4, 5, 6],
-          })
-          .then((res) => {
-            console.log(res.data);
-          });
-      },
-      //ページ遷移機能
       onPushField: function (value) {
+        alert("Happy hacking!");
         this.startSE.play();
         this.roomId = value;
         console.log(this.roomId);
@@ -94,6 +60,8 @@
         });
       },
       onPushCPU: function () {
+        alert("Play with CPU. Happy hacking!");
+        this.startSE.play();
         this.playerId = Math.random().toString(32).substring(2);
         this.$axios.post("/cpuPlayerData", {
           playerId: this.playerId,
@@ -104,28 +72,24 @@
           query: { id: this.playerId },
         });
       },
-      onStartModalOpen: function () {
-        this.isStartModalOpen = true;
-      },
-      onStartModalClose: function () {
-        console.log("onStartModalClose");
-        this.isStartModalOpen = false;
-      },
-      onChangeFirstToSecond: function (value) {
-        this.gameMode = value;
-        console.log(this.gameMode);
-      },
-      onChangeSecondToThird: function (value) {
-        this.matchType = value;
-        console.log(this.matchType);
-      },
-      onPushAutoMatting: function () {
+      onPushAutoMatching: function () {
+        alert("Play random match. Happy hacking!");
+        this.startSE.play();
         this.playerId = Math.random().toString(32).substring(2);
-        this.socket.emit("AutoMattingPreLogin", this.playerId);
+        this.socket.emit("AutoMatchingPreLogin", this.playerId);
         this.$router.push({
           name: "waitingroom",
           query: { id: this.playerId },
         });
+      },
+      onStartModalOpen: function (user) {
+        this.startSE.play();
+        console.log(user);
+        this.isStartModalOpen = true;
+      },
+      onStartModalClose: function () {
+        this.back1SE.play();
+        this.isStartModalOpen = false;
       },
     },
   };
