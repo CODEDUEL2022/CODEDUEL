@@ -399,6 +399,14 @@ export const comboDB = [
     idList: [24, 50],
     nameList: ["JavaScript", "Svelte"],
   },
+  {
+    comboId: 51,
+    nameEn: "Pair",
+    nameJa: "ペア",
+    actionValue: 60,
+    idList: [13, 65],
+    nameList: ["Elixir", "Phoenix"],
+  },
 ];
 
 export const cardDB = [
@@ -507,7 +515,7 @@ export const cardDB = [
     type: "language",
     img: "Electron.svg",
     action: "attack",
-    actionValue: 40,
+    actionValue: 30,
     field: "",
   },
   {
@@ -516,7 +524,7 @@ export const cardDB = [
     type: "language",
     img: "Elixir.svg",
     action: "attack",
-    actionValue: 40,
+    actionValue: 20,
     field: "",
   },
   {
@@ -723,7 +731,7 @@ export const cardDB = [
     type: "language",
     img: "Perl.svg",
     action: "attack",
-    actionValue: 40,
+    actionValue: 20,
     field: "",
   },
   {
@@ -813,7 +821,7 @@ export const cardDB = [
     type: "language",
     img: "scala.svg",
     action: "attack",
-    actionValue: 40,
+    actionValue: 20,
     field: "",
   },
   {
@@ -978,6 +986,15 @@ export const cardDB = [
     actionValue: 30,
     field: "",
   },
+  {
+    id: 65,
+    name: "Phoenix",
+    type: "language",
+    img: "phoenix.svg",
+    action: "attack",
+    actionValue: 40,
+    field: "",
+  },
 ];
 
 export const Dec1 = [
@@ -992,7 +1009,7 @@ export const Dec2 = [
 
 export const Dec3 = [
   1, 4, 4, 5, 6, 8, 10, 12, 13, 17, 18, 21, 26, 27, 28, 35, 39, 40, 43, 44, 51,
-  52, 54, 59, 60, 63, 64,
+  52, 54, 59, 60, 63, 64, 65,
 ];
 
 export const cpuDec = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];

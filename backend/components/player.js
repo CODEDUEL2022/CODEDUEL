@@ -33,7 +33,7 @@ export const cardDraw = function (selectId) {
   if (playerDB[selectId].decList.length == 0) {
     console.log("デッキ指定がない為、全てのカードを参照してドローをします");
     for (let j = playerDB[selectId].cardList.length; j < 6; ) {
-      const tmp = Number(Math.floor(Math.random() * 64));
+      const tmp = Number(Math.floor(Math.random() * 65));
       playerDB[selectId].cardList.push(cardDB[tmp]);
       j++;
     }
