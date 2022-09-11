@@ -21,9 +21,12 @@
     :effectImages="effectImages"
     :attackOptions="attackOptions()"
     :isEnableAction="isEnableAction()"
+    :isCardListModalOpen = "isCardListModalOpen"
     @goHome="goHome()"
     @closeActionCutIn="closeActionCutIn()"
     @handleAction="handleAction()"
+    @handleModalOpen="onCardListModalOpen()"
+    @handleModalClose="onCardListModalClose()"
   />
 </template>
 <script>
@@ -45,6 +48,7 @@ export default {
       showActionCutIn: false,
       showBattleOutcome: false,
       judgeWin: true,
+      isCardListModalOpen: false,
       actionType: "",
       actionPoint: "",
       yourHP: 200,
@@ -201,6 +205,16 @@ export default {
         }
       }
     },
+    onCardListModalOpen: function () {
+      console.log("onStartModalOpen   ");
+      document.documentElement.style.overflow = 'hidden'
+      this.isCardListModalOpen = true;
+    },
+    onCardListModalClose: function () {
+      console.log("onCardListModalClose");
+      document.documentElement.style.overflow = 'auto'
+      this.isCardListModalOpen = false;
+    },
     goHome: function () {
       this.$router.push("/");
     },
@@ -330,6 +344,15 @@ export default {
     this.currentFieldName = this.fieldData[this.roundCount].name;
     this.currentFieldImg = this.fieldData[this.roundCount].img;
   },
+  watch(){
+      // if (this.isCardListModalOpen) {
+      //   console.log("開いた")
+      //   document.documentElement.style.overflow = 'hidden'
+      // } else {
+      //   document.documentElement.style.overflow = 'auto'
+      // }
+
+  }
 };
 </script>
 <style scoped></style>

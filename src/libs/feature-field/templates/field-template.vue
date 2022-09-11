@@ -100,9 +100,14 @@
             :isEnableAction="isEnableAction"
             @handleAction="$emit('handleAction')"
           ></ActionButton>
-          <div @click="$emit()" class="card-list-btn">
+          <div class = "card-list-btn" @click="$emit('handleModalOpen')">
             <span>Card List</span>
           </div>
+          <CardListModal
+            v-if="isCardListModalOpen"
+            :isCardListModalOpen="isCardListModalOpen"
+            @handleModalClose="$emit('handleModalClose')"
+          />
         </v-col>
       </v-row>
     </div>
@@ -131,6 +136,7 @@ import ActionCutIn from "../components/ActionCutIn.vue";
 import TerminalUI from "../components/TerminalUI.vue";
 import SimpleCard from "../components/SimpleCard.vue";
 import BattleOutcomeView from "../components/BattleOutcomeView.vue"
+import CardListModal from "../components/CardListModal.vue"
 
 export default {
   name: "FieldTemplate",
@@ -140,6 +146,7 @@ export default {
     HPDisplay,
     VueDrag,
     GeneralCutIn,
+    CardListModal,
     ActionCutIn,
     TerminalUI,
     SimpleCard,
@@ -168,6 +175,7 @@ export default {
     "selectedId",
     "comboData",
     "isEnableAction",
+    "isCardListModalOpen",
     "attackOptions",
     "focusedCard",
   ],
