@@ -2,6 +2,7 @@
   <HomeTemplate
     :userName.sync="userName"
     :roomId.sync="roomId"
+    :userName="userName"
     :isStartModalOpen="isStartModalOpen"
     @handleStart="onPushField"
     @handleSetIssue="onSetId()"
@@ -84,7 +85,7 @@
       },
       onStartModalOpen: function (user) {
         this.startSE.play();
-        console.log(user);
+        this.userName = user;
         this.isStartModalOpen = true;
       },
       onStartModalClose: function () {

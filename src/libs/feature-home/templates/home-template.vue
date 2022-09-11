@@ -23,6 +23,7 @@
       </div>
       <StartModal
         v-if="isStartModalOpen"
+        :userName="userName"
         :roomId.sync="roomId"
         @handleModalClose="$emit('handleModalClose')"
         @handleStart="handleStart"

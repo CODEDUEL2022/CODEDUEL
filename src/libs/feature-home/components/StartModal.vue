@@ -2,6 +2,7 @@
   <div class="overlay" @click.self="$emit('handleModalClose')">
     <div class="animation">
       <div class="modal">
+        <span>Hello, {{ userName }}!!</span>
         <span class="close-btn" @click="$emit('handleModalClose')">×</span>
         <div v-if="modalContent == 'selectGameMode'" class="contents">
           <span class="modal-title gameMode">Choose Game Mode.</span>
@@ -74,7 +75,7 @@
 <script>
   export default {
     name: "StartModal",
-    props: ["roomId"],
+    props: ["roomId", "userName"],
     data() {
       return {
         modalContent: "selectGameMode",
@@ -178,7 +179,7 @@
               text-shadow: 0 0 10px #00fff2, 0 0 5px #fff, 0 0 13px #d3fffd;
             }
             100% {
-              text-shadow: 0 0 30px #00fff2, 0 0 15px #fff, 0 0 0px #d3fffd;
+              text-shadow: 0 0 20px #00fff2, 0 0 10px #fff, 0 0 0px #d3fffd;
             }
           }
           animation: neon 2s infinite alternate;
@@ -217,7 +218,7 @@
             display: block;
             overflow: hidden;
             white-space: nowrap;
-            animation: typing 2s steps(23), caret 1s steps(1) infinite,
+            animation: typing 1.25s steps(15), caret 1s steps(1) infinite,
               neon 2s infinite alternate;
             border-right: 1px solid transparent;
 
