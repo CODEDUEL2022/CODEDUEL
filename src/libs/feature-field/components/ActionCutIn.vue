@@ -6,7 +6,9 @@
         v-for="effectImage in effectImages"
         :key="effectImage.index"
       >
-        <v-img :src="require(`../../ui/assets/cards/${effectImage}`)"></v-img>
+        <v-img
+          :src="require(`../../ui/assets/new-cards/${effectImage}`)"
+        ></v-img>
       </div>
     </div>
     <div class="dalayEffect">{{ actionType }} {{ actionPoint }} pt</div>
@@ -56,7 +58,7 @@
       font-size: 7rem;
       letter-spacing: 1.1rem;
       text-shadow: 0 0 20px #d3fffd;
-      background: radial-gradient(#2d909e, #102335);
+      background: radial-gradient(#186883, #020508);
       opacity: 0;
       z-index: 3;
       animation: SlideIn 0.4s;

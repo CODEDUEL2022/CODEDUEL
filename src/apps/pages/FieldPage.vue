@@ -14,6 +14,7 @@
     :roundCount="roundCount"
     :currentFieldName="currentFieldName"
     :currentFieldImg="currentFieldImg"
+    :nextFieldName="nextFieldName"
     :yourCardsData.sync="yourCardsData"
     :selectedCardsData.sync="selectedCardsData"
     :selectedId="selectedId"
@@ -21,12 +22,9 @@
     :effectImages="effectImages"
     :attackOptions="attackOptions()"
     :isEnableAction="isEnableAction()"
-    :isCardListModalOpen = "isCardListModalOpen"
     @goHome="goHome()"
     @closeActionCutIn="closeActionCutIn()"
     @handleAction="handleAction()"
-    @handleModalOpen="onCardListModalOpen()"
-    @handleModalClose="onCardListModalClose()"
   />
 </template>
 <script>
@@ -48,7 +46,6 @@ export default {
       showActionCutIn: false,
       showBattleOutcome: false,
       judgeWin: true,
-      isCardListModalOpen: false,
       actionType: "",
       actionPoint: "",
       yourHP: 200,
@@ -56,8 +53,9 @@ export default {
       opponentHP: 200,
       opponentName: "User2",
       roundCount: 0,
-      currentFieldName: "macOS",
-      currentFieldImg: "",
+      currentFieldName: "iOS,macOS",
+      currentFieldImg: "Apple.svg",
+      nextFieldName: "AndroidOS",
       yourCardsData: [],
       selectedCardsData: [],
       comboData: [],
@@ -105,6 +103,15 @@ export default {
         console.log(res.data);
         this.yourHP = res.data.yourHP;
         this.opponentHP = res.data.opponentHP;
+        if (this.yourHP <= 0) {
+          this.showGeneralCutIn = false;
+          this.judgeWin = false;
+          this.showBattleOutcome = true;
+        }
+        if (this.opponentHP <= 0) {
+          this.showGeneralCutIn = false;
+          this.showBattleOutcome = true;
+        }
       });
     // カードをドローする処理
     this.$axios
@@ -205,16 +212,6 @@ export default {
         }
       }
     },
-    onCardListModalOpen: function () {
-      console.log("onStartModalOpen   ");
-      document.documentElement.style.overflow = 'hidden'
-      this.isCardListModalOpen = true;
-    },
-    onCardListModalClose: function () {
-      console.log("onCardListModalClose");
-      document.documentElement.style.overflow = 'auto'
-      this.isCardListModalOpen = false;
-    },
     goHome: function () {
       this.$router.push("/");
     },
@@ -237,6 +234,9 @@ export default {
             this.yourCardsData.push(res.data[i]);
           }
         });
+      this.currentFieldName = this.fieldData[this.roundCount % 4].name;
+      this.currentFieldImg = this.fieldData[this.roundCount % 4].img;
+      this.nextFieldName = this.fieldData[(this.roundCount + 1) % 4].name;  
       // 負け！
       if(this.yourHP <= 0) {
         this.showGeneralCutIn = false;
@@ -258,6 +258,7 @@ export default {
         selectedCardData: this.selectedCardsData,
         roomId: searchParams.get("room"),
       };
+      console.log(cardValue.selectedCardData)
       this.socket.emit("cardValue", cardValue, searchParams.get("id"));
       this.selectedCardsData.splice(this.index, this.selectedCardsData.length);
       this.showActionCutIn = true;
@@ -276,7 +277,9 @@ export default {
     });
     this.socket.on(
       "gameStart",
-      function () // 報告:この処理が走るとルームに二人が入ったことになる
+      function (
+        playersName
+      ) // 報告:この処理が走るとルームに二人が入ったことになる
       {
       anotherThis.$axios
       .post("/getTurn", { playerId: searchParams.get("id") })
@@ -297,6 +300,8 @@ export default {
           } else {
             setTimeout(closeCutIn, 1000);
           }
+          console.log(playersName.yourName);
+          console.log(playersName.opponentName);
         }
       })
       }
@@ -308,7 +313,7 @@ export default {
         anotherThis.roundCount = res.data - 2
       })
       anotherThis.actionType = HPinfo.actionType; //攻撃の種類
-      anotherThis.roundCount = HPinfo.nextTurnField // 何ターン目かの情報
+      anotherThis.roundCount = HPinfo.roundCount // 何ターン目かの情報
       anotherThis.actionPoint = HPinfo.actionPoint
       console.log("round:" + anotherThis.roundCount)
       anotherThis.effectImages.splice(anotherThis.index, anotherThis.effectImages.length);
@@ -344,15 +349,6 @@ export default {
     this.currentFieldName = this.fieldData[this.roundCount].name;
     this.currentFieldImg = this.fieldData[this.roundCount].img;
   },
-  watch(){
-      // if (this.isCardListModalOpen) {
-      //   console.log("開いた")
-      //   document.documentElement.style.overflow = 'hidden'
-      // } else {
-      //   document.documentElement.style.overflow = 'auto'
-      // }
-
-  }
 };
 </script>
 <style scoped></style>
