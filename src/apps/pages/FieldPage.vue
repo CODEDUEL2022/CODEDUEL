@@ -285,13 +285,13 @@ export default {
           .then((res) => {
             if (res.data < 2) {
               console.log("gamestart");
-              //2回書いているのは仕様です。
-              // anotherThis.$axios.post("/controlTurn", {
-              //   playerId: searchParams.get("id"),
-              // });
-              // anotherThis.$axios.post("/controlTurn", {
-              //   playerId: searchParams.get("id"),
-              // });
+              // 2回書いているのは仕様です。
+              anotherThis.$axios.post("/controlTurn", {
+                playerId: searchParams.get("id"),
+              });
+              anotherThis.$axios.post("/controlTurn", {
+                playerId: searchParams.get("id"),
+              });
               //ここに処理を書いてほしいです
               //ゲームスタート！みたいなカットイン＋opponentTurnによる場合分けで相手のターンみたいなのを表示する
               anotherThis.showGeneralCutIn = true;
@@ -314,7 +314,7 @@ export default {
       anotherThis.$axios
         .post("/getTurn", { playerId: searchParams.get("id") })
         .then((res) => {
-          anotherThis.roundCount = res.data;
+          // anotherThis.roundCount = res.data;
         });
       anotherThis.actionType = HPinfo.actionType; //攻撃の種類
       anotherThis.roundCount = HPinfo.roundCount; // 何ターン目かの情報
