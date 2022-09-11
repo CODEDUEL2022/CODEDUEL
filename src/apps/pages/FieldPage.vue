@@ -45,7 +45,7 @@
         damageSE: new Audio(
           require("/src/libs/ui/assets/sounds/damage_se.mp3")
         ),
-        clickSE: new Audio(require("/src/libs/ui/assets/sounds/kako.mp3")),
+        clickSE: new Audio(require("/src/libs/ui/assets/sounds/click.mp3")),
         message: "",
         showGeneralCutIn: true,
         showActionCutIn: false,
