@@ -44,6 +44,7 @@
           require("/src/libs/ui/assets/sounds/damage_se.mp3")
         ),
         clickSE: new Audio(require("/src/libs/ui/assets/sounds/click.mp3")),
+        bgm: new Audio(require("/src/libs/ui/assets/sounds/Reflect.mp3")),
         message: "",
         showGeneralCutIn: true,
         showActionCutIn: false,
@@ -257,6 +258,8 @@
       },
     },
     mounted() {
+      this.bgm;
+      this.bgm.play();
       const searchParams = new URLSearchParams(window.location.search);
       let playerId = searchParams.get("id");
       let anotherThis = this;
