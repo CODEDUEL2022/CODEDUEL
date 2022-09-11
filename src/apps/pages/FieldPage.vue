@@ -269,8 +269,9 @@
       });
       this.socket.on(
         "gameStart",
-        function () // 報告:この処理が走るとルームに二人が入ったことになる
-        {
+        function (
+          playersName // 報告:この処理が走るとルームに二人が入ったことになる
+        ) {
           anotherThis.$axios
             .post("/getTurn", { playerId: searchParams.get("id") })
             .then((res) => {
@@ -295,6 +296,8 @@
                 } else {
                   setTimeout(closeCutIn, 1000);
                 }
+                console.log(playersName.yourName);
+                console.log(playersName.opponentName);
               }
             });
         }

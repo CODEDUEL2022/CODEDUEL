@@ -11,6 +11,7 @@ import {
   postCardDraw,
   addDec,
   findOpponentUser,
+  getPlayersName,
 } from "./components/player.js";
 import {
   cpuHPReload,
@@ -134,7 +135,7 @@ io.sockets.on("connection", function (socket) {
     } else if (numPlayer[roomId] == 1) {
       if (findOpponentUser(playerId)) {
         numPlayer[roomId]++;
-        io.to(roomId).emit("gameStart");
+        io.to(roomId).emit("gameStart", getPlayersName(roomId, playerId));
       }
     }
   });
