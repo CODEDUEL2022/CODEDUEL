@@ -1,7 +1,7 @@
 
 import { cardDB } from "./DB.js";
 import { comboDB } from "./DB.js";
-import { fieldDB } from "./DB.js"
+import { fieldDB } from "./DB.js";
 import {
   controlTurn,
   getTurn,
@@ -11,7 +11,8 @@ import {
   reload,
   postCardDraw,
   addDec,
-  findOpponentUser
+  findOpponentUser,
+  getPlayersName,
 } from "./components/player.js";
 import {
   cpuHPReload,
@@ -81,31 +82,33 @@ app.use(
   })
 );
 
-let standByPlayer = []
+let standByPlayer = [];
 
 //WebSocket周りの処理
 io.sockets.on("connection", function (socket) {
   console.log("connected");
   //オートマッチング機能
-  socket.on("AutoMattingPreLogin", function(playerId){
-    standByPlayer.push(playerId)
-    console.log("現在の待機プレイヤー："+standByPlayer.length+"名")
-    function joinRoom(player1,player2){
+  socket.on("AutoMattingPreLogin", function (playerId) {
+    standByPlayer.push(playerId);
+    console.log("現在の待機プレイヤー：" + standByPlayer.length + "名");
+    function joinRoom(player1, player2) {
       let roomId = Math.random().toString(32).substring(2);
-      io.emit("FullRoom",roomId,player1,player2)
+      io.emit("FullRoom", roomId, player1, player2);
     }
-    if(standByPlayer.length >= 2){
-      let player1 = standByPlayer[0]
-      let player2 = standByPlayer[1]
-      standByPlayer.splice(0,2);
-      setTimeout(function(){joinRoom(player1,player2)}, 1000)
+    if (standByPlayer.length >= 2) {
+      let player1 = standByPlayer[0];
+      let player2 = standByPlayer[1];
+      standByPlayer.splice(0, 2);
+      setTimeout(function () {
+        joinRoom(player1, player2);
+      }, 1000);
     }
-  })
-  socket.on("LeaveWaitingRoom", function(playerId){
-    let idx = standByPlayer.indexOf(playerId)
-    standByPlayer.splice(idx,1);
-    console.log(standByPlayer)
-  })
+  });
+  socket.on("LeaveWaitingRoom", function (playerId) {
+    let idx = standByPlayer.indexOf(playerId);
+    standByPlayer.splice(idx, 1);
+    console.log(standByPlayer);
+  });
 
   //接続切断処理
   //ログイン時処理
@@ -126,15 +129,15 @@ io.sockets.on("connection", function (socket) {
     }
     //ルーム入室
   });
-  socket.on("roomJoin", function (roomId,playerId) {
+  socket.on("roomJoin", function (roomId, playerId) {
     socket.join(roomId);
     console.log("roomJoin fire");
     if (numPlayer[roomId] == undefined) {
       numPlayer[roomId] = 1;
     } else if (numPlayer[roomId] == 1) {
-      if(findOpponentUser(playerId)){
+      if (findOpponentUser(playerId)) {
         numPlayer[roomId]++;
-        io.to(roomId).emit("gameStart");
+        io.to(roomId).emit("gameStart", getPlayersName(roomId, playerId));
       }
     }
   });
@@ -165,9 +168,9 @@ app.post("/api/playerData", (req, res) => {
   res.json(postPlayerData(req, res, numClients));
 });
 
-app.post("/api/dec",(req,res) => {
-  res.send(addDec(req,res))
-})
+app.post("/api/dec", (req, res) => {
+  res.send(addDec(req, res));
+});
 
 //コンボカードリストをフロントに送信
 app.get("/api/getComboDb", (req, res) => {
