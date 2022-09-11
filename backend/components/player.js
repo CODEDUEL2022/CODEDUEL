@@ -86,8 +86,7 @@ export const postPlayerData = function (req, res, numClients) {
     playerDB.push({
       RoomId: req.body.RoomId,
       playerId: req.body.playerId,
-      // playerName: req.body.playerName,
-      playerName: "hogehoge",
+      playerName: req.body.playerName,
       cardList: [],
       yourHP: 200,
       opponentHP: 200,
@@ -101,8 +100,7 @@ export const postPlayerData = function (req, res, numClients) {
     playerDB.push({
       RoomId: req.body.RoomId,
       playerId: req.body.playerId,
-      // playerName: req.body.playerName,
-      playerName: "hogehoge",
+      playerName: req.body.playerName,
       cardList: [],
       yourHP: 200,
       opponentHP: 200,
