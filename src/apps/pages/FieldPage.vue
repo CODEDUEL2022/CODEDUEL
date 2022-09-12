@@ -22,70 +22,71 @@
     :effectImages="effectImages"
     :attackOptions="attackOptions()"
     :isEnableAction="isEnableAction()"
+    :isCardListModalOpen = "isCardListModalOpen"
     @goHome="goHome()"
     @closeActionCutIn="closeActionCutIn()"
     @handleAction="handleAction()"
+    @handleModalOpen="onCardListModalOpen()"
+    @handleModalClose="onCardListModalClose()"
   />
 </template>
 <script>
 import FieldTemplate from "/src/libs/feature-field/templates/field-template.vue";
 import io from "socket.io-client";
-  export default {
-    name: "field",
-    components: {
-      FieldTemplate,
-    },
-    data() {
-      return {
-        actionSE: new Audio(
-          require("/src/libs/ui/assets/sounds/action_se.mp3")
-        ),
-        damageSE: new Audio(
-          require("/src/libs/ui/assets/sounds/damage_se.mp3")
-        ),
-        clickSE: new Audio(require("/src/libs/ui/assets/sounds/click.mp3")),
-        message: "",
-        showGeneralCutIn: true,
-        showActionCutIn: false,
-        showBattleOutcome: false,
-        judgeWin: true,
-        actionType: "",
-        actionPoint: "",
-        yourHP: 200,
-        yourName: "User1",
-        opponentHP: 200,
-        opponentName: "User2",
-        roundCount: 0,
-        currentFieldName: "iOS,macOS",
-        currentFieldImg: "Apple.svg",
-        nextFieldName: "AndroidOS",
-        yourCardsData: [],
-        selectedCardsData: [],
-        comboData: [],
-        cardData: [],
-        fieldData: [],
-        yourId: "",
-        roomId: "",
-        selectedId: "",
-        attackSignal: 0,
-        opponentTurn: false,
-        isAlone: false,
-        usedCardIdList: [], //攻撃された、攻撃したカードのIDのリスト
-        effectImages: [],
-        socket: io("localhost:3000"),
-      };
-    },
-    created() {
-      this.yourCardsData = [];
-      const searchParams = new URLSearchParams(window.location.search);
-      const giveNewProperty = function (object) {
-        object.isCombined = true;
-      };
-      console.log(this.yourCardsData);
-      this.$axios.get("/getComboDb").then((res) => {
-        for (let i = 0; i < res.data.length; i++) {
-          this.comboData.push(res.data[i]);
-        }
+
+export default {
+  name: "field",
+  components: {
+    FieldTemplate,
+  },
+  data() {
+    return {
+      actionSE: new Audio(require("/src/libs/ui/assets/sounds/action_se.mp3")),
+      damageSE: new Audio(require("/src/libs/ui/assets/sounds/damage_se.mp3")),
+      clickSE: new Audio(require("/src/libs/ui/assets/sounds/click.mp3")),
+      message: "",
+      showGeneralCutIn: true,
+      showActionCutIn: false,
+      showBattleOutcome: false,
+      judgeWin: true,
+      isCardListModalOpen: false,
+      actionType: "",
+      actionPoint: "",
+      yourHP: 200,
+      yourName: "User1",
+      opponentHP: 200,
+      opponentName: "User2",
+      roundCount: 0,
+      currentFieldName: "iOS,macOS",
+      currentFieldImg: "Apple.svg",
+      nextFieldName: "AndroidOS",  
+      yourCardsData: [],
+      selectedCardsData: [],
+      comboData: [],
+      cardData: [],
+      fieldData: [],
+      yourId: "",
+      roomId: "",
+      selectedId: "",
+      attackSignal: 0,
+      opponentTurn: false,
+      isAlone: false,
+      usedCardIdList: [], //攻撃された、攻撃したカードのIDのリスト
+      effectImages: [],
+      socket: io("localhost:3000"),
+    };
+  },
+  created() {
+    this.yourCardsData = [];
+    const searchParams = new URLSearchParams(window.location.search);
+    const giveNewProperty = function (object) {
+      object.isCombined = true;
+    };
+    console.log(this.yourCardsData);
+    this.$axios.get("/getComboDb").then((res) => {
+      for (let i = 0; i < res.data.length; i++) {
+        this.comboData.push(res.data[i]);
+      }
     });
     this.$axios.get("/getCardDB").then((res) => {
       for (let i = 0; i < res.data.length; i++) {
@@ -215,6 +216,16 @@ import io from "socket.io-client";
         }
       }
     },
+    onCardListModalOpen: function () {
+      console.log("onStartModalOpen   ");
+      document.documentElement.style.overflow = 'hidden'
+      this.isCardListModalOpen = true;
+    },
+    onCardListModalClose: function () {
+      console.log("onCardListModalClose");
+      document.documentElement.style.overflow = 'auto'
+      this.isCardListModalOpen = false;
+    },
     goHome: function () {
       this.$router.push("/");
     },
@@ -261,7 +272,6 @@ import io from "socket.io-client";
         selectedCardData: this.selectedCardsData,
         roomId: searchParams.get("room"),
       };
-      console.log(cardValue.selectedCardData)
       this.socket.emit("cardValue", cardValue, searchParams.get("id"));
       this.selectedCardsData.splice(this.index, this.selectedCardsData.length);
       this.showActionCutIn = true;
@@ -303,8 +313,6 @@ import io from "socket.io-client";
           } else {
             setTimeout(closeCutIn, 1000);
           }
-          console.log(playersName.yourName);
-          console.log(playersName.opponentName);
         }
       })
       }
@@ -349,9 +357,18 @@ import io from "socket.io-client";
   updated() {
     // roundを受け取ってそこからfieldDBと照らし合わせる
     // room入室時にupdatedが発火されるがfieldDataがないのでエラーがでる。他の実装を考える
-    this.currentFieldName = this.fieldData[this.roundCount].name;
-    this.currentFieldImg = this.fieldData[this.roundCount].img;
+    // this.currentFieldName = this.fieldData[this.roundCount].name;
+    // this.currentFieldImg = this.fieldData[this.roundCount].img;
   },
+  watch(){
+      // if (this.isCardListModalOpen) {
+      //   console.log("開いた")
+      //   document.documentElement.style.overflow = 'hidden'
+      // } else {
+      //   document.documentElement.style.overflow = 'auto'
+      // }
+
+  }
 };
 </script>
 <style scoped></style>

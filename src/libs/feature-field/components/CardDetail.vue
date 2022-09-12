@@ -1,41 +1,32 @@
 <template>
-  <div class="overlay" @click.self="$emit('handleModalClose')">
-    <div>
-      <div class="close-btn">
-        <span @click="$emit('handleModalClose')">×</span>
-      </div>
-      <div class = "modal">
-        <v-container>
-          <v-row>
-              <SimpleCard
-              v-for="cardImage in cardImages"
-              :focusedCard="cardImage"
-              :key="cardImage.index"
-              :isCardDetailOpen = "isCardDetailOpen"
-              @handleCardDetailModalOpen="onCardDetailModalOpen()"
-              @handleCardDetailModalClose="onCardDetailModalClose()"
-              />
-          </v-row>
-        </v-container>
-        <v-pagination
-            v-model="page"
-            :length="length"
-            @input = "pageChange"
-          ></v-pagination>
-      </div>
-      <!--step1: 人かcpuを選択-->
+    <div class = "overlay" @click.self="$emit('handleCardDetailModalClose')">
+        <div>
+            <div class="close-btn">
+                <span @click="$emit('handleCardDetailModalClose')">×</span>
+            </div>
+            <div class = "modal">
+                <v-container>
+                <v-row>
+                    <v-card class="black" color="grey lighten-4">
+                        <v-img :src="require(`../../ui/assets/new-cards/${focusedCard.img}`)"></v-img>
+                    </v-card>
+                </v-row>
+                </v-container>
+            </div>
+        </div>
     </div>
-  </div>
 </template>
-
 <script>
 import SimpleCard from "./CardList.vue";
 
   export default {
     name: "CardListModal",
+    props: [
+        "focusedCard",
+    ],
     components: {
-    SimpleCard
-},
+        SimpleCard
+    },
     data() {
       return {
         cardList: [],
@@ -48,6 +39,7 @@ import SimpleCard from "./CardList.vue";
       };
     },
     created(){
+      console.log("CardDetailが正常に発火されてる")
       this.$axios.get("/getCardDB").then((res) => {
       for (let i = 0; i < res.data.length; i++) {
         this.cardList.push(res.data[i]);

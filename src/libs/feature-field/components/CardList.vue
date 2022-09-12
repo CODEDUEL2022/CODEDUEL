@@ -1,40 +1,48 @@
 <template>
   <div class="item">
-    <v-hover v-slot="{ hover }">
-      <v-card class="black" color="grey lighten-4">
-        <v-img :src="require(`../../ui/assets/cards/${focusedCard.img}`)">
-          <v-expand-transition>
-            <div
-              v-if="hover"
-              class="d-flex transition-fast-in-fast-out orange darken-2 v-card--reveal text-h2 white--text"
-              style="height: 100%;"
-            >
-              へ～い
-            </div>
-          </v-expand-transition>
-        </v-img>
-      </v-card>
-    </v-hover>
+    <v-card class="black" color="grey lighten-4">
+      <v-img 
+      :src="require(`../../ui/assets/new-cards/${focusedCard.img}`)"
+      @click="$emit('handleCardDetailModalOpen')">
+      </v-img>
+    </v-card>
+    <CardDetail
+      v-if="isCardDetailOpen"
+      :focusedCard="focusedCard"
+      :key="focusedCard.index"
+      :isCardDetailOpen = "isCardDetailOpen"
+      @handleCardDetailModalClose="$emit('handleCardDetailModalClose')"
+    />
   </div>
 </template>
 
 <script>
+import CardDetail from "./CardDetail.vue"
   export default {
     name: "SimpleCard",
-    props: ["focusedCard"],
+    components:{
+    CardDetail,
+},
+    props: [
+      "focusedCard",
+      "isCardDetailOpen",
+    ],
     data:{
       hoverFlag: false,
     },
     methods: {
-                mouseOverAction(){
-                  console.log("hover")
-                  console.log(key)
-                  this.hoverFlag = true
-                },
-                mouseLeaveAction(){
-                    this.hoverFlag = false
-                }
-            }
+      mouseOverAction(){
+        console.log("hover")
+        console.log(key)
+        this.hoverFlag = true
+      },
+      mouseLeaveAction(){
+        this.hoverFlag = false
+      },
+      imageClick(){
+        console.log("click")
+      }
+    }
   };
 </script>
 
@@ -44,4 +52,13 @@
     width: 15%;
     max-height: 222px;
   }
+  .v-card--reveal {
+    align-items: center;
+    bottom: 0;
+    justify-content: center;
+    opacity: .5;
+    position: absolute;
+    width: 100%;
+    overflow-y: scroll; 
+}
 </style>

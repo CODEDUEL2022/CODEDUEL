@@ -124,6 +124,8 @@ import TerminalUI from "../components/TerminalUI.vue";
 import SimpleCard from "../components/SimpleCard.vue";
 import BattleOutcomeView from "../components/BattleOutcomeView.vue"
 import CardListModal from "../components/CardListModal.vue"
+import RoundCounter from "../components/RoundCounter.vue";
+import FieldDisplay from "../components/FieldDisplay.vue";
 
 export default {
   name: "FieldTemplate",
