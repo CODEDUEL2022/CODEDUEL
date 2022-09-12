@@ -1,39 +1,34 @@
 <template>
-    <div class = "overlay" @click.self="$emit('handleCardDetailModalClose')">
-        <div>
-            <div class="close-btn">
-                <span @click="$emit('handleCardDetailModalClose')">×</span>
-            </div>
-            <div class = "modal">
-                <v-container>
-                <v-row>
-                    <v-col cols="4">
-                        <v-card class="black" color="grey lighten-4">
-                            <v-img :src="require(`../../ui/assets/cards/${focusedCard.img}`)"></v-img>
-                        </v-card>
-                    </v-col>
-                    <v-col cols = "8">
-                        <p>{{focusedCard.name}}</p>
-                        <p>{{focusedCard.shortDescription}}</p>
-                        <p>Install URL</p>
-                        <a :href="focusedCard.installUrl" target="_blank">{{focusedCard.installUrl}}</a>
-                    </v-col>
-                </v-row>
-                </v-container>
-            </div>
-        </div>
+  <div class="overlay" @click.self="$emit('handleCardDetailModalClose')">
+    <div class="modal">
+      <v-row>
+        <v-col cols="4">
+          <v-card class="black" color="grey lighten-4">
+            <v-img
+              :src="require(`../../ui/assets/cards/${focusedCard.img}`)"
+            ></v-img>
+          </v-card>
+        </v-col>
+        <v-col cols="8">
+          <p>{{ focusedCard.name }}</p>
+          <p>{{ focusedCard.shortDescription }}</p>
+          <p>Install URL</p>
+          <a :href="focusedCard.installUrl" target="_blank">{{
+            focusedCard.installUrl
+          }}</a>
+        </v-col>
+      </v-row>
     </div>
+  </div>
 </template>
 <script>
-import SimpleCard from "./CardList.vue";
+  import SimpleCard from "./CardList.vue";
 
   export default {
     name: "CardListModal",
-    props: [
-        "focusedCard",
-    ],
+    props: ["focusedCard"],
     components: {
-        SimpleCard
+      SimpleCard,
     },
     data() {
       return {
@@ -41,31 +36,27 @@ import SimpleCard from "./CardList.vue";
         cardImages: [],
         hoverFlag: false,
         page: 1,
-        length:0,
+        length: 0,
         pageSize: 12,
-        isCardDetailOpen: false
+        isCardDetailOpen: false,
       };
     },
-    created(){
-      console.log("CardDetailが正常に発火されてる")
+    created() {
+      console.log("CardDetailが正常に発火されてる");
     },
     methods: {
       onCardDetailModalOpen: function () {
         console.log("onStartModalOpen   ");
-        document.documentElement.style.overflow = 'hidden'
+        document.documentElement.style.overflow = "hidden";
         this.isCardDetailOpen = true;
       },
       onCardDetailModalClose: function () {
         console.log("onCardListModalClose");
-        document.documentElement.style.overflow = 'auto'
+        document.documentElement.style.overflow = "auto";
         this.isCardDetailOpen = false;
       },
     },
-    mounted(){
-    }
-    
-
-    
+    mounted() {},
   };
 </script>
 
@@ -77,55 +68,53 @@ import SimpleCard from "./CardList.vue";
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 100%;
-    height: 100%;
+    width: 100% !important;
+    height: 100% !important;
     background-color: rgba(0, 0, 0, 0.5);
-    z-index: 1;
-
-    .cards {
-      display: flex;
-      align-items: center;
-      .cardParent {
-        margin: 0.5rem;
-      }
-    }
+    z-index: 9999;
 
     .modal {
       position: relative;
-      width: 1200px;
+      width: 1000px;
       height: 600px;
+      margin: auto;
       padding: 1rem;
+      font-size: 1.25rem;
       border: 9px solid #d3fffd;
       background-color: #0e3145;
       box-shadow: 0px 0px 20px #d3fffd;
-      overflow: scroll; 
-      
-      &::before {
-          background-color: #0e3145;
-          position: absolute;
-          content: "";
-          display: block;
-          top: -8px;
-          bottom: -8px;
-          left: 40px;
-          right: 40px;
-        }
+      z-index: 1000;
+      text-align: center;
 
-        &::after {
-          background-color: #0e3145;
-          position: absolute;
-          content: "";
-          display: block;
-          top: 40px;
-          bottom: 40px;
-          left: -8px;
-          right: -8px;
-        }
+      &::before {
+        background-color: #0e3145;
+        position: absolute;
+        content: "";
+        display: block;
+        top: -8px;
+        bottom: -8px;
+        left: 40px;
+        right: 40px;
+      }
+
+      &::after {
+        background-color: #0e3145;
+        position: absolute;
+        content: "";
+        display: block;
+        top: 40px;
+        bottom: 40px;
+        left: -8px;
+        right: -8px;
+      }
+
+      .col {
+        padding-bottom: 0;
+      }
 
       span {
         position: relative;
-        z-index: 10;
-        font-size: 28px;
+        font-size: 1rem;
         letter-spacing: 0.15em;
         @keyframes neon {
           0% {
@@ -138,62 +127,41 @@ import SimpleCard from "./CardList.vue";
         animation: neon 2s infinite alternate;
       }
 
+      .modal-title {
+        margin-top: 1rem;
+        font-size: 1.75rem;
+      }
+
       .close-btn {
         cursor: pointer;
         text-align: right;
-        span {
-          z-index: 10;
-          font-size: 2rem;
-          text-shadow: none;
-          animation: none;
-        }
+        font-size: 2rem;
+        text-shadow: none;
       }
 
       .contents {
         display: flex;
         flex-direction: column;
-        z-index: 10;
+        justify-content: start;
+        max-height: 400px;
+        margin-top: 1rem;
+        overflow-y: scroll;
 
-        .select {
-          display: flex;
-          align-items: center;
-          padding: 1rem;
+        .list {
+          .card {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            padding-bottom: 2rem;
 
-          .select-icon {
-            margin: 1rem;
-            min-width: 165px;
-            span {
-              font-size: 1.15rem;
-            }
             &:hover {
               cursor: pointer;
-              background-color: #186883;
             }
-          }
-        }
 
-        .input-text {
-          margin: 2rem 0;
-          cursor: text;
-
-          input {
-            padding: 0.5rem;
-            border-top: solid 1px #d3fffd;
-            border-bottom: solid 2px #d3fffd;
-            font-size: 1rem;
-            color: #ffffff;
-          }
-        }
-
-        .start-btn {
-          margin-top: 1rem;
-          padding: 1rem;
-          background-color: #186883;
-          font-size: 1.5rem;
-
-          &:hover {
-            background-color: #2d909e;
-            cursor: pointer;
+            div {
+              width: 12%;
+              margin: 1rem 1rem;
+            }
           }
         }
       }

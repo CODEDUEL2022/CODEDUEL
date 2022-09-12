@@ -144,7 +144,7 @@
 
       span {
         position: relative;
-        z-index: 10;
+        z-index: 3;
         font-size: 1rem;
         letter-spacing: 0.15em;
         @keyframes neon {
@@ -183,6 +183,10 @@
             flex-wrap: wrap;
             justify-content: center;
             padding-bottom: 2rem;
+
+            &:hover {
+              cursor: pointer;
+            }
 
             div {
               width: 12%;

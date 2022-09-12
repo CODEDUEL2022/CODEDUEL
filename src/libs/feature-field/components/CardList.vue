@@ -1,17 +1,17 @@
 <template>
   <div class="item">
     <v-card class="black" color="grey lighten-4">
-      <v-img 
+      <v-img
         :src="require(`../../ui/assets/cards/${focusedCard.img}`)"
-        @click = "onCardDetailModalOpen"
-        >
+        @click="onCardDetailModalOpen"
+      >
       </v-img>
     </v-card>
     <CardDetail
       v-if="isCardDetailOpen"
       :focusedCard="focusedCard"
       :key="focusedCard.index"
-      :isCardDetailOpen = "isCardDetailOpen"
+      :isCardDetailOpen="isCardDetailOpen"
       @handleCardDetailModalClose="onCardDetailModalClose"
       @handleCardDetailModalOpen="onCardDetailModalOpen"
     />
@@ -19,44 +19,40 @@
 </template>
 
 <script>
-import CardDetail from "./CardDetail.vue"
+  import CardDetail from "./CardDetail.vue";
   export default {
     name: "SimpleCard",
-    components:{
+    components: {
       CardDetail,
     },
-    props: [
-      "focusedCard",
-    ],
-    data(){
-      return{
+    props: ["focusedCard"],
+    data() {
+      return {
         hoverFlag: false,
         thisImage: null,
-        isCardDetailOpen: false
-      }
+        isCardDetailOpen: false,
+      };
     },
     methods: {
-      mouseOverAction(){
-        console.log("hover")
-        this.hoverFlag = true
+      mouseOverAction() {
+        console.log("hover");
+        this.hoverFlag = true;
       },
-      mouseLeaveAction(){
-        this.hoverFlag = false
+      mouseLeaveAction() {
+        this.hoverFlag = false;
       },
       onCardDetailModalOpen: function () {
-        document.documentElement.style.overflow = 'hidden'
+        document.documentElement.style.overflow = "hidden";
         this.isCardDetailOpen = true;
-        
       },
       onCardDetailModalClose: function () {
-        document.documentElement.style.overflow = 'auto'
+        document.documentElement.style.overflow = "auto";
         this.isCardDetailOpen = false;
       },
-      
     },
-    mounted(){
+    mounted() {
       // this.thisImage = this.focusedCard
-    }
+    },
   };
 </script>
 
@@ -70,9 +66,13 @@ import CardDetail from "./CardDetail.vue"
     align-items: center;
     bottom: 0;
     justify-content: center;
-    opacity: .5;
+    opacity: 0.5;
     position: absolute;
     width: 100%;
-    overflow-y: scroll; 
-}
+    overflow-y: scroll;
+  }
+
+  .skeleton {
+    background-color: #c4c4c4;
+  }
 </style>
