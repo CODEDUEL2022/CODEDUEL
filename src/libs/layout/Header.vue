@@ -31,19 +31,20 @@ export default {
   align-items: center;
   padding: 0 2rem;
   background-color: transparent;
-  @keyframes neon {
-    0% {
-      text-shadow: 0 0 10px #00fff2, 0 0 5px #fff, 0 0 13px #d3fffd;
-    }
-    100% {
-      text-shadow: 0 0 10px #00fff2, 0 0 10px #fff, 0 0 0px #d3fffd;
-    }
-  }
-  animation: neon 2s infinite alternate;
+
   .title {
     font-family: "Gill Sans", sans-serif;
     font-weight: 200;
     letter-spacing: 0.15em;
+    @keyframes neon {
+      0% {
+        text-shadow: 0 0 10px #00fff2, 0 0 5px #fff, 0 0 13px #d3fffd;
+      }
+      100% {
+        text-shadow: 0 0 10px #00fff2, 0 0 10px #fff, 0 0 0px #d3fffd;
+      }
+    }
+    animation: neon 2s infinite alternate;
   }
 
   .btn {
@@ -56,6 +57,15 @@ export default {
     justify-content: center;
     border: none;
     border-radius: 0;
+    @keyframes neon {
+      0% {
+        text-shadow: 0 0 10px #00fff2, 0 0 5px #fff, 0 0 13px #d3fffd;
+      }
+      100% {
+        text-shadow: 0 0 10px #00fff2, 0 0 10px #fff, 0 0 0px #d3fffd;
+      }
+    }
+    animation: neon 2s infinite alternate;
   }
 }
 </style>

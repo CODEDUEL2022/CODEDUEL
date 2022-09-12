@@ -7,53 +7,84 @@
         >
         <div class="modal-content">
           <div class="title">CUDE_DUELとは</div>
-          <div class="contest">
-            CUDE_DUELとは１対１で対戦するカードゲームです
-            プレイヤーはプログラミング言語やフレームワークなどをモチーフにしたカードを用いて戦います
+          <div class="content">
+            CUDE_DUELとは1対1で対戦するカードゲームです
+            <br />プレイヤーはプログラミング言語やフレームワークなどをモチーフにしたカードを用いて戦います
           </div>
           <p></p>
-          <div class="title">基本的な情報</div>
-          <div class="contest">
-            - 手札 <br />&emsp;- 基本的に６枚<br />
+          <div class="title">プレイ画面の説明</div>
+          <v-img
+            class="HowToPlayImg"
+            width="500px"
+            :src="require(`../../ui/assets/HowToPlay/HowToPlay.png`)"
+          ></v-img>
+          <div class="content">
+            ①手札 <br />&emsp;- 基本的に６枚<br />
             &emsp;- カードを使用した毎ターン6枚になるまで補充されます<br />
-            - フィールド <br />&emsp;- 使用するカードを置く場所<br />
+            ②フィールド <br />&emsp;- 使用するカードを置く場所<br />
             &emsp;-
             手札のカードをドラック＆ドロップして持ってくることができます<br />
-            - ターミナル<br />
-            - フィールドにおいてあるカードとコンボできるカードを提示します<br />
-            - HP<br />
+            ③ターミナル<br />
+            &emsp;-
+            フィールドにおいてあるカードとコンボできるカードを提示します<br />
+            ④HP<br />
             &emsp;-自分と相手のHPを表示しています<br />
-            - OSfield<br />
+            ⑤OSfield<br />
             &emsp;- 場に設定いるフィールド<br />
             &emsp;- 一部のカードはOSフィールドによってボーナスが付きます<br />
-            - 発動ボタン<br />
+            ⑥発動ボタン<br />
             &emsp;- フィールドにおいてあるカードを使用するボタン<br />
             &emsp;-
             フィールドにおいてあるカードに問題がなければ押せるようになります<br />
             &emsp;-
             フィールドにカードが置かれていない、カードの組み合わせがコンボできない場合は押せません<br />
-            - カードリスト<br />
+            ⑦カードリスト<br />
             &emsp;- カードの一覧が見れます<br />
             &emsp;- カードのイラスト、名称、そのカードの説明を見れます<br />
-            - 遊び方<br />
-            &emsp;- 遊び方が見れます
           </div>
           <p></p>
           <div class="title">基本的な遊び方</div>
-          <div class="contest">
-            1. メイン画面に来たらまず、Input your name
-            と書かれているところの下に自分が使いたい名前を入力しましょう.
+          <div class="content">
+            <v-img
+              class="Play&UserNameImg"
+              width="500px"
+              :src="require(`../../ui/assets/HowToPlay/Play&UserName.png`)"
+            ></v-img>
+            1.Input your
+            nameと書かれているところに自分が使いたい名前を入力しましょう.
             ここで入力された名前は対戦中のHPバーに表示され、相手の画面にも表示されます.<br />
+            <p></p>
             2. ＞PLAYボタンを押し、ゲームモードを選択しましょう. このゲームには
-            `Custom match`, `Random match`, `CPU
-            match`の三種類のモードがあります<br />
-            `Custom match`を遊びたい場合<br />
+            Custom match, Random match, CPU matchの三種類のモードがあります<br />
+            <v-img
+              class="PlayImg"
+              width="500px"
+              :src="require(`../../ui/assets/HowToPlay/Play.png`)"
+            ></v-img>
+            <v-img
+              class="HumanOrCPUImg"
+              width="500px"
+              :src="require(`../../ui/assets/HowToPlay/HumanOrCPU.png`)"
+            ></v-img>
+            <v-img
+              class="CustomOrRandomImg"
+              width="500px"
+              :src="require(`../../ui/assets/HowToPlay/CustomOrRandom.png`)"
+            ></v-img>
+            <v-img
+              class="RoomIdImg"
+              width="500px"
+              :src="require(`../../ui/assets/HowToPlay/RoomId.png`)"
+            ></v-img>
+            Custom matchを遊びたい場合<br />
             ＞PLAYボタン -> Play against Human -> Custom
             matchを順に押し、roomIDを入力してから＞GAME STARTを押しましょう.<br />
-            `Random match`を遊びたい場合 ＞PLAYボタン -> Play against Human ->
-            Random matchを順に押しましょう.<br />
-            `CPU match`を遊びたい場合 ＞PLAYボタン -> Play against
-            CPUを順に押しましょう<br />
+            Random matchを遊びたい場合<br />
+            ＞PLAYボタン -> Play against Human -> Random
+            matchを順に押しましょう.<br />
+            CPU matchを遊びたい場合<br />
+            ＞PLAYボタン -> Play against CPUを順に押しましょう<br />
+            <p></p>
             3.プレイ画面に移ったら、相手プレイヤーとの対戦が始まります<br />
             自分のターン：手札から使用したいカードを選びフィールドに置きましょう。基本的にはカードは一枚ずつしか使用できませんが、コンボを組むことのできるカードがそろっている場合は複数枚同時に出せます<br />
             相手のターン：相手が行動しているので、相手がカードを使用するのを待ちましょう<br />
@@ -63,11 +94,12 @@
           </div>
           <p></p>
           <div class="title">３つのゲームモード</div>
-          <div class="contest">
-            - `Custom match`
-            同じRoomIDを入力することで任意のプレイヤーと対戦できます。 - `Random
-            match` 他のプレイヤーと対戦するモードです
-            対戦相手はランダムに決まります - `CPU match`
+          <div class="content">
+            - Custom match<br />
+            同じRoomIDを入力することで任意のプレイヤーと対戦できます.<br />-
+            Random match<br />
+            他のプレイヤーと対戦するモードです 対戦相手はランダムに決まります<br />
+            - CPU match<br />
             他のプレイヤーではなくコンピュータと戦うモードです
           </div>
         </div>
@@ -104,7 +136,6 @@ export default {
       height: 500px;
       margin: 5rem auto;
       padding: 1rem;
-      font-size: 1.25rem;
       border: 9px solid #d3fffd;
       background-color: #0e3145;
       box-shadow: 0px 0px 20px #d3fffd;
@@ -134,7 +165,6 @@ export default {
 
       div {
         position: relative;
-        letter-spacing: 0.15em;
       }
 
       .modal-content {
@@ -143,10 +173,20 @@ export default {
         overflow-x: hidden;
         height: 400px;
         .title {
-          font-size: 1.25rem;
-          color: white;
+          font-size: 1.75rem;
+          @keyframes neon {
+            0% {
+              text-shadow: 0 0 10px #00fff2, 0 0 5px #fff, 0 0 13px #d3fffd;
+            }
+            100% {
+              text-shadow: 0 0 10px #00fff2, 0 0 10px #fff, 0 0 0px #d3fffd;
+            }
+          }
+          animation: neon 2s infinite alternate;
         }
         .content {
+          font-size: 1.25rem;
+          color: white;
         }
       }
 
