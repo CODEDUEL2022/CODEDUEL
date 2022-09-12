@@ -407,6 +407,14 @@ export const comboDB = [
     idList: [13, 65],
     nameList: ["Elixir", "phoenix"],
   },
+  {
+    comboId: 52,
+    nameEn: "Pair",
+    nameJa: "ペア",
+    actionValue: 45,
+    idList: [24, 55],
+    nameList: ["JavaScript", "three.js"],
+  },
 ];
 
 export const cardDB = [
