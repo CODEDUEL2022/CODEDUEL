@@ -144,12 +144,12 @@ export default {
           this.showGeneralCutIn = false;
         } else if (res.data == 1) {
           this.opponentTurn = true;
-          this.message = "マッチング中";
+          this.message = "Matching...";
         } else if (res.data % 2 == 0) {
           this.opponentTurn = false;
           this.showGeneralCutIn = false;
         } else {
-          this.message = "相手のターンです";
+          this.message = "It's opponent turn.";
           this.opponentTurn = true;
         }
       });

@@ -1,58 +1,58 @@
 <template>
-    <div class="overWrap items">
-      <p class="judge" v-if="judgeWin">Win!</p>
-      <p class="judge" v-else>Lose...</p>
-      <v-btn outlined class="btn big" @click="$emit('goHome')">
-        <span>home</span>
-      </v-btn>
-    </div>
+  <div class="overWrap items">
+    <p class="judge" v-if="judgeWin">Win!</p>
+    <p class="judge" v-else>Lose...</p>
+    <v-btn class="home-btn" @click="$emit('goHome')">
+      <span>home</span>
+    </v-btn>
+  </div>
 </template>
 
 <script>
-export default {
-  props: ["judgeWin"]
-}
+  export default {
+    props: ["judgeWin"],
+  };
 </script>
 
-<style scoped>
-.items {
-  display: flex;
-  flex-direction: column;
-}
+<style scoped lang="scss">
+  .overWrap {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: "Gill Sans", sans-serif;
+    font-weight: 200;
+    font-size: 4rem;
+    letter-spacing: 0.15rem;
+    background-color: rgba(0, 0, 0, 0.8);
+    z-index: 1000;
 
-.judge {
-  font-size: 4rem;
-  animation: neon_blink 2s infinite alternate;
-}
+    .judge {
+      animation: neon 2s infinite alternate;
+      @keyframes neon {
+        0% {
+          text-shadow: 0 0 10px #00fff2, 0 0 5px #fff, 0 0 13px #d3fffd;
+        }
+        100% {
+          text-shadow: 0 0 12px #00fff2, 0 0 10px #fff, 0 0 0px #d3fffd;
+        }
+      }
+    }
 
-.btn.big {
-  width: 250px;
-  height: 75px;
-  margin: 1rem;
-  justify-content: center;
-  font-size: 28px;
-  text-decoration: none;
-  color: #ffffff;
-  text-align: center;
-  text-decoration-color: transparent;
-  margin: 1rem;
-  box-shadow: 0 0 0.75rem #d3fffd;
-}
-
-.overWrap {
-  /*　要素を重ねた時の順番　*/
-  z-index: 1;
-  /*　画面全体を覆う設定　*/
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.8);
-  /*　画面の中央に要素を表示させる設定　*/
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
+    .home-btn {
+      background-color: #0e3145;
+      color: #ffff;
+      font-size: 1.75rem;
+      font-weight: 100;
+      padding: 2rem;
+      margin: 1rem;
+      border: none;
+      border-radius: 0;
+    }
+  }
 </style>
