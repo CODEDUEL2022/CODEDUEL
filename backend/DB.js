@@ -399,6 +399,14 @@ export const comboDB = [
     idList: [24, 50],
     nameList: ["JavaScript", "Svelte"],
   },
+  {
+    comboId: 51,
+    nameEn: "Pair",
+    nameJa: "ペア",
+    actionValue: 60,
+    idList: [13, 65],
+    nameList: ["Elixir", "phoenix"],
+  },
 ];
 
 export const cardDB = [
@@ -507,7 +515,7 @@ export const cardDB = [
     type: "language",
     img: "Electron.svg",
     action: "attack",
-    actionValue: 40,
+    actionValue: 30,
     field: "",
   },
   {
@@ -516,7 +524,7 @@ export const cardDB = [
     type: "language",
     img: "Elixir.svg",
     action: "attack",
-    actionValue: 40,
+    actionValue: 20,
     field: "",
   },
   {
@@ -723,7 +731,7 @@ export const cardDB = [
     type: "language",
     img: "Perl.svg",
     action: "attack",
-    actionValue: 40,
+    actionValue: 20,
     field: "",
   },
   {
@@ -813,7 +821,7 @@ export const cardDB = [
     type: "language",
     img: "scala.svg",
     action: "attack",
-    actionValue: 40,
+    actionValue: 20,
     field: "",
   },
   {
@@ -928,7 +936,7 @@ export const cardDB = [
     id: 59,
     name: "外付けHDD",
     type: "attachment",
-    img: "External-HDD.png",
+    img: "externalHDD.svg",
     action: "enhancement",
     actionValue: 40,
     field: "",
@@ -937,7 +945,7 @@ export const cardDB = [
     id: 60,
     name: "冷却ファン",
     type: "attachment",
-    img: "Cooling-fan.png",
+    img: "coolingfan.svg",
     action: "enhancement",
     actionValue: 30,
     field: "",
@@ -946,7 +954,7 @@ export const cardDB = [
     id: 61,
     name: "セカンドディスプレイ",
     type: "attachment",
-    img: "PC-Monitor.png",
+    img: "pc-monitor.svg",
     action: "enhancement",
     actionValue: 30,
     field: "",
@@ -955,7 +963,7 @@ export const cardDB = [
     id: 62,
     name: "キーボード",
     type: "attachment",
-    img: "Keyboard.png",
+    img: "keyboard.svg",
     action: "enhancement",
     actionValue: 30,
     field: "",
@@ -964,7 +972,7 @@ export const cardDB = [
     id: 63,
     name: "マウス",
     type: "attachment",
-    img: "mouse.png",
+    img: "mouse.svg",
     action: "enhancement",
     actionValue: 10,
     field: "",
@@ -973,9 +981,18 @@ export const cardDB = [
     id: 64,
     name: "Hacker",
     type: "hack",
-    img: "hacker2.png",
+    img: "hacker.svg",
     action: "steal",
     actionValue: 30,
+    field: "",
+  },
+  {
+    id: 65,
+    name: "phoenix",
+    type: "language",
+    img: "phoenix.svg",
+    action: "attack",
+    actionValue: 20,
     field: "",
   },
 ];
@@ -992,7 +1009,7 @@ export const Dec2 = [
 
 export const Dec3 = [
   1, 4, 4, 5, 6, 8, 10, 12, 13, 17, 18, 21, 26, 27, 28, 35, 39, 40, 43, 44, 51,
-  52, 54, 59, 60, 63, 64,
+  52, 54, 59, 60, 63, 64, 65,
 ];
 
 export const cpuDec = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];

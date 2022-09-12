@@ -33,6 +33,8 @@
 <script>
 import FieldTemplate from "/src/libs/feature-field/templates/field-template.vue";
 import io from "socket.io-client";
+import nonNumericOnlyHash from "webpack/lib/util/nonNumericOnlyHash";
+
 
 export default {
   name: "field",
@@ -140,19 +142,19 @@ export default {
     this.$axios
       .post("/getTurn", { playerId: searchParams.get("id") })
       .then((res) => {
-        this.roundCount = res.data -2
+        this.roundCount = res.data;
         console.log(res.data);
         if (res.data == 0) {
           this.opponentTurn = false;
           this.showGeneralCutIn = false;
         } else if (res.data == 1) {
           this.opponentTurn = true;
-          this.message = "マッチング中";
-        } else if(res.data % 2 == 0){
+          this.message = "Matching...";
+        } else if (res.data % 2 == 0) {
           this.opponentTurn = false;
           this.showGeneralCutIn = false;
-        }else {
-          this.message = "相手のターンです";
+        } else {
+          this.message = "It's opponent turn.";
           this.opponentTurn = true;
         }
       });
@@ -250,22 +252,22 @@ export default {
         });
       this.currentFieldName = this.fieldData[this.roundCount % 4].name;
       this.currentFieldImg = this.fieldData[this.roundCount % 4].img;
-      this.nextFieldName = this.fieldData[(this.roundCount + 1) % 4].name;  
+      this.nextFieldName = this.fieldData[(this.roundCount + 1) % 4].name;
       // 負け！
-      if(this.yourHP <= 0) {
+      if (this.yourHP <= 0) {
         this.showGeneralCutIn = false;
         this.judgeWin = false;
         this.showBattleOutcome = true;
       }
       // 勝ち！
-      if(this.opponentHP <= 0) {
+      if (this.opponentHP <= 0) {
         this.showGeneralCutIn = false;
         this.showBattleOutcome = true;
       }
     },
     handleAction: function () {
       this.actionSE.play();
-      console.log("handleAction発火")
+      console.log("handleAction発火");
       const searchParams = new URLSearchParams(window.location.search);
       this.$axios.post("/controlTurn", { playerId: searchParams.get("id") });
       let cardValue = {
@@ -291,43 +293,52 @@ export default {
     this.socket.on(
       "gameStart",
       function (
-        playersName
-      ) // 報告:この処理が走るとルームに二人が入ったことになる
-      {
-      anotherThis.$axios
-      .post("/getTurn", { playerId: searchParams.get("id") })
-      .then((res) => {
-        if(res.data < 2){
-          console.log("gamestart")
-          //2回書いているのは仕様です。
-          anotherThis.$axios.post("/controlTurn", { playerId: searchParams.get("id") });
-          anotherThis.$axios.post("/controlTurn", { playerId: searchParams.get("id") });
-          //ここに処理を書いてほしいです
-          //ゲームスタート！みたいなカットイン＋opponentTurnによる場合分けで相手のターンみたいなのを表示する
-          anotherThis.showGeneralCutIn = true;
-          anotherThis.message = "Hello World";
-          const changeMessage = () => (anotherThis.message = "相手のターンです");
-          const closeCutIn = () => (anotherThis.showGeneralCutIn = false);
-          if (anotherThis.opponentTurn % 2 == 1) {
-            setTimeout(changeMessage, 1000);
-          } else {
-            setTimeout(closeCutIn, 1000);
-          }
-        }
-      })
+        playersName // 報告:この処理が走るとルームに二人が入ったことになる
+      ) {
+        anotherThis.$axios
+          .post("/getTurn", { playerId: searchParams.get("id") })
+          .then((res) => {
+            if (res.data < 2) {
+              console.log("gamestart");
+              // 2回書いているのは仕様です。
+              anotherThis.$axios.post("/controlTurn", {
+                playerId: searchParams.get("id"),
+              });
+              anotherThis.$axios.post("/controlTurn", {
+                playerId: searchParams.get("id"),
+              });
+              //ここに処理を書いてほしいです
+              //ゲームスタート！みたいなカットイン＋opponentTurnによる場合分けで相手のターンみたいなのを表示する
+              anotherThis.showGeneralCutIn = true;
+              anotherThis.message = "Hello World";
+              const changeMessage = () =>
+                (anotherThis.message = "相手のターンです");
+              const closeCutIn = () => (anotherThis.showGeneralCutIn = false);
+              if (anotherThis.opponentTurn % 2 == 1) {
+                setTimeout(changeMessage, 1000);
+              } else {
+                setTimeout(closeCutIn, 1000);
+              }
+              console.log(playersName.yourName);
+              console.log(playersName.opponentName);
+            }
+          });
       }
     );
     this.socket.on("HPinfo", function (HPinfo) {
       anotherThis.$axios
-      .post("/getTurn", { playerId: searchParams.get("id") })
-      .then((res) => {
-        anotherThis.roundCount = res.data - 2
-      })
+        .post("/getTurn", { playerId: searchParams.get("id") })
+        .then((res) => {
+          // anotherThis.roundCount = res.data;
+        });
       anotherThis.actionType = HPinfo.actionType; //攻撃の種類
-      anotherThis.roundCount = HPinfo.roundCount // 何ターン目かの情報
-      anotherThis.actionPoint = HPinfo.actionPoint
-      console.log("round:" + anotherThis.roundCount)
-      anotherThis.effectImages.splice(anotherThis.index, anotherThis.effectImages.length);
+      anotherThis.roundCount = HPinfo.roundCount; // 何ターン目かの情報
+      anotherThis.actionPoint = HPinfo.actionPoint;
+      console.log("round:" + anotherThis.roundCount);
+      anotherThis.effectImages.splice(
+        anotherThis.index,
+        anotherThis.effectImages.length
+      );
       // エフェクト用に画像を持ってくる
       for (let i = 0; i < HPinfo.usedCardIdList.length; i++) {
         let usedCard = "";
@@ -354,21 +365,6 @@ export default {
       }
     });
   },
-  updated() {
-    // roundを受け取ってそこからfieldDBと照らし合わせる
-    // room入室時にupdatedが発火されるがfieldDataがないのでエラーがでる。他の実装を考える
-    // this.currentFieldName = this.fieldData[this.roundCount].name;
-    // this.currentFieldImg = this.fieldData[this.roundCount].img;
-  },
-  watch(){
-      // if (this.isCardListModalOpen) {
-      //   console.log("開いた")
-      //   document.documentElement.style.overflow = 'hidden'
-      // } else {
-      //   document.documentElement.style.overflow = 'auto'
-      // }
-
-  }
 };
 </script>
 <style scoped></style>
