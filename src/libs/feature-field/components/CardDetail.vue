@@ -7,9 +7,17 @@
             <div class = "modal">
                 <v-container>
                 <v-row>
-                    <v-card class="black" color="grey lighten-4">
-                        <v-img :src="require(`../../ui/assets/new-cards/${focusedCard.img}`)"></v-img>
-                    </v-card>
+                    <v-col cols="4">
+                        <v-card class="black" color="grey lighten-4">
+                            <v-img :src="require(`../../ui/assets/cards/${focusedCard.img}`)"></v-img>
+                        </v-card>
+                    </v-col>
+                    <v-col cols = "8">
+                        <p>{{focusedCard.name}}</p>
+                        <p>{{focusedCard.shortDescription}}</p>
+                        <p>Install URL</p>
+                        <a :href="focusedCard.installUrl" target="_blank">{{focusedCard.installUrl}}</a>
+                    </v-col>
                 </v-row>
                 </v-container>
             </div>
@@ -40,24 +48,8 @@ import SimpleCard from "./CardList.vue";
     },
     created(){
       console.log("CardDetailが正常に発火されてる")
-      this.$axios.get("/getCardDB").then((res) => {
-      for (let i = 0; i < res.data.length; i++) {
-        this.cardList.push(res.data[i]);
-      }
-      this.cardImages = this.cardList.slice(this.pageSize*(this.page -1), this.pageSize*(this.page));
-      this.length = Math.ceil(this.cardList.length/this.pageSize);
-  });
-},
+    },
     methods: {
-      mouseOverAction(){
-        this.hoverFlag = true
-      },
-      mouseLeaveAction(){
-        this.hoverFlag = false
-      },
-      pageChange: function(pageNumber){
-        this.cardImages = this.cardList.slice(this.pageSize*(pageNumber -1), this.pageSize*(pageNumber));
-      },
       onCardDetailModalOpen: function () {
         console.log("onStartModalOpen   ");
         document.documentElement.style.overflow = 'hidden'
@@ -70,7 +62,6 @@ import SimpleCard from "./CardList.vue";
       },
     },
     mounted(){
-      this.cardImages = this.cardList.slice(this.pageSize*(this.page -1), this.pageSize*(this.page));
     }
     
 
@@ -108,6 +99,28 @@ import SimpleCard from "./CardList.vue";
       background-color: #0e3145;
       box-shadow: 0px 0px 20px #d3fffd;
       overflow: scroll; 
+      
+      &::before {
+          background-color: #0e3145;
+          position: absolute;
+          content: "";
+          display: block;
+          top: -8px;
+          bottom: -8px;
+          left: 40px;
+          right: 40px;
+        }
+
+        &::after {
+          background-color: #0e3145;
+          position: absolute;
+          content: "";
+          display: block;
+          top: 40px;
+          bottom: 40px;
+          left: -8px;
+          right: -8px;
+        }
 
       span {
         position: relative;

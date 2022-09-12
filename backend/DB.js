@@ -418,6 +418,8 @@ export const cardDB = [
     action: "attack",
     actionValue: 30,
     field: "",
+    shortDescription: "Rust 用のパワフルで実用的、かつ非常に高速な Web フレームワーク",
+    installUrl: "https://actix.rs/"
   },
   {
     id: 2,
@@ -427,6 +429,8 @@ export const cardDB = [
     action: "attack",
     actionValue: 20,
     field: "",
+    shortDescription: "Googleと個人や企業のコミュニティによって開発されているTypeScriptベースのオープンソースのフロントエンドWebアプリケーションフレームワーク",
+    installUrl: "https://angular.io/"
   },
   {
     id: 3,
@@ -436,6 +440,8 @@ export const cardDB = [
     action: "attack",
     actionValue: 20,
     field: "",
+    shortDescription: "世界で一番人気のあるフロントエンドライブラリ モバイルファーストなレスポンシブウェブを素早くデザイン・カスタマイズできる",
+    installUrl: "https://getbootstrap.jp/"
   },
   {
     id: 4,
@@ -445,6 +451,8 @@ export const cardDB = [
     action: "attack",
     actionValue: 50,
     field: "",
+    shortDescription: "1972年にAT&Tベル研究所で、UNIX の開発者であるのデニス・リッチーが主体となって開発した言語. • 元々 ALGOL という言語があり、ALGOL → B言語 → C言語の流れで「C言語」と命名された。 静的型付け言語であり、コンパイル型言語",
+    installUrl: "https://www.tohoho-web.com/ex/c-lang.html#about"
   },
   {
     id: 5,
@@ -454,6 +462,8 @@ export const cardDB = [
     action: "attack",
     actionValue: 50,
     field: "",
+    shortDescription: "2010年にMicrosoftが開発した「.NET」というフレームワークを扱うためのプログラミング言語.web開発だけでなく、モバイルアプリ開発、ゲーム開発にも使われている.",
+    installUrl: "https://docs.microsoft.com/ja-jp/dotnet/csharp/"
   },
   {
     id: 6,
@@ -463,6 +473,8 @@ export const cardDB = [
     action: "attack",
     actionValue: 60,
     field: "",
+    shortDescription: "汎用プログラミング言語のひとつである。派生元であるC言語の機能や特徴を継承しつつ、表現力と効率性の向上のために、手続き型プログラミング・データ抽象・オブジェクト指向プログラミング・ジェネリックプログラミングといった複数のプログラミングパラダイムが組み合わされている。",
+    installUrl: "https://docs.microsoft.com/ja-jp/cpp/cpp/?view=msvc-170"
   },
   {
     id: 7,
@@ -472,6 +484,8 @@ export const cardDB = [
     action: "attack",
     actionValue: 30,
     field: "",
+    shortDescription: "PHPで書かれたオープンソースのWebアプリケーションフレームワークである。先行するRuby on Railsの概念の多くを取り入れており、Rails流の高速開発とPHPの機動性を兼ね備えたフレームワーク",
+    installUrl: "https://cakephp.org/jp"
   },
   {
     id: 8,
@@ -481,6 +495,8 @@ export const cardDB = [
     action: "attack",
     actionValue: 70,
     field: "",
+    shortDescription: "1959年に事務処理用に開発されたプログラミング言語である。名前「Common Business Oriented L anguage」（共通事務処理用言語）に由来する",
+    installUrl: "https://www.cobol.co.jp/"
   },
   {
     id: 9,
@@ -490,6 +506,8 @@ export const cardDB = [
     action: "attack",
     actionValue: 10,
     field: "",
+    shortDescription: "カスケーディングスタイルシート(Cascading Style Sheets) (CSS) はスタイルシート言語であり、HTMLや XML (方言である SVG、MathML、XHTML などを含む) で記述された文書の体裁や見栄えを表現するために用いられる",
+    installUrl: "https://developer.mozilla.org/ja/docs/Web/CSS"
   },
   {
     id: 10,
@@ -499,6 +517,8 @@ export const cardDB = [
     action: "attack",
     actionValue: 30,
     field: "",
+    shortDescription: "ウェブアプリやモバイルアプリのクライアント開発向けにGoogleによって設計されたプログラミング言語。",
+    installUrl: "https://dart.dev/"
   },
   {
     id: 11,
@@ -508,6 +528,8 @@ export const cardDB = [
     action: "attack",
     actionValue: 20,
     field: "linux",
+    shortDescription: "無料かつオープンソースの高水準の Python Web フレームワーク",
+    installUrl: "https://www.djangoproject.com/"
   },
   {
     id: 12,
@@ -517,6 +539,8 @@ export const cardDB = [
     action: "attack",
     actionValue: 30,
     field: "",
+    shortDescription: "JavaScript、HTML、CSS によるデスクトップアプリケーションを構築するフレームワーク Chromiumと Node.js をバイナリに組み込むことで、単一のJavaScript コードベースを維持しつつ、ネイテイブ開発経験無しでも Windows、macOS、Linux で動作するクロスプラットフォームアプリを作成できる",
+    installUrl: "https://www.electronjs.org/"
   },
   {
     id: 13,
@@ -526,6 +550,8 @@ export const cardDB = [
     action: "attack",
     actionValue: 20,
     field: "",
+    shortDescription: "拡張性と保守性の高いアプリケーションを構築するためにデザインされた、動的で関数型のプログラミング言語",
+    installUrl: "https://elixir-lang.jp/"
   },
   {
     id: 14,
@@ -535,6 +561,8 @@ export const cardDB = [
     action: "attack",
     actionValue: 20,
     field: "",
+    shortDescription: "Node.jsのための高速で、革新的な、最小限のWebフレームワーク ",
+    installUrl: "http://expressjs.com/"
   },
   {
     id: 15,
@@ -544,6 +572,8 @@ export const cardDB = [
     action: "attack",
     actionValue: 20,
     field: "linux",
+    shortDescription: "Pythonの標準である型ヒントに基づいてPython 3.6 以降でAPI を構築するための、モダンで、高速(高パフォーマンス)な、Web フレームワーク",
+    installUrl: "https://fastapi.tiangolo.com/ja/"
   },
   {
     id: 16,
@@ -553,6 +583,8 @@ export const cardDB = [
     action: "attack",
     actionValue: 20,
     field: "linux",
+    shortDescription: "最も人気のあるPythonのWebアプリケーションフレームワークの1つ",
+    installUrl: "https://palletsprojects.com/p/flask/"
   },
   {
     id: 17,
@@ -562,6 +594,8 @@ export const cardDB = [
     action: "attack",
     actionValue: 40,
     field: "",
+    shortDescription: "Googleによって開発されたフリーかつオープンソースのUIのSDKである。単一のコードベースから、Android、iOS、Linux、macOS、Windows、Google Fuchsia向けのクロスプラットフォームアプリケーションを開発するために利用される",
+    installUrl: "https://flutter.dev/"
   },
   {
     id: 18,
@@ -571,6 +605,8 @@ export const cardDB = [
     action: "attack",
     actionValue: 80,
     field: "",
+    shortDescription: "Fortran は1950年代に誕生した、世界初の高級プログラミング言語 Fortran は FORmulaTRANslation の略 数値計算プログラム作成に適している。",
+    installUrl: "https://www.nag-j.co.jp/fortran/FI_1.html"
   },
   {
     id: 19,
@@ -580,6 +616,8 @@ export const cardDB = [
     action: "attack",
     actionValue: 30,
     field: "",
+    shortDescription: "ReactベースのオープンソースのSSGフレームワーク",
+    installUrl: "https://www.gatsbyjs.com/"
   },
   {
     id: 20,
@@ -589,6 +627,8 @@ export const cardDB = [
     action: "attack",
     actionValue: 40,
     field: "",
+    shortDescription: "Googleによって開発されたオープンソースのプログラミング言語 高速で静的型付けされたコンパイル言語でありながら、動的型付けされたインタプリタ言語のような感覚で使用できる",
+    installUrl: "https://go.dev/"
   },
   {
     id: 21,
@@ -598,6 +638,8 @@ export const cardDB = [
     action: "attack",
     actionValue: 30,
     field: "",
+    shortDescription: "非正格な評価を特徴とする純粋関数型プログラミング言語",
+    installUrl: "https://www.haskell.org/"
   },
   {
     id: 22,
@@ -607,6 +649,8 @@ export const cardDB = [
     action: "attack",
     actionValue: 10,
     field: "",
+    shortDescription: "HyperText Markup Language",
+    installUrl: "undefined"
   },
   {
     id: 23,
@@ -616,6 +660,8 @@ export const cardDB = [
     action: "attack",
     actionValue: 50,
     field: "",
+    shortDescription: "汎用プログラミング言語のひとつ 世界中で何百万人もの開発者が利用している",
+    installUrl: "https://www.java.com/ja/"
   },
   {
     id: 24,
@@ -625,6 +671,8 @@ export const cardDB = [
     action: "attack",
     actionValue: 10,
     field: "",
+    shortDescription: "ウェブページでよく使用されるスクリプト言語 Javaと同じ？そんなはず無いですよ。",
+    installUrl: "https://developer.mozilla.org/ja/docs/Web/JavaScript"
   },
   {
     id: 25,
@@ -634,6 +682,8 @@ export const cardDB = [
     action: "attack",
     actionValue: 10,
     field: "",
+    shortDescription: "高速で、小さく、機能豊富なJavaScriptライブラリ",
+    installUrl: "https://jquery.com/"
   },
   {
     id: 26,
@@ -643,6 +693,8 @@ export const cardDB = [
     action: "attack",
     actionValue: 30,
     field: "",
+    shortDescription: "科学計算や数値計算に適した柔軟な動的言語",
+    installUrl: "https://julialang.org/"
   },
   {
     id: 27,
@@ -652,6 +704,8 @@ export const cardDB = [
     action: "attack",
     actionValue: 30,
     field: "Android",
+    shortDescription: "静的型付けのオブジェクト指向プログラミング言語 2017年にAndroid公式開発言語に追加された",
+    installUrl: "https://kotlinlang.org/"
   },
   {
     id: 28,
@@ -661,6 +715,8 @@ export const cardDB = [
     action: "attack",
     actionValue: 30,
     field: "Android",
+    shortDescription: "強力なプログラミング言語Kotlin を用いて、システム間連携のため非同期なサーバーとクライアントを構築するためのフレームワーク",
+    installUrl: "https://jp.ktor.work/"
   },
   {
     id: 29,
@@ -670,6 +726,8 @@ export const cardDB = [
     action: "attack",
     actionValue: 40,
     field: "",
+    shortDescription: "MVCのWebアプリケーション開発用の無料・オープンソースのPHPで書かれたWebアプリケーションフレームワーク",
+    installUrl: "https://laravel.com/"
   },
   {
     id: 30,
@@ -679,6 +737,8 @@ export const cardDB = [
     action: "attack",
     actionValue: 20,
     field: "",
+    shortDescription: "より速く、より簡単なWeb開発のためのReactコンポーネント",
+    installUrl: "https://mui.com/"
   },
   {
     id: 31,
@@ -688,6 +748,8 @@ export const cardDB = [
     action: "attack",
     actionValue: 20,
     field: "",
+    shortDescription: "エンジニアや科学者向けに設計された、行列演算や配列演算を直接表現できる高水準のプログラミング言語",
+    installUrl: "https://jp.mathworks.com/products/matlab.html"
   },
   {
     id: 32,
@@ -697,6 +759,8 @@ export const cardDB = [
     action: "attack",
     actionValue: 30,
     field: "",
+    shortDescription: "Reactをベースに開発されたJavaScriptフレームワーク",
+    installUrl: "https://nextjs.org/"
   },
   {
     id: 33,
@@ -706,6 +770,8 @@ export const cardDB = [
     action: "attack",
     actionValue: 30,
     field: "windows",
+    shortDescription: "JavaScriptエンジン上に構築されたJavaScript実行環境の1つ",
+    installUrl: "https://nodejs.org/ja/"
   },
   {
     id: 34,
@@ -715,6 +781,8 @@ export const cardDB = [
     action: "attack",
     actionValue: 30,
     field: "",
+    shortDescription: "vueをベースに開発されたJavaScriptフレームワーク",
+    installUrl: "https://nuxtjs.org/ja/"
   },
   {
     id: 35,
@@ -724,6 +792,8 @@ export const cardDB = [
     action: "attack",
     actionValue: 30,
     field: "",
+    shortDescription: "C 言語の基本構造をベースにして、Smalltalk 言語を取り入れたオブジェクト指向言語",
+    installUrl: "undefined"
   },
   {
     id: 36,
@@ -733,6 +803,8 @@ export const cardDB = [
     action: "attack",
     actionValue: 20,
     field: "",
+    shortDescription: "ラリー・ウォールによって開発されたwebアプリケーション、システム管理、テキスト処理などのプログラムを書くのに広く用いられているプログラミング言語",
+    installUrl: "https://www.perl.org/"
   },
   {
     id: 37,
@@ -742,6 +814,8 @@ export const cardDB = [
     action: "attack",
     actionValue: 40,
     field: "",
+    shortDescription: "広く使われているオープンソースの汎用スクリプト言語 特に Web 開発に適しており、HTML に埋め込むことができる",
+    installUrl: "https://www.php.net/"
   },
   {
     id: 38,
@@ -751,6 +825,8 @@ export const cardDB = [
     action: "attack",
     actionValue: 10,
     field: "linux",
+    shortDescription: "システム管理やツール・アプリケーション開発・科学技術計算・Webシステムなどから、昨今の機械学習ブームでは科学技術計算ツールとしても使われている汎用的なプログラミング言語",
+    installUrl: "https://www.python.org/"
   },
   {
     id: 39,
@@ -760,6 +836,8 @@ export const cardDB = [
     action: "attack",
     actionValue: 20,
     field: "",
+    shortDescription: "オープンソース・フリーソフトウェアの統計解析向けのプログラミング言語及びその開発実行環境",
+    installUrl: "https://www.r-project.org/"
   },
   {
     id: 40,
@@ -769,6 +847,8 @@ export const cardDB = [
     action: "attack",
     actionValue: 40,
     field: "",
+    shortDescription: "Rubyで書かれたWebアプリケーションフレームワーク",
+    installUrl: "https://rubyonrails.org/"
   },
   {
     id: 41,
@@ -778,6 +858,8 @@ export const cardDB = [
     action: "attack",
     actionValue: 30,
     field: "",
+    shortDescription: "Metaとコミュニティによって開発されているユーザインタフェース構築のためのJavaScriptライブラリ",
+    installUrl: "https://ja.reactjs.org/"
   },
   {
     id: 42,
@@ -787,6 +869,8 @@ export const cardDB = [
     action: "attack",
     actionValue: 20,
     field: "",
+    shortDescription: "アプリケーションの状態管理のためのオープンソースのJavaScriptライブラリ. ReactやAngularなどのライブラリで最もよく使用される",
+    installUrl: "https://redux.js.org/"
   },
   {
     id: 43,
@@ -796,6 +880,8 @@ export const cardDB = [
     action: "attack",
     actionValue: 40,
     field: "",
+    shortDescription: "まつもとゆきひろ氏により開発されたオブジェクト指向スクリプト言語",
+    installUrl: "https://www.ruby-lang.org/ja/"
   },
   {
     id: 44,
@@ -805,6 +891,8 @@ export const cardDB = [
     action: "attack",
     actionValue: 30,
     field: "",
+    shortDescription: "性能、メモリ安全性、安全な並行性を目指して設計されたマルチパラダイムのプログラミング言語",
+    installUrl: "https://www.rust-lang.org/ja"
   },
   {
     id: 45,
@@ -814,6 +902,8 @@ export const cardDB = [
     action: "attack",
     actionValue: 20,
     field: "",
+    shortDescription: "「Syntactically Awesome StyleSheet」構文的にイケてるスタイルシート",
+    installUrl: "https://sass-lang.com/"
   },
   {
     id: 46,
@@ -823,6 +913,8 @@ export const cardDB = [
     action: "attack",
     actionValue: 20,
     field: "",
+    shortDescription: "オブジェクト指向言語と関数型言語の特徴を統合したマルチパラダイムのプログラミング言語",
+    installUrl: "https://www.scala-lang.org/"
   },
   {
     id: 47,
@@ -832,6 +924,8 @@ export const cardDB = [
     action: "attack",
     actionValue: 20,
     field: "",
+    shortDescription: "特に8歳から16歳向けにデザインされている無料教育プログラミング言語",
+    installUrl: "https://scratch.mit.edu/"
   },
   {
     id: 48,
@@ -841,6 +935,8 @@ export const cardDB = [
     action: "attack",
     actionValue: 20,
     field: "",
+    shortDescription: "クライアントとサーバー間の低遅延、双方向、イベントベースの通信を可能にするライブラリ",
+    installUrl: "https://socket.io/"
   },
   {
     id: 49,
@@ -850,6 +946,8 @@ export const cardDB = [
     action: "attack",
     actionValue: 40,
     field: "",
+    shortDescription: "Javaプラットフォーム向けのオープンソースアプリケーションフレームワークです",
+    installUrl: "https://spring.io/"
   },
   {
     id: 50,
@@ -859,6 +957,8 @@ export const cardDB = [
     action: "attack",
     actionValue: 20,
     field: "",
+    shortDescription: "Svelteは、ブラウザ上で動作するUIを作成するためのJavascriptオープンソースフレームワーク",
+    installUrl: "https://svelte.dev/"
   },
   {
     id: 51,
@@ -868,6 +968,8 @@ export const cardDB = [
     action: "attack",
     actionValue: 30,
     field: "iOS,macOS",
+    shortDescription: "iOS、Mac、Apple TV、Apple Watch向けのアプリを開発するためにAppleが作ったプログラミング言語",
+    installUrl: "https://www.apple.com/jp/swift/"
   },
   {
     id: 52,
@@ -877,6 +979,8 @@ export const cardDB = [
     action: "attack",
     actionValue: 30,
     field: "iOS,macOS",
+    shortDescription: "Appleが開発した、アプリケーションのGUIを構築するためのフレームワーク",
+    installUrl: "https://developer.apple.com/jp/xcode/swiftui/"
   },
   {
     id: 53,
@@ -886,6 +990,8 @@ export const cardDB = [
     action: "attack",
     actionValue: 20,
     field: "",
+    shortDescription: "オープンソースの CSS フレームワーク",
+    installUrl: "https://tailwindcss.com/"
   },
   {
     id: 54,
@@ -895,6 +1001,8 @@ export const cardDB = [
     action: "attack",
     actionValue: 30,
     field: "",
+    shortDescription: "デスクトップアプリ作成に使用できるフレームワーク Rustでメインのプロセスを記述する",
+    installUrl: "https://tauri.app/"
   },
   {
     id: 55,
@@ -904,6 +1012,8 @@ export const cardDB = [
     action: "attack",
     actionValue: 20,
     field: "",
+    shortDescription: "webブラウザ上でリアルタイムレンダリングによる3次元コンピュータグラフィックスを描画する、クロスブラウザ対応の軽量なJavaScriptライブラリおよびAPI",
+    installUrl: "https://threejs.org/"
   },
   {
     id: 56,
@@ -913,6 +1023,8 @@ export const cardDB = [
     action: "attack",
     actionValue: 20,
     field: "",
+    shortDescription: "マイクロソフトによって開発され、メンテナンスされているフリーでオープンソースのプログラミング言語 静的型付けとオブジェクト指向のJavaScript",
+    installUrl: "https://www.typescriptlang.org/"
   },
   {
     id: 57,
@@ -922,6 +1034,8 @@ export const cardDB = [
     action: "attack",
     actionValue: 30,
     field: "",
+    shortDescription: "WebアプリケーションにおけるUIを構築するための、オープンソースのJavaScriptフレームワーク",
+    installUrl: "https://jp.vuejs.org/index.html"
   },
   {
     id: 58,
@@ -931,6 +1045,8 @@ export const cardDB = [
     action: "attack",
     actionValue: 20,
     field: "",
+    shortDescription: "Vue.jsのUIライブラリ",
+    installUrl: "https://vuetifyjs.com/ja/"
   },
   {
     id: 59,
@@ -940,6 +1056,8 @@ export const cardDB = [
     action: "enhancement",
     actionValue: 40,
     field: "",
+    shortDescription: "HDDの容量が拡張して幸せになります",
+    installUrl: "あなたの財布から"
   },
   {
     id: 60,
@@ -949,6 +1067,8 @@ export const cardDB = [
     action: "enhancement",
     actionValue: 30,
     field: "",
+    shortDescription: "PCが冷えます。これが無いとCPUがドロっと溶けて数万円が吹き飛ぶことになりますよ。",
+    installUrl: "電源を切って箱をあけてみましょう。"
   },
   {
     id: 61,
@@ -958,6 +1078,8 @@ export const cardDB = [
     action: "enhancement",
     actionValue: 30,
     field: "",
+    shortDescription: "お金に余裕がある貴方にオススメの一品。エンジニアっぽさを醸し出せる最高のディスプレイ。",
+    installUrl: "あなたの財布から"
   },
   {
     id: 62,
@@ -967,6 +1089,8 @@ export const cardDB = [
     action: "enhancement",
     actionValue: 30,
     field: "",
+    shortDescription: "ｶﾀｶﾀｶﾀ…タ～～～ン",
+    installUrl: "目の前においてあるはずです。"
   },
   {
     id: 63,
@@ -976,6 +1100,8 @@ export const cardDB = [
     action: "enhancement",
     actionValue: 10,
     field: "",
+    shortDescription: "これが無いとデスクトップパソコンでクリックが出来ません。必需品ですね。",
+    installUrl: "USBを指してスイッチオン"
   },
   {
     id: 64,
@@ -985,6 +1111,8 @@ export const cardDB = [
     action: "steal",
     actionValue: 30,
     field: "",
+    shortDescription: "ハッカーはいつも貴方の傍に…　ほら、PCのウイルスソフトが警告してますよ？",
+    installUrl: "バックドアが仕込まれたファイルをクリックしましょう。"
   },
   {
     id: 65,
@@ -994,6 +1122,8 @@ export const cardDB = [
     action: "attack",
     actionValue: 20,
     field: "",
+    shortDescription: "関数型プログラミング言語Elixirで記述されたWeb開発フレームワークです。フェニックスは、サーバー側のモデル-ビュー-コントローラーパターンを使用します。",
+    installUrl: "https://elixir-lang.org/install.html"
   },
 ];
 

@@ -2,8 +2,9 @@
   <div class="item">
     <v-card class="black" color="grey lighten-4">
       <v-img 
-      :src="require(`../../ui/assets/new-cards/${focusedCard.img}`)"
-      @click="$emit('handleCardDetailModalOpen')">
+        :src="require(`../../ui/assets/cards/${focusedCard.img}`)"
+        @click = "onCardDetailModalOpen"
+        >
       </v-img>
     </v-card>
     <CardDetail
@@ -11,7 +12,8 @@
       :focusedCard="focusedCard"
       :key="focusedCard.index"
       :isCardDetailOpen = "isCardDetailOpen"
-      @handleCardDetailModalClose="$emit('handleCardDetailModalClose')"
+      @handleCardDetailModalClose="onCardDetailModalClose"
+      @handleCardDetailModalOpen="onCardDetailModalOpen"
     />
   </div>
 </template>
@@ -21,27 +23,39 @@ import CardDetail from "./CardDetail.vue"
   export default {
     name: "SimpleCard",
     components:{
-    CardDetail,
-},
+      CardDetail,
+    },
     props: [
       "focusedCard",
-      "isCardDetailOpen",
     ],
-    data:{
-      hoverFlag: false,
+    data(){
+      return{
+        hoverFlag: false,
+        thisImage: null,
+        isCardDetailOpen: false
+      }
     },
     methods: {
       mouseOverAction(){
         console.log("hover")
-        console.log(key)
         this.hoverFlag = true
       },
       mouseLeaveAction(){
         this.hoverFlag = false
       },
-      imageClick(){
-        console.log("click")
-      }
+      onCardDetailModalOpen: function () {
+        document.documentElement.style.overflow = 'hidden'
+        this.isCardDetailOpen = true;
+        
+      },
+      onCardDetailModalClose: function () {
+        document.documentElement.style.overflow = 'auto'
+        this.isCardDetailOpen = false;
+      },
+      
+    },
+    mounted(){
+      // this.thisImage = this.focusedCard
     }
   };
 </script>

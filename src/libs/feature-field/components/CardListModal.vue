@@ -11,9 +11,6 @@
               v-for="cardImage in cardImages"
               :focusedCard="cardImage"
               :key="cardImage.index"
-              :isCardDetailOpen = "isCardDetailOpen"
-              @handleCardDetailModalOpen="onCardDetailModalOpen()"
-              @handleCardDetailModalClose="onCardDetailModalClose()"
               />
           </v-row>
         </v-container>
@@ -33,9 +30,10 @@ import SimpleCard from "./CardList.vue";
 
   export default {
     name: "CardListModal",
+    props:["focusedCard"],
     components: {
-    SimpleCard
-},
+        SimpleCard
+    },
     data() {
       return {
         cardList: [],
@@ -44,7 +42,6 @@ import SimpleCard from "./CardList.vue";
         page: 1,
         length:0,
         pageSize: 12,
-        isCardDetailOpen: false
       };
     },
     created(){
@@ -66,16 +63,7 @@ import SimpleCard from "./CardList.vue";
       pageChange: function(pageNumber){
         this.cardImages = this.cardList.slice(this.pageSize*(pageNumber -1), this.pageSize*(pageNumber));
       },
-      onCardDetailModalOpen: function () {
-        console.log("onStartModalOpen   ");
-        document.documentElement.style.overflow = 'hidden'
-        this.isCardDetailOpen = true;
-      },
-      onCardDetailModalClose: function () {
-        console.log("onCardListModalClose");
-        document.documentElement.style.overflow = 'auto'
-        this.isCardDetailOpen = false;
-      },
+    
     },
     mounted(){
       this.cardImages = this.cardList.slice(this.pageSize*(this.page -1), this.pageSize*(this.page));
@@ -116,6 +104,28 @@ import SimpleCard from "./CardList.vue";
       background-color: #0e3145;
       box-shadow: 0px 0px 20px #d3fffd;
       overflow: scroll; 
+      
+      &::before {
+          background-color: #0e3145;
+          position: absolute;
+          content: "";
+          display: block;
+          top: -8px;
+          bottom: -8px;
+          left: 40px;
+          right: 40px;
+        }
+
+        &::after {
+          background-color: #0e3145;
+          position: absolute;
+          content: "";
+          display: block;
+          top: 40px;
+          bottom: 40px;
+          left: -8px;
+          right: -8px;
+        }
 
       span {
         position: relative;
