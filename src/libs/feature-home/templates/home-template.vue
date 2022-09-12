@@ -18,9 +18,11 @@
           />
         </span>
       </div>
+      <DecSelectBox />
       <div class="play-btn" @click="handleModalOpen(userName)">
         <span>＞ PLAY</span>
       </div>
+      <v-btn @click="$emit('openDeckModal')">{{ receivedDeck }}</v-btn>
       <StartModal
         v-if="isStartModalOpen"
         :userName="userName"
@@ -30,20 +32,35 @@
         @handlePushCPUPage="handlePushCPUPage"
         @handlePushAutoMatching="handlePushAutoMatching"
       />
+      <SelectDeckModal
+        v-if="isDeckModalOpen"
+        @closeDeckModal="$emit('closeDeckModal')"
+        @sendDeckFromChild="receiveDeckFromChild"
+      ></SelectDeckModal>
     </div>
   </div>
 </template>
 <script>
   import Header from "/src/libs/layout/Header.vue";
   import StartModal from "@/libs/feature-home/components/StartModal.vue";
+  import SelectDeckModal from "../components/SelectDeckModal.vue";
 
   export default {
     name: "HomeTemplate",
     components: {
-      Header,
-      StartModal,
+        Header,
+        StartModal,
+        SelectDeckModal
     },
-    props: ["isStartModalOpen", "roomId", "userName"],
+    data() {
+      return {
+        receivedDeck: "Deck1"
+      }
+    },
+    props: ["isStartModalOpen", "isDeckModalOpen", "selectedDeck", "roomId", "userName"],
+    updated () {
+      this.$emit('sendSelectedDeck', this.receivedDeck)
+    },
     methods: {
       handleModalOpen: function (userName) {
         if (!userName) {
@@ -62,7 +79,10 @@
       handlePushAutoMatching: function () {
         this.$emit("handlePushAutoMatching");
       },
-    },
+      receiveDeckFromChild: function (receivedDeck) {
+        this.receivedDeck = receivedDeck
+      }
+    }
   };
 </script>
 <style scoped lang="scss">

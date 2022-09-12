@@ -4,6 +4,10 @@
     :roomId.sync="roomId"
     :userName="userName"
     :isStartModalOpen="isStartModalOpen"
+    :isDeckModalOpen="isDeckModalOpen"
+    @sendSelectedDeck="receiveSelectedDeck"
+    @openDeckModal="openDeckModal"
+    @closeDeckModal="closeDeckModal"
     @handleStart="onPushField"
     @handleSetIssue="onSetId()"
     @handlePushCPUPage="onPushCPU()"
@@ -28,7 +32,9 @@
         socket: io("localhost:3000"),
         turn_flag: 0,
         playerId: "",
+        selectedDeck: "Deck1",
         isStartModalOpen: false,
+        isDeckModalOpen: false,
         roomId: null,
         startSE: new Audio(require("/src/libs/ui/assets/sounds/start.mp3")),
         back1SE: new Audio(require("/src/libs/ui/assets/sounds/back1.mp3")),
@@ -92,6 +98,16 @@
         this.back1SE.play();
         this.isStartModalOpen = false;
       },
+      openDeckModal: function () {
+        this.isDeckModalOpen = true;
+      },
+      closeDeckModal: function (){
+        this.isDeckModalOpen = false;
+      },
+      receiveSelectedDeck: function (selectedDeck) {
+        this.selectedDeck = selectedDeck
+        console.log(this.selectedDeck)
+      }
     },
   };
 </script>
