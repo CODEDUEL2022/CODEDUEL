@@ -2,7 +2,8 @@
   <div class="hp-monitor">
     <div class="you">
       <div class="flex">
-        <span class="user-name">You</span><span>HP:{{ yourHP }}</span>
+        <span class="user-name">{{ yourName }}</span
+        ><span>HP:{{ yourHP }}</span>
       </div>
       <div id="hp-frame">
         <div id="bar-you"></div>
@@ -11,7 +12,8 @@
     </div>
     <div class="opponent">
       <div class="flex">
-        <span class="user-name">Opponent</span><span>HP:{{ opponentHP }}</span>
+        <span class="user-name">{{ opponentName }}</span
+        ><span>HP:{{ opponentHP }}</span>
       </div>
       <div id="hp-frame">
         <div id="bar-opponent"></div>
@@ -51,6 +53,7 @@
   width: 70%;
   letter-spacing: 0.1em;
   text-shadow: 0 0 10px #d3fffd;
+
   .you {
     font-size: 1.5rem;
     margin-bottom: 1.5rem;
@@ -80,43 +83,43 @@
     }
   }
   #hp-frame {
-    background-color: #d3fffd;
+    background-color: #ffffff5e;
     height: 0.8rem;
     width: 100%;
     display: flex;
     align-items: center;
+  }
 
-    #bar-you {
-      height: 0.75rem;
-      background-color: #00fff2;
-      transition: 300ms;
-      width: 100%;
-    }
+  #bar-you {
+    height: 0.75rem;
+    background-color: #ff8844;
+    transition: 300ms;
+    width: 100%;
+  }
 
-    #mark-you {
-      width: 3px;
-      height: 3px;
-      border-radius: 3px;
-      background-color: #ffffff;
-      filter: saturate(300%);
-      box-shadow: 0 0 5px 3px #d3fffd, 0 0 7px 7px #00fff2;
-    }
+  #mark-you {
+    width: 3px;
+    height: 3px;
+    border-radius: 3px;
+    background-color: #ffffff;
+    filter: saturate(300%);
+    box-shadow: 0 0 5px 3px #fff1d3, 0 0 7px 7px #ff8844;
+  }
 
-    #bar-opponent {
-      height: 0.75rem;
-      background-color: #00fff2;
-      transition: 300ms;
-      width: 100%;
-    }
+  #bar-opponent {
+    height: 0.75rem;
+    background-color: #00fff2;
+    transition: 300ms;
+    width: 100%;
+  }
 
-    #mark-opponent {
-      width: 3px;
-      height: 3px;
-      border-radius: 3px;
-      background-color: #ffffff;
-      filter: saturate(300%);
-      box-shadow: 0 0 5px 3px #d3fffd, 0 0 7px 7px #00fff2;
-    }
+  #mark-opponent {
+    width: 3px;
+    height: 3px;
+    border-radius: 3px;
+    background-color: #ffffff;
+    filter: saturate(300%);
+    box-shadow: 0 0 5px 3px #d3fffd, 0 0 7px 7px #00fff2;
   }
 }
 </styled>

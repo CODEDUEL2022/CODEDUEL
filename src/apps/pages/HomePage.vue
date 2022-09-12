@@ -2,7 +2,6 @@
   <HomeTemplate
     :userName.sync="userName"
     :roomId.sync="roomId"
-    :userName="userName"
     :isStartModalOpen="isStartModalOpen"
     @handleStart="onPushField"
     @handleSetIssue="onSetId()"
@@ -49,6 +48,7 @@
           .post("/playerData", {
             RoomId: this.roomId,
             playerId: this.playerId,
+            playerName: this.userName,
             decId: 0, //仮においている。本来はデッキ選択用
           })
           .then((res) => {
