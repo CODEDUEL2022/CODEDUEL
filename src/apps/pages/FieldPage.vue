@@ -153,7 +153,7 @@
             this.opponentTurn = false;
             this.showGeneralCutIn = false;
           } else {
-            this.message = "It's opponent turn.";
+            this.message = `It's ${this.opponentName}'s turn.`;
             this.opponentTurn = true;
           }
         });
@@ -299,20 +299,17 @@
                 anotherThis.$axios.post("/controlTurn", {
                   playerId: searchParams.get("id"),
                 });
-                //ここに処理を書いてほしいです
                 //ゲームスタート！みたいなカットイン＋opponentTurnによる場合分けで相手のターンみたいなのを表示する
                 anotherThis.showGeneralCutIn = true;
-                anotherThis.message = "Hello World";
+                anotherThis.message = "Hello World!";
                 const changeMessage = () =>
-                  (anotherThis.message = "相手のターンです");
+                  (anotherThis.message = `It's ${anotherThis.opponentName}'s turn.`);
                 const closeCutIn = () => (anotherThis.showGeneralCutIn = false);
                 if (anotherThis.opponentTurn % 2 == 1) {
                   setTimeout(changeMessage, 1000);
                 } else {
                   setTimeout(closeCutIn, 1000);
                 }
-                console.log("@@@" + playersName.yourName);
-                console.log(playersName.opponentName);
                 anotherThis.yourName = playersName.yourName;
                 anotherThis.opponentName = playersName.opponentName;
                 console.log(anotherThis.yourName);
@@ -324,9 +321,7 @@
       this.socket.on("HPinfo", function (HPinfo) {
         anotherThis.$axios
           .post("/getTurn", { playerId: searchParams.get("id") })
-          .then((res) => {
-            // anotherThis.roundCount = res.data;
-          });
+          .then((res) => {});
         anotherThis.actionType = HPinfo.actionType; //攻撃の種類
         anotherThis.roundCount = HPinfo.roundCount; // 何ターン目かの情報
         anotherThis.actionPoint = HPinfo.actionPoint;
@@ -348,7 +343,7 @@
           anotherThis.yourHP = HPinfo.attackedPlayerHP;
           anotherThis.opponentHP = HPinfo.damagedPlayerHP;
           anotherThis.opponentTurn = true;
-          anotherThis.message = "相手のターンです";
+          anotherThis.message = `It's ${anotherThis.opponentName}'s turn.`;
           anotherThis.showGeneralCutIn = true;
         } else if (HPinfo.damagedPlayerID == playerId) {
           //攻撃された時の処理
