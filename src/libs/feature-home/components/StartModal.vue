@@ -140,7 +140,7 @@
         width: 500px;
         min-height: 400px;
         height: fit-content;
-        margin: 5rem auto;
+        margin: auto;
         padding: 1rem;
         font-size: 1.25rem;
         border: 9px solid #d3fffd;
