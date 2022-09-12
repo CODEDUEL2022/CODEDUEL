@@ -99,6 +99,14 @@
           this.fieldData.push(res.data[i]);
         }
       });
+      this.$axios.post("/getPlayerName",{
+        roomId: searchParams.get("room"),
+        playerId: searchParams.get("id"),
+      }).then((res) => {
+        console.log("playername"+res.data.yourName)
+        this.yourName = res.data.yourName;
+        this.opponentName = res.data.opponentName;
+      });
       //HPの共有
       this.$axios
         .post("/HPReload", {
@@ -310,12 +318,18 @@
                 } else {
                   setTimeout(closeCutIn, 1000);
                 }
-                anotherThis.yourName = playersName.yourName;
-                anotherThis.opponentName = playersName.opponentName;
-                console.log(anotherThis.yourName);
-                console.log(anotherThis.opponentName);
+                
               }
             });
+            setTimeout(
+              this.$axios.post("/getPlayerName",{
+              roomId: searchParams.get("room"),
+              playerId: searchParams.get("id"),
+            }).then((res) => {
+              anotherThis.yourName = res.data.yourName;
+              anotherThis.opponentName = res.data.opponentName;
+            }), 1000);
+            
         }
       );
       this.socket.on("HPinfo", function (HPinfo) {

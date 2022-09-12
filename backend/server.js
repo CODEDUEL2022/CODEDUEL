@@ -149,6 +149,13 @@ io.sockets.on("connection", function (socket) {
 });
 
 //カードドローリクエストがフロントから走った場合に発火
+app.post("/api/getPlayerName", (req, res) => {
+  res.send(getPlayersName(req.body.roomId,req.body.playerId));
+});
+
+
+
+//カードドローリクエストがフロントから走った場合に発火
 app.post("/api/cardDraw", (req, res) => {
   res.send(postCardDraw(req, res));
 });
