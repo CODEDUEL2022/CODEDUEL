@@ -114,6 +114,7 @@ export const postPlayerData = function (req, res, numClients) {
       decList: [],
     });
   }
+  console.log(req.body.playerName)
   return numClients[req.body.RoomId];
 };
 
@@ -296,17 +297,25 @@ const changeRound = function (playerId) {
 
 export const getPlayersName = function (roomId, playerId) {
   const yourIndex = playerDB.findIndex((e) => e.playerId === playerId);
+  let opponentIndex = 0
   const opponent = playerDB.filter((e) => {
     if (e.RoomId === roomId && e.playerId != playerId) {
       return true;
     }
   });
-  const opponentIndex = playerDB.findIndex(
-    (e) => e.playerId === opponent[0].playerId
-  );
+  console.log(opponent)
+  if(opponent.length != 0){
+    opponentIndex = playerDB.findIndex(
+      (e) => e.playerId === opponent[0].playerId
+    );
+  }else{
+    opponentIndex = 0
+  }
+
   const playersName = {
     yourName: playerDB[yourIndex].playerName,
     opponentName: playerDB[opponentIndex].playerName,
   };
+  
   return playersName;
 };

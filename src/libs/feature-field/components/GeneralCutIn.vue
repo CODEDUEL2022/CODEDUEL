@@ -32,7 +32,7 @@
     font-size: 3.5rem;
     letter-spacing: 0.3rem;
     background-color: rgba(0, 0, 0, 0.5);
-    z-index: 1000;
+    z-index: 1;
 
     .message {
       animation: neon 2s infinite alternate;
