@@ -284,6 +284,16 @@
         );
         this.showActionCutIn = true;
       },
+      onCardListModalOpen: function () {
+        console.log("onStartModalOpen   ");
+        document.documentElement.style.overflow = "hidden";
+        this.isCardListModalOpen = true;
+      },
+      onCardListModalClose: function () {
+        console.log("onCardListModalClose");
+        document.documentElement.style.overflow = "auto";
+        this.isCardListModalOpen = false;
+      },
     },
     mounted() {
       const searchParams = new URLSearchParams(window.location.search);
