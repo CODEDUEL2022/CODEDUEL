@@ -12,7 +12,7 @@
 
 <style scoped>
   .round {
-    font-size: 2rem;
+    font-size: 2.5rem;
     font-weight: medium;
     letter-spacing: 0.15em;
     text-align: center;
