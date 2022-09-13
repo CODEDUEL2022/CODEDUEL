@@ -21,7 +21,8 @@ import {
   cpuContorlTrun,
   cpuAction,
   cpuPostPlayerData,
-  cpuPlayerAction
+  cpuPlayerAction,
+  cpuGetPlayerName
 } from "./components/cpu.js";
 import path from "path";
 import { fileURLToPath } from "url";
@@ -216,9 +217,15 @@ app.get("/api/reload", (req, res) => {
 app.post("/api/cpuHPReload", (req, res) => {
   res.send(cpuHPReload(req, res));
 });
+
+
 app.post("/api/cpuPlayerData", (req, res) => {
   cpuPostPlayerData(req, res);
 });
+
+app.post("/api/cpuGetPlayerName",(req,res) => {
+  res.send(cpuGetPlayerName(req.body.playerId))
+})
 
 app.post("/api/cpuGetTurn", (req, res) => {
   res.json(cpuGetTurn(req, res));
