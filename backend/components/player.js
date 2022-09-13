@@ -136,6 +136,12 @@ export const getTurn = function (req, res) {
   return playerDB[selectTurnId].turnFlag;
 };
 
+export const getRoundCount = function (req) {
+  const selectTurnId = playerDB.findIndex(
+    (e) => e.playerId === req.body.playerId
+  );
+  return playerDB[selectTurnId].roundCount;
+};
 export const controlTurn = function (req, res) {
   const selectTurnId = playerDB.findIndex(
     (e) => e.playerId === req.body.playerId
