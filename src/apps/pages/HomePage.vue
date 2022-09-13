@@ -5,6 +5,7 @@
     :userName="userName"
     :isStartModalOpen="isStartModalOpen"
     :isDeckModalOpen="isDeckModalOpen"
+    :deckCardData="deckCardData"
     @sendSelectedDeck="receiveSelectedDeck"
     @openDeckModal="openDeckModal"
     @closeDeckModal="closeDeckModal"
@@ -32,13 +33,23 @@
         socket: io("localhost:3000"),
         turn_flag: 0,
         playerId: "",
-        selectedDeck: "Deck1",
+        selectedDeck: 1,
+        deckList: [],
         isStartModalOpen: false,
         isDeckModalOpen: false,
         roomId: null,
+        deckCardData: [],
+        cardDB: [],
         startSE: new Audio(require("/src/libs/ui/assets/sounds/start.mp3")),
         back1SE: new Audio(require("/src/libs/ui/assets/sounds/back1.mp3")),
       };
+    },
+    created() {
+      this.$axios.get("/getCardDB").then((res) => {
+        for (let i = 0; i < res.data.length; i++) {
+          this.cardDB.push(res.data[i]);
+        }
+      });
     },
     mounted() {
       this.socket.on("logined");
@@ -106,7 +117,44 @@
       },
       receiveSelectedDeck: function (selectedDeck) {
         this.selectedDeck = selectedDeck
-        console.log(this.selectedDeck)
+        this.deckList = []
+        if(this.selectedDeck == 1) {
+          this.$axios.get("/getDec1").then((res) => {
+            let deckCardData = []
+            for (let i = 0; i < res.data.length; i++) {
+              this.deckList.push(res.data[i]);
+              const matchedCard = this.cardDB.find(e => e.id == res.data[i]);
+              deckCardData.push(matchedCard)
+            }
+            this.deckCardData = deckCardData
+          });
+        };
+        if(this.selectedDeck == 2) {
+          this.$axios.get("/getDec2").then((res) => {
+            let deckCardData = []
+            for (let i = 0; i < res.data.length; i++) {
+              this.deckList.push(res.data[i]);
+              const matchedCard = this.cardDB.find(e => e.id == res.data[i]);
+              deckCardData.push(matchedCard)
+            }
+            this.deckCardData = deckCardData
+          });
+        };
+        if(this.selectedDeck == 3) {
+          this.$axios.get("/getDec3").then((res) => {
+            let deckCardData = []
+            for (let i = 0; i < res.data.length; i++) {
+              this.deckList.push(res.data[i]);
+              const matchedCard = this.cardDB.find(e => e.id == res.data[i]);
+              deckCardData.push(matchedCard)
+            }
+            this.deckCardData = deckCardData
+          });
+        };
+        // deckListから対応するcardListをつくる
+        // for (let i = 0; i < this.deckList.length; i++) {
+        //   console.log(matchedCard)
+        // }
       }
     },
   };

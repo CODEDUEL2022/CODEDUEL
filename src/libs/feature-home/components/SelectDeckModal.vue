@@ -5,24 +5,25 @@
         <div class="container">
           <ul>
           <li>
-            <input type="radio" id="f-option" name="selector" value="Deck1" v-model="selectedDeckFromChild">
+            <input type="radio" id="f-option" name="selector" value=1 v-model="selectedDeckFromChild">
             <label for="f-option">Deck1</label>
             <div class="check"></div>
           </li>
           <li>
-            <input type="radio" id="s-option" name="selector" value="Deck2" v-model="selectedDeckFromChild">
+            <input type="radio" id="s-option" name="selector" value=2 v-model="selectedDeckFromChild">
             <label for="s-option">Deck2</label>
             <div class="check"></div>
           </li>
           <li>
-            <input type="radio" id="t-option" name="selector" value="Deck3" v-model="selectedDeckFromChild">
+            <input type="radio" id="t-option" name="selector" value=3 v-model="selectedDeckFromChild">
             <label for="t-option">Deck3</label>
             <div class="check"></div>
           </li>
           </ul>
-          <div>{{ selectedDeckFromChild }}</div>
         </div>
-        <div></div>
+        <div class="cards">
+          <v-img height="100" width="70" v-for="card in deckCardData" :key="card.id" :src="require(`../../ui/assets/new-cards/${card.img}`)" :retain-focus="false"></v-img>
+        </div>
       </div>
     </div>
   </div>
@@ -32,9 +33,10 @@
 export default {
     data() {
         return {
-            selectedDeckFromChild: "Deck1"
+            selectedDeckFromChild: 1
         }
     },
+    props: ["deckCardData"],
     updated () {
         this.$emit('sendDeckFromChild', this.selectedDeckFromChild)
     }
@@ -69,27 +71,27 @@ export default {
         box-shadow: 0px 0px 20px #d3fffd;
         z-index: 10;
 
-        &::before {
-          background-color: #0e3145;
-          position: absolute;
-          content: "";
-          display: block;
-          top: -8px;
-          bottom: -8px;
-          left: 40px;
-          right: 40px;
-        }
+        // &::before {
+        //   background-color: #0e3145;
+        //   position: absolute;
+        //   content: "";
+        //   display: block;
+        //   top: -8px;
+        //   bottom: -8px;
+        //   left: 40px;
+        //   right: 40px;
+        // }
 
-        &::after {
-          background-color: #0e3145;
-          position: absolute;
-          content: "";
-          display: block;
-          top: 40px;
-          bottom: 40px;
-          left: -8px;
-          right: -8px;
-        }
+        // &::after {
+        //   background-color: #0e3145;
+        //   position: absolute;
+        //   content: "";
+        //   display: block;
+        //   top: 40px;
+        //   bottom: 40px;
+        //   left: -8px;
+        //   right: -8px;
+        // }
         }
       }
     }
@@ -183,4 +185,12 @@ export default {
   input[type=radio]:checked ~ label{
     color: #00f7ff;
   }
+
+.cards {
+  z-index: 1000;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: stretch;
+  width: 80%;
+}
 </style>

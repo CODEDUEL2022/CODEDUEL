@@ -22,7 +22,7 @@
       <div class="play-btn" @click="handleModalOpen(userName)">
         <span>＞ PLAY</span>
       </div>
-      <v-btn @click="$emit('openDeckModal')">{{ receivedDeck }}</v-btn>
+      <v-btn @click="$emit('openDeckModal')">Deck{{ receivedDeck }}</v-btn>
       <StartModal
         v-if="isStartModalOpen"
         :userName="userName"
@@ -34,6 +34,7 @@
       />
       <SelectDeckModal
         v-if="isDeckModalOpen"
+        :deckCardData="deckCardData"
         @closeDeckModal="$emit('closeDeckModal')"
         @sendDeckFromChild="receiveDeckFromChild"
       ></SelectDeckModal>
@@ -54,10 +55,10 @@
     },
     data() {
       return {
-        receivedDeck: "Deck1"
+        receivedDeck: 1
       }
     },
-    props: ["isStartModalOpen", "isDeckModalOpen", "selectedDeck", "roomId", "userName"],
+    props: ["isStartModalOpen", "isDeckModalOpen", "selectedDeck", "roomId", "userName", "deckCardData"],
     updated () {
       this.$emit('sendSelectedDeck', this.receivedDeck)
     },
