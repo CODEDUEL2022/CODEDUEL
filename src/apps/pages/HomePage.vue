@@ -70,6 +70,7 @@ import io from "socket.io-client";
         this.playerId = Math.random().toString(32).substring(2);
         this.$axios.post("/cpuPlayerData", {
           playerId: this.playerId,
+          playerName: this.userName,
           decId: 0, //仮においている。本来はデッキ選択用
         })
         .then((res) => {
@@ -87,6 +88,7 @@ import io from "socket.io-client";
       this.playerId = Math.random().toString(32).substring(2);
       this.$axios.post("/cpuPlayerData", {
         playerId: this.playerId,
+        playerName: this.userName,
         decId: 0, //仮においている。本来はデッキ選択用
       });
       this.$router.push({
