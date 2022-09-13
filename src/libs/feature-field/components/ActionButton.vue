@@ -27,7 +27,7 @@
     },
     methods: {
       ableToAction: function () {
-        if (isEnableAction === true) {
+        if (isEnableAction == true) {
           this.ableToActionSE.play();
         }
       },

@@ -319,7 +319,7 @@
         }
       },
       handleAction: function () {
-        this.actionSE.play();
+        this.generalAttackSE.play();
         console.log("handleAction発火");
         const searchParams = new URLSearchParams(window.location.search);
         this.$axios.post("/controlTurn", { playerId: searchParams.get("id") });
@@ -335,9 +335,11 @@
         this.showActionCutIn = true;
       },
       onCardListModalOpen: function () {
+        this.openModalSE.play();
         this.isCardListModalOpen = true;
       },
       onCardListModalClose: function () {
+        this.backSE.play();
         this.isCardListModalOpen = false;
       },
       onShowHowToPlay: function () {
