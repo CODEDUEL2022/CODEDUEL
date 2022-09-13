@@ -20,11 +20,14 @@
     :yourId="yourId"
     :effectImages="effectImages"
     :isHowToPlayOpen="isHowToPlayOpen"
+    :isCardListModalOpen="isCardListModalOpen"
     :attackOptions="attackOptions()"
     :isEnableAction="isEnableAction()"
     @goHome="goHome()"
     @closeActionCutIn="closeActionCutIn()"
     @handleAction="handleAction()"
+    @handleModalOpen="onCardListModalOpen()"
+    @handleModalClose="onCardListModalClose()"
     @handleHowToPlayModalClose="onHowToPlayClose()"
     @handleShowHowToPlay="onShowHowToPlay()"
   />
@@ -65,6 +68,7 @@
         showBattleOutcome: false,
         judgeWin: true,
         isHowToPlayOpen: false,
+        isCardListModalOpen: false,
         actionType: "",
         actionPoint: "",
         yourName: "User1",
@@ -356,6 +360,12 @@
           this.selectedCardsData.length
         );
         console.log(this.selectedCardsData);
+      },
+      onCardListModalOpen: function () {
+        this.isCardListModalOpen = true;
+      },
+      onCardListModalClose: function () {
+        this.isCardListModalOpen = false;
       },
       onShowHowToPlay: function () {
         this.isHowToPlayOpen = true;

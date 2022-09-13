@@ -172,7 +172,6 @@
       this.$axios
         .post("/getTurn", { playerId: searchParams.get("id") })
         .then((res) => {
-          this.roundCount = res.data;
           console.log(res.data);
           if (res.data == 0) {
             this.opponentTurn = false;
@@ -187,6 +186,11 @@
             this.message = `It's ${this.opponentName}'s turn.`;
             this.opponentTurn = true;
           }
+        });
+      this.$axios
+        .post("/getRoundCount", { playerId: searchParams.get("id") })
+        .then((res) => {
+          this.roundCount = res.data;
         });
       this.$axios
         .post("/getPlayerName", {
@@ -315,6 +319,7 @@
         }
       },
       handleAction: function () {
+        this.actionSE.play();
         console.log("handleAction発火");
         const searchParams = new URLSearchParams(window.location.search);
         this.$axios.post("/controlTurn", { playerId: searchParams.get("id") });
@@ -328,6 +333,12 @@
           this.selectedCardsData.length
         );
         this.showActionCutIn = true;
+      },
+      onCardListModalOpen: function () {
+        this.isCardListModalOpen = true;
+      },
+      onCardListModalClose: function () {
+        this.isCardListModalOpen = false;
       },
       onShowHowToPlay: function () {
         this.openModalSE.play();
