@@ -45,12 +45,25 @@
     },
     data() {
       return {
-        actionSE: new Audio(
-          require("/src/libs/ui/assets/sounds/action_se.mp3")
+        generalAttackSE: new Audio(
+          require("/src/libs/ui/assets/sounds/action/general-attack.mp3")
+        ),
+        comboAttackSE: new Audio(
+          require("/src/libs/ui/assets/sounds/action/combo-attack.mp3")
+        ),
+        enhancementSE: new Audio(
+          require("/src/libs/ui/assets/sounds/action/enhancement.mp3")
+        ),
+        hackerSE: new Audio(
+          require("/src/libs/ui/assets/sounds/action/hacker.mp3")
         ),
         damageSE: new Audio(
-          require("/src/libs/ui/assets/sounds/damage_se.mp3")
+          require("/src/libs/ui/assets/sounds/action/damage.mp3")
         ),
+        openModalSE: new Audio(
+          require("/src/libs/ui/assets/sounds/open-modal.mp3")
+        ),
+        backSE: new Audio(require("/src/libs/ui/assets/sounds/back.mp3")),
         clickSE: new Audio(require("/src/libs/ui/assets/sounds/click.mp3")),
         message: "",
         showGeneralCutIn: true,
@@ -268,6 +281,7 @@
         }
       },
       goHome: function () {
+        this.clickSE.play();
         this.$router.push("/");
       },
       closeActionCutIn: function () {
@@ -305,7 +319,7 @@
         }
       },
       handleAction: function () {
-        this.actionSE.play();
+        this.generalAttackSE.play();
         console.log("handleAction発火");
         const searchParams = new URLSearchParams(window.location.search);
         this.$axios.post("/controlTurn", { playerId: searchParams.get("id") });
@@ -321,15 +335,19 @@
         this.showActionCutIn = true;
       },
       onCardListModalOpen: function () {
+        this.openModalSE.play();
         this.isCardListModalOpen = true;
       },
       onCardListModalClose: function () {
+        this.backSE.play();
         this.isCardListModalOpen = false;
       },
       onShowHowToPlay: function () {
+        this.openModalSE.play();
         this.isHowToPlayOpen = true;
       },
       onHowToPlayClose: function () {
+        this.backSE.play();
         this.isHowToPlayOpen = false;
       },
     },
@@ -411,6 +429,7 @@
         }
         if (HPinfo.attackedPlayerID == playerId) {
           //攻撃した時の処理
+          anotherThis.generalAttackSE.play();
           anotherThis.yourHP = HPinfo.attackedPlayerHP;
           anotherThis.opponentHP = HPinfo.damagedPlayerHP;
           anotherThis.opponentTurn = true;

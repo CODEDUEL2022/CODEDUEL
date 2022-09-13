@@ -41,12 +41,25 @@
     },
     data() {
       return {
-        actionSE: new Audio(
-          require("/src/libs/ui/assets/sounds/action_se.mp3")
+        generalAttackSE: new Audio(
+          require("/src/libs/ui/assets/sounds/action/general-attack.mp3")
+        ),
+        comboAttackSE: new Audio(
+          require("/src/libs/ui/assets/sounds/action/combo-attack.mp3")
+        ),
+        enhancementSE: new Audio(
+          require("/src/libs/ui/assets/sounds/action/enhancement.mp3")
+        ),
+        hackerSE: new Audio(
+          require("/src/libs/ui/assets/sounds/action/hacker.mp3")
         ),
         damageSE: new Audio(
-          require("/src/libs/ui/assets/sounds/damage_se.mp3")
+          require("/src/libs/ui/assets/sounds/action/damage.mp3")
         ),
+        openModalSE: new Audio(
+          require("/src/libs/ui/assets/sounds/open-modal.mp3")
+        ),
+        backSE: new Audio(require("/src/libs/ui/assets/sounds/back.mp3")),
         clickSE: new Audio(require("/src/libs/ui/assets/sounds/click.mp3")),
         cardsList: [],
         message: "準備が完了するまでしばらくお待ちください",
@@ -219,6 +232,7 @@
       },
 
       goHome: function () {
+        this.clickSE.play();
         this.$router.push("/");
       },
       closeGeneralCutIn: function () {
@@ -301,6 +315,7 @@
         this.showActionCutIn = true;
       },
       isCpuAction: function (cardValue) {
+        this.damageSE.play();
         this.effectImages.splice(this.index, this.effectImages.length);
         this.actionPoint = cardValue.damageValue;
         for (let i = 0; i < cardValue.usedCardIdList.length; i++) {
@@ -317,7 +332,7 @@
         this.showActionCutIn = true;
       },
       handleAction: function () {
-        this.actionSE.play();
+        this.generalActionSE.play();
         let anotherThis = this;
         const searchParams = new URLSearchParams(window.location.search);
         let cardValue = {

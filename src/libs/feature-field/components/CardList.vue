@@ -22,6 +22,8 @@
       return {
         hoverFlag: false,
         thisImage: null,
+        clickSE: new Audio(require("/src/libs/ui/assets/sounds/click.mp3")),
+        backSE: new Audio(require("/src/libs/ui/assets/sounds/back.mp3")),
       };
     },
     methods: {
@@ -33,9 +35,11 @@
         this.hoverFlag = false;
       },
       onCardDetailModalOpen: function () {
+        this.clickSE.play();
         this.$emit("onCardDetailModalOpen", this.focusedCard);
       },
       onCardDetailModalClose: function () {
+        this.backSE.play();
         document.documentElement.style.overflow = "auto";
         this.isCardDetailOpen = false;
       },
