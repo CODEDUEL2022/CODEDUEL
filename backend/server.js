@@ -1,4 +1,3 @@
-
 import { cardDB } from "./DB.js";
 import { comboDB } from "./DB.js";
 import { fieldDB } from "./DB.js";
@@ -21,7 +20,8 @@ import {
   cpuContorlTrun,
   cpuAction,
   cpuPostPlayerData,
-  cpuPlayerAction
+  cpuPlayerAction,
+  cpuGetPlayerName,
 } from "./components/cpu.js";
 import path from "path";
 import { fileURLToPath } from "url";
@@ -118,6 +118,7 @@ io.sockets.on("connection", function (socket) {
     } else {
       numClients[RoomId]++;
     }
+    let checkRoomJoin = false;
     //もしルームの人数が２人以上ならルームに入れない
     if (numClients[RoomId] > 2) {
       console.log("This room is full");
@@ -126,6 +127,7 @@ io.sockets.on("connection", function (socket) {
       console.log("Roomに入室が完了しました");
       console.log(RoomId);
       console.log("今のRoomに居る人数" + numClients[RoomId]);
+      checkRoomJoin = true;
     }
     //ルーム入室
   });
@@ -150,10 +152,8 @@ io.sockets.on("connection", function (socket) {
 
 //カードドローリクエストがフロントから走った場合に発火
 app.post("/api/getPlayerName", (req, res) => {
-  res.send(getPlayersName(req.body.roomId,req.body.playerId));
+  res.send(getPlayersName(req.body.roomId, req.body.playerId));
 });
-
-
 
 //カードドローリクエストがフロントから走った場合に発火
 app.post("/api/cardDraw", (req, res) => {
@@ -216,8 +216,13 @@ app.get("/api/reload", (req, res) => {
 app.post("/api/cpuHPReload", (req, res) => {
   res.send(cpuHPReload(req, res));
 });
+
 app.post("/api/cpuPlayerData", (req, res) => {
   cpuPostPlayerData(req, res);
+});
+
+app.post("/api/cpuGetPlayerName", (req, res) => {
+  res.send(cpuGetPlayerName(req.body.playerId));
 });
 
 app.post("/api/cpuGetTurn", (req, res) => {
@@ -236,9 +241,9 @@ app.post("/api/cpuControlTurn", (req, res) => {
 app.post("/api/cpuAction", (req, res) => {
   res.send(cpuAction(req, res));
 });
-app.post("/api/cpuPlayerAction", (req,res) => {
-  res.send(cpuPlayerAction(req,res))
-})
+app.post("/api/cpuPlayerAction", (req, res) => {
+  res.send(cpuPlayerAction(req, res));
+});
 
 http.listen(PORT, function () {
   console.log("server listening. Port:" + PORT);

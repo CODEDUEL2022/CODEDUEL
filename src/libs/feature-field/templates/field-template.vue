@@ -1,6 +1,10 @@
 <template>
   <div>
-    <Header />
+    <Header
+      :isHowToPlayOpen="isHowToPlayOpen"
+      @handleShowHowToPlay="handleShowHowToPlay"
+      @handleHowToPlayModalClose="$emit('handleHowToPlayModalClose')"
+    />
     <div v-show="showGeneralCutIn">
       <GeneralCutIn :message="message" />
     </div>
@@ -167,10 +171,16 @@ export default {
     "selectedId",
     "comboData",
     "isEnableAction",
-    "isCardListModalOpen",
     "attackOptions",
     "focusedCard",
+    "isHowToPlayOpen",
+    "isCardListModalOpen",
   ],
+  methods: {
+    handleShowHowToPlay: function () {
+      this.$emit("handleShowHowToPlay");
+    },
+  },
   data() {
     return {
       // drag&drop用のデータ
@@ -184,99 +194,99 @@ export default {
 </script>
 
 <style scoped lang="scss">
-  .field-container {
-    font-family: "Gill Sans", sans-serif;
-    font-weight: 200;
-    font-size: 1.5rem;
-    margin: 0.25rem 2rem;
+.field-container {
+  font-family: "Gill Sans", sans-serif;
+  font-weight: 200;
+  font-size: 1.5rem;
+  margin: 0.25rem 2rem;
 
-    .first-row {
-      margin-bottom: 2rem;
-      text-align: center;
-      height: 9rem;
-    }
+  .first-row {
+    margin-bottom: 2rem;
+    text-align: center;
+    height: 9rem;
+  }
 
-    .second-row {
-      margin-bottom: 1rem;
-      .field {
-        height: 15rem;
-        width: 98%;
-        background: #144f61;
-        border: 1px solid #00fff2;
-        box-shadow: 0px 0px 10px #00fff2;
+  .second-row {
+    margin-bottom: 1rem;
+    .field {
+      height: 15rem;
+      width: 98%;
+      background: #144f61;
+      border: 1px solid #00fff2;
+      box-shadow: 0px 0px 10px #00fff2;
 
-        .area {
-          display: flex;
-          justify-content: stretch;
-          width: 100%;
-          height: 100%;
-        }
-      }
-    }
-
-    .third-row {
       .area {
         display: flex;
         justify-content: stretch;
-        height: fit-content;
-      }
-
-      .card-list-btn {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        text-align: center;
-        width: 180px;
-        height: fit-content;
-        padding: 0.75rem 2rem;
-        margin-top: 2rem;
-        position: relative;
-        border: 4px solid #00fff2;
-        background-color: #0e3145;
-        box-shadow: 0px 0px 5px #00fff2;
-        cursor: pointer;
-
-        span {
-          position: relative;
-          z-index: 1;
-          color: #00fff2;
-          font-size: 1.25rem;
-          letter-spacing: 0.15rem;
-        }
-      }
-      .card-list-btn::before {
-        position: absolute;
-        content: "";
-        display: block;
-        top: -3px;
-        bottom: -3px;
-        left: 10px;
-        right: 10px;
-        background-color: #0e3145;
-      }
-      .card-list-btn::after {
-        position: absolute;
-        content: "";
-        display: block;
-        top: 10px;
-        bottom: 10px;
-        left: -3px;
-        right: -3px;
-        background-color: #0e3145;
-      }
-
-      .card-list-btn:hover,
-      .card-list-btn:hover::after,
-      .card-list-btn:hover::before {
-        background-color: #144f61;
+        width: 100%;
+        height: 100%;
       }
     }
   }
 
-  @media screen and (max-width: 959px) {
-    /* 959px以下に適用されるCSS（タブレット用） */
+  .third-row {
+    .area {
+      display: flex;
+      justify-content: stretch;
+      height: fit-content;
+    }
+
+    .card-list-btn {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      width: 180px;
+      height: fit-content;
+      padding: 0.75rem 2rem;
+      margin-top: 2rem;
+      position: relative;
+      border: 4px solid #00fff2;
+      background-color: #0e3145;
+      box-shadow: 0px 0px 5px #00fff2;
+      cursor: pointer;
+
+      span {
+        position: relative;
+        z-index: 1;
+        color: #00fff2;
+        font-size: 1.25rem;
+        letter-spacing: 0.15rem;
+      }
+    }
+    .card-list-btn::before {
+      position: absolute;
+      content: "";
+      display: block;
+      top: -3px;
+      bottom: -3px;
+      left: 10px;
+      right: 10px;
+      background-color: #0e3145;
+    }
+    .card-list-btn::after {
+      position: absolute;
+      content: "";
+      display: block;
+      top: 10px;
+      bottom: 10px;
+      left: -3px;
+      right: -3px;
+      background-color: #0e3145;
+    }
+
+    .card-list-btn:hover,
+    .card-list-btn:hover::after,
+    .card-list-btn:hover::before {
+      background-color: #144f61;
+    }
   }
-  @media screen and (max-width: 480px) {
-    /* 480px以下に適用されるCSS（スマホ用） */
-  }
+}
+
+@media screen and (max-width: 959px) {
+  /* 959px以下に適用されるCSS（タブレット用） */
+}
+@media screen and (max-width: 480px) {
+  /* 480px以下に適用されるCSS（スマホ用） */
+}
 </style>

@@ -1,6 +1,6 @@
 <template>
   <FieldTemplate
-  :message="message"
+    :message="message"
     :showGeneralCutIn="showGeneralCutIn"
     :showActionCutIn="showActionCutIn"
     :showBattleOutcome="showBattleOutcome"
@@ -19,11 +19,14 @@
     :selectedId="selectedId"
     :yourId="yourId"
     :effectImages="effectImages"
+    :isHowToPlayOpen="isHowToPlayOpen"
     :attackOptions="attackOptions()"
     :isEnableAction="isEnableAction()"
     @goHome="goHome()"
     @closeActionCutIn="closeActionCutIn()"
     @handleAction="handleAction()"
+    @handleHowToPlayModalClose="onHowToPlayClose()"
+    @handleShowHowToPlay="onShowHowToPlay()"
   />
 </template>
 <script>
@@ -44,11 +47,12 @@ export default {
       showActionCutIn: false,
       showBattleOutcome: false,
       judgeWin: true,
+      isHowToPlayOpen: false,
       actionType: "",
       actionPoint: "",
       yourName: "User1",
       yourHP: 200,
-      opponentName: "User2",
+      opponentName: "CPU",
       currentFieldName: "macOS",
       currentFieldImg: "",
       opponentHP: 200,
@@ -68,21 +72,20 @@ export default {
       isAlone: false,
       usedCardIdList: [], //攻撃された、攻撃したカードのIDのリスト
       effectImages: [],
-      playerAction : {
+      playerAction: {
         damageValue: 0,
-        effect : "",
-        cardList: []
+        effect: "",
+        cardList: [],
       },
-      cpuAction : {
+      cpuAction: {
         damageValue: 0,
-        effect : "",
-        cardList: []
+        effect: "",
+        cardList: [],
       },
       showCPUAttack: false,
     };
   },
   created() {
-        
     this.yourCardsData = [];
     console.log(this.yourCardsData);
     const searchParams = new URLSearchParams(window.location.search);
@@ -123,11 +126,18 @@ export default {
         }
         console.log(this.yourCardsData);
       });
+    this.$axios
+      .post("/cpuGetPlayerName", {
+        playerId: searchParams.get("id"),
+      })
+      .then((res) => {
+        this.yourName = res.data.yourName;
+      });
 
     this.$axios
       .post("/cpuGetTurn", { playerId: searchParams.get("id") })
       .then((res) => {
-        console.log(res.data)
+        console.log(res.data);
         if (res.data % 2 == 0) {
           this.showGeneralCutIn = false;
           this.oponentTurn = false;
@@ -196,134 +206,142 @@ export default {
           return true;
         } else {
           return false;
+        }
       }
-    }
-  },
-  
-  goHome: function () {
-    this.$router.push("/");
-  },
-  closeGeneralCutIn: function () {
-    this.showGeneralCutIn = false;
-  },
-  closeActionCutIn: function () {
-    const searchParams = new URLSearchParams(window.location.search);
-    const giveNewProperty = function (object) {
-      object.isCombined = true;
-    };
+    },
 
-    this.$axios
-      .post("/cpuGetTurn", { playerId: searchParams.get("id") })
-      .then((res) => {
-        console.log("closeのgetturn発火"+res.data)
-        let anotherThis = this
-        if(res.data % 2 == 1){
-          anotherThis.showGeneralCutIn = false
-          console.log("mountedの発火を確認")
-          const searchParams = new URLSearchParams(window.location.search);
-          let cardValue = {
-            userId: searchParams.get("id"),
-            selectedCardData: this.selectedCardsData,
-          };
-          anotherThis.$axios.post("cpuAction",{cardValue:cardValue}).then((res) => {
-            console.log(res.data)
-            anotherThis.yourHP = res.data.playerHP;
-            anotherThis.opponentHP = res.data.cpuHP;
-            anotherThis.cpuAction.damageValue = res.data.damageValue
-            anotherThis.cpuAction.effect = res.data.action
-            anotherThis.cpuAction.usedCardIdList = res.data.usedCardIdList
-            anotherThis.isCpuAction(anotherThis.cpuAction)
-          })
-        }
-      });
+    goHome: function () {
+      this.$router.push("/");
+    },
+    closeGeneralCutIn: function () {
+      this.showGeneralCutIn = false;
+    },
+    closeActionCutIn: function () {
+      const searchParams = new URLSearchParams(window.location.search);
+      const giveNewProperty = function (object) {
+        object.isCombined = true;
+      };
 
-    this.showActionCutIn = false;
-    if(this.yourHP <= 0) {
+      this.$axios
+        .post("/cpuGetTurn", { playerId: searchParams.get("id") })
+        .then((res) => {
+          console.log("closeのgetturn発火" + res.data);
+          let anotherThis = this;
+          if (res.data % 2 == 1) {
+            anotherThis.showGeneralCutIn = false;
+            console.log("mountedの発火を確認");
+            const searchParams = new URLSearchParams(window.location.search);
+            let cardValue = {
+              userId: searchParams.get("id"),
+              selectedCardData: this.selectedCardsData,
+            };
+            anotherThis.$axios
+              .post("cpuAction", { cardValue: cardValue })
+              .then((res) => {
+                console.log(res.data);
+                anotherThis.yourHP = res.data.playerHP;
+                anotherThis.opponentHP = res.data.cpuHP;
+                anotherThis.cpuAction.damageValue = res.data.damageValue;
+                anotherThis.cpuAction.effect = res.data.action;
+                anotherThis.cpuAction.usedCardIdList = res.data.usedCardIdList;
+                anotherThis.isCpuAction(anotherThis.cpuAction);
+              });
+          }
+        });
+
       this.showActionCutIn = false;
-      this.showGeneralCutIn = false;
-      this.judgeWin = false;
-      this.showBattleOutcome = true;
-    }
-    // 勝ち！
-    if(this.opponentHP <= 0) {
-      this.showActionCutIn = false;
-      this.showGeneralCutIn = false;
-      this.showBattleOutcome = true;
-    }
-    this.$axios
-      .post("/cpuCardDraw", {
-        cardData: this.yourCardsData,
+      if (this.yourHP <= 0) {
+        this.showActionCutIn = false;
+        this.showGeneralCutIn = false;
+        this.judgeWin = false;
+        this.showBattleOutcome = true;
+      }
+      // 勝ち！
+      if (this.opponentHP <= 0) {
+        this.showActionCutIn = false;
+        this.showGeneralCutIn = false;
+        this.showBattleOutcome = true;
+      }
+      this.$axios
+        .post("/cpuCardDraw", {
+          cardData: this.yourCardsData,
+          playerId: searchParams.get("id"),
+        })
+        .then((res) => {
+          console.log(res.data);
+          this.yourCardsData = [];
+          for (let i = 0; i < res.data.length; i++) {
+            giveNewProperty(res.data[i]);
+            this.yourCardsData.push(res.data[i]);
+          }
+        });
+      // 負け！
+    },
+    isPlayerAction: function (cardValue) {
+      this.effectImages.splice(this.index, this.effectImages.length);
+      this.actionPoint = cardValue.damageValue;
+      console.log("length" + cardValue.usedCardIdList);
+      for (let i = 0; i < cardValue.usedCardIdList.length; i++) {
+        let usedCard = "";
+        usedCard = this.cardData.find(
+          (element) => element.id == cardValue.usedCardIdList[i]
+        );
+        this.effectImages.push(usedCard.img);
+      }
+      this.showGeneralCutIn = true;
+      this.showActionCutIn = true;
+    },
+    isCpuAction: function (cardValue) {
+      this.effectImages.splice(this.index, this.effectImages.length);
+      this.actionPoint = cardValue.damageValue;
+      for (let i = 0; i < cardValue.usedCardIdList.length; i++) {
+        let usedCard = "";
+        usedCard = this.cardData.find(
+          (element) => element.id == cardValue.usedCardIdList[i]
+        );
+        this.effectImages.push(usedCard.img);
+      }
+      const searchParams = new URLSearchParams(window.location.search);
+      this.$axios.post("/cpuControlTurn", {
         playerId: searchParams.get("id"),
-      })
-      .then((res) => {
-        console.log(res.data);
-        this.yourCardsData = [];
-        for (let i = 0; i < res.data.length; i++) {
-          giveNewProperty(res.data[i]);
-          this.yourCardsData.push(res.data[i]);
-        }
       });
-    // 負け！
-    
-  },
-  isPlayerAction: function (cardValue){
-    this.effectImages.splice(this.index, this.effectImages.length);
-    this.actionPoint = cardValue.damageValue;
-    console.log("length"+cardValue.usedCardIdList)
-    for (let i = 0; i < cardValue.usedCardIdList.length; i++) {
-      let usedCard = "";
-      usedCard = this.cardData.find(
-        (element) => element.id == cardValue.usedCardIdList[i]
-      );
-      this.effectImages.push(usedCard.img);
-    }
-    this.showGeneralCutIn = true;
-    this.showActionCutIn = true;
-  },
-  isCpuAction: function(cardValue){
-    this.effectImages.splice(this.index, this.effectImages.length);
-    this.actionPoint = cardValue.damageValue;
-    for (let i = 0; i < cardValue.usedCardIdList.length; i++) {
-      let usedCard = "";
-      usedCard = this.cardData.find(
-        (element) => element.id == cardValue.usedCardIdList[i]
-      );
-      this.effectImages.push(usedCard.img);
-    }
-    const searchParams = new URLSearchParams(window.location.search);
-    this.$axios.post("/cpuControlTurn", {
-      playerId: searchParams.get("id"),
-    });
-    this.showActionCutIn = true;
-  },
-  handleAction: function () {
-    this.actionSE.play();
-    let anotherThis = this;
-    const searchParams = new URLSearchParams(window.location.search);
-    let cardValue = {
-      userId: searchParams.get("id"),
-      selectedCardData: this.selectedCardsData,
-    };
-    
-    this.$axios.post("/cpuControlTurn", {
-      playerId: searchParams.get("id"),
-    });
+      this.showActionCutIn = true;
+    },
+    handleAction: function () {
+      this.actionSE.play();
+      let anotherThis = this;
+      const searchParams = new URLSearchParams(window.location.search);
+      let cardValue = {
+        userId: searchParams.get("id"),
+        selectedCardData: this.selectedCardsData,
+      };
 
-    this.$axios.post("/cpuPlayerAction", { cardValue: cardValue }).then((res) => {
-      console.log(res.data)
-      anotherThis.yourHP = res.data.playerHP;
-      anotherThis.opponentHP = res.data.cpuHP;
-      anotherThis.playerAction.damageValue = res.data.damageValue
-      anotherThis.playerAction.effect = res.data.action
-      anotherThis.playerAction.usedCardIdList = res.data.usedCardIdList
-      anotherThis.isPlayerAction(anotherThis.playerAction)
-    });
-    this.selectedCardsData.splice(this.index, this.selectedCardsData.length);
-    console.log(this.selectedCardsData)
+      this.$axios.post("/cpuControlTurn", {
+        playerId: searchParams.get("id"),
+      });
+
+      this.$axios
+        .post("/cpuPlayerAction", { cardValue: cardValue })
+        .then((res) => {
+          console.log(res.data);
+          anotherThis.yourHP = res.data.playerHP;
+          anotherThis.opponentHP = res.data.cpuHP;
+          anotherThis.playerAction.damageValue = res.data.damageValue;
+          anotherThis.playerAction.effect = res.data.action;
+          anotherThis.playerAction.usedCardIdList = res.data.usedCardIdList;
+          anotherThis.isPlayerAction(anotherThis.playerAction);
+        });
+      this.selectedCardsData.splice(this.index, this.selectedCardsData.length);
+      console.log(this.selectedCardsData);
+    },
+    onShowHowToPlay: function () {
+      this.isHowToPlayOpen = true;
+    },
+    onHowToPlayClose: function () {
+      this.isHowToPlayOpen = false;
+    },
   },
-  },
-  mounted() {
-  },
+  mounted() {},
 };
 </script>
 <style scoped></style>
