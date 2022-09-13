@@ -42,6 +42,7 @@ export default {
 
     const searchParams = new URLSearchParams(window.location.search);
     let playerId = searchParams.get("id");
+    let playerName = searchParams.get("playerName")
     let anotherThis = this;
     this.socket.on("FullRoom", function (roomId, playerId1, playerId2) {
       function logIn() {
@@ -50,6 +51,7 @@ export default {
           .post("/playerData", {
             RoomId: roomId,
             playerId: playerId,
+            playerName: playerName,
             decId: 0, //仮においている。本来はデッキ選択用
           })
           .then((res) => {

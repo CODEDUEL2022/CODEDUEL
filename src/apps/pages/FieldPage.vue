@@ -322,10 +322,11 @@
               }
             });
             setTimeout(
-              this.$axios.post("/getPlayerName",{
+              anotherThis.$axios.post("/getPlayerName",{
               roomId: searchParams.get("room"),
               playerId: searchParams.get("id"),
             }).then((res) => {
+              console.log(res.data)
               anotherThis.yourName = res.data.yourName;
               anotherThis.opponentName = res.data.opponentName;
             }), 1000);

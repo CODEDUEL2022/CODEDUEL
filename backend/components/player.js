@@ -316,6 +316,6 @@ export const getPlayersName = function (roomId, playerId) {
     yourName: playerDB[yourIndex].playerName,
     opponentName: playerDB[opponentIndex].playerName,
   };
-  
+  console.log(playerDB[yourIndex].playerName)
   return playersName;
 };

@@ -101,7 +101,7 @@ import io from "socket.io-client";
       this.socket.emit("AutoMatchingPreLogin", this.playerId);
       this.$router.push({
         name: "waitingroom",
-        query: { id: this.playerId },
+        query: { id: this.playerId,playerName: this.userName },
       });
     },
     onStartModalOpen: function (user) {
