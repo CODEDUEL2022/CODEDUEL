@@ -48,7 +48,7 @@ export default {
       actionPoint: "",
       yourName: "User1",
       yourHP: 200,
-      opponentName: "User2",
+      opponentName: "CPU",
       currentFieldName: "macOS",
       currentFieldImg: "",
       opponentHP: 200,
@@ -122,6 +122,11 @@ export default {
           this.yourCardsData.push(res.data[i]);
         }
         console.log(this.yourCardsData);
+      });
+    this.$axios.post("/cpuGetPlayerName",{
+        playerId: searchParams.get("id"),
+      }).then((res) => {
+        this.yourName = res.data.yourName;
       });
 
     this.$axios
