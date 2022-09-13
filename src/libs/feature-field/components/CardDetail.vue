@@ -1,24 +1,34 @@
 <template>
-  <div class="overlay" @click.self="$emit('handleCardDetailModalClose')">
-    <div class="modal">
-      <v-row>
-        <v-col cols="4">
-          <v-card class="black" color="grey lighten-4">
-            <v-img
-              :src="require(`../../ui/assets/cards/${focusedCard.img}`)"
-            ></v-img>
-          </v-card>
-        </v-col>
-        <v-col cols="8">
-          <p>{{ focusedCard.name }}</p>
-          <p>{{ focusedCard.shortDescription }}</p>
-          <p>Install URL</p>
-          <a :href="focusedCard.installUrl" target="_blank">{{
-            focusedCard.installUrl
-          }}</a>
-        </v-col>
-      </v-row>
-    </div>
+  <div>
+    <v-row>
+      <v-col cols="10"> </v-col>
+      <v-col cols="2">
+        <span class="close-btn" @click="$emit('handleModalClose')">×</span>
+      </v-col>
+    </v-row>
+    <v-row>
+      <div class="contents">
+        <v-row>
+          <v-col cols="4">
+            <span>
+              <v-img
+                :src="require(`../../ui/assets/cards/${focusedCard.img}`)"
+              />
+            </span>
+          </v-col>
+          <v-col cols="8" class="card-info">
+            <span class="name">{{ focusedCard.name }}</span>
+            <span class="description">{{ focusedCard.shortDescription }}</span>
+            <span>Install URL</span>
+            <span>
+              <a :href="focusedCard.installUrl" target="_blank">{{
+                focusedCard.installUrl
+              }}</a>
+            </span>
+          </v-col>
+        </v-row>
+      </div>
+    </v-row>
   </div>
 </template>
 <script>
@@ -43,20 +53,8 @@
     },
     created() {
       console.log("CardDetailが正常に発火されてる");
+      console.log(this.focusedCard.name);
     },
-    methods: {
-      onCardDetailModalOpen: function () {
-        console.log("onStartModalOpen   ");
-        document.documentElement.style.overflow = "hidden";
-        this.isCardDetailOpen = true;
-      },
-      onCardDetailModalClose: function () {
-        console.log("onCardListModalClose");
-        document.documentElement.style.overflow = "auto";
-        this.isCardDetailOpen = false;
-      },
-    },
-    mounted() {},
   };
 </script>
 
@@ -71,19 +69,19 @@
     width: 100% !important;
     height: 100% !important;
     background-color: rgba(0, 0, 0, 0.5);
-    z-index: 9999;
+    z-index: 100;
 
     .modal {
       position: relative;
-      width: 1000px;
-      height: 600px;
+      width: 1000px !important;
+      height: 600px !important;
       margin: auto;
       padding: 1rem;
       font-size: 1.25rem;
       border: 9px solid #d3fffd;
       background-color: #0e3145;
       box-shadow: 0px 0px 20px #d3fffd;
-      z-index: 1000;
+      z-index: 2;
       text-align: center;
 
       &::before {
@@ -114,22 +112,9 @@
 
       span {
         position: relative;
-        font-size: 1rem;
+        font-size: 1.1rem;
         letter-spacing: 0.15em;
-        @keyframes neon {
-          0% {
-            text-shadow: 0 0 10px #00fff2, 0 0 5px #fff, 0 0 13px #d3fffd;
-          }
-          100% {
-            text-shadow: 0 0 30px #00fff2, 0 0 15px #fff, 0 0 0px #d3fffd;
-          }
-        }
-        animation: neon 2s infinite alternate;
-      }
-
-      .modal-title {
-        margin-top: 1rem;
-        font-size: 1.75rem;
+        z-index: 1;
       }
 
       .close-btn {
@@ -144,24 +129,28 @@
         flex-direction: column;
         justify-content: start;
         max-height: 400px;
-        margin-top: 1rem;
-        overflow-y: scroll;
+        margin: 0 2rem;
 
-        .list {
-          .card {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            padding-bottom: 2rem;
+        .card-info {
+          display: flex;
+          flex-direction: column;
+          text-align: left;
 
-            &:hover {
-              cursor: pointer;
+          .name {
+            margin: 0.5rem 0 2rem;
+            font-size: 1.75rem;
+            @keyframes neon {
+              0% {
+                text-shadow: 0 0 10px #00fff2, 0 0 5px #fff, 0 0 13px #d3fffd;
+              }
+              100% {
+                text-shadow: 0 0 30px #00fff2, 0 0 15px #fff, 0 0 0px #d3fffd;
+              }
             }
-
-            div {
-              width: 12%;
-              margin: 1rem 1rem;
-            }
+            animation: neon 2s infinite alternate;
+          }
+          .description {
+            margin-bottom: 2rem;
           }
         }
       }

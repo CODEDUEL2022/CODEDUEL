@@ -7,21 +7,13 @@
       >
       </v-img>
     </v-card>
-    <CardDetail
-      v-if="isCardDetailOpen"
-      :focusedCard="focusedCard"
-      :key="focusedCard.index"
-      :isCardDetailOpen="isCardDetailOpen"
-      @handleCardDetailModalClose="onCardDetailModalClose"
-      @handleCardDetailModalOpen="onCardDetailModalOpen"
-    />
   </div>
 </template>
 
 <script>
   import CardDetail from "./CardDetail.vue";
   export default {
-    name: "SimpleCard",
+    name: "CardList",
     components: {
       CardDetail,
     },
@@ -30,7 +22,6 @@
       return {
         hoverFlag: false,
         thisImage: null,
-        isCardDetailOpen: false,
       };
     },
     methods: {
@@ -42,8 +33,7 @@
         this.hoverFlag = false;
       },
       onCardDetailModalOpen: function () {
-        document.documentElement.style.overflow = "hidden";
-        this.isCardDetailOpen = true;
+        this.$emit("onCardDetailModalOpen", this.focusedCard);
       },
       onCardDetailModalClose: function () {
         document.documentElement.style.overflow = "auto";

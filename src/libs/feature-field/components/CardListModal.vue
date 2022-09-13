@@ -1,49 +1,65 @@
 <template>
   <div class="overlay" @click.self="$emit('handleModalClose')">
     <div class="modal">
-      <v-row>
-        <v-col cols="2"></v-col>
-        <v-col cols="8">
-          <span class="modal-title">CODE DUEL　card list</span>
-        </v-col>
-        <v-col cols="2">
-          <span class="close-btn" @click="$emit('handleModalClose')">×</span>
-        </v-col>
-      </v-row>
-      <v-row
-        ><v-col><span>Click and you can show detail.</span></v-col></v-row
-      >
-      <div class="contents">
-        <div class="list">
-          <span class="card">
-            <SimpleCard
-              v-for="cardImage in cardImages"
-              :focusedCard="cardImage"
-              :key="cardImage.index"
-            />
-          </span>
-        </div>
-        <span
-          ><v-pagination
-            color="#30a4a7"
-            dark
-            v-model="page"
-            :length="length"
-            @input="pageChange"
-        /></span>
+      <div v-if="isSelected">
+        <CardDetail
+          :focusedCard="focusedCard"
+          :key="focusedCard.name"
+          @handleModalClose="onCardDetailModalClose"
+        />
+      </div>
+      <div v-else>
+        <v-row>
+          <v-col cols="2"></v-col>
+          <v-col cols="8">
+            <span class="modal-title">CODE DUEL　card list</span>
+          </v-col>
+          <v-col cols="2">
+            <span class="close-btn" @click="$emit('handleModalClose')">×</span>
+          </v-col>
+        </v-row>
+        <v-row
+          ><v-col><span>Click and you can show detail.</span></v-col></v-row
+        >
+        <v-row>
+          <div class="contents">
+            <div class="list">
+              <span class="card">
+                <CardList
+                  v-for="cardImage in cardImages"
+                  :focusedCard="cardImage"
+                  :key="cardImage.index"
+                  @onCardDetailModalOpen="onCardDetailModalOpen"
+                />
+              </span>
+            </div>
+            <div>
+              <span
+                ><v-pagination
+                  color="#30a4a7"
+                  dark
+                  v-model="page"
+                  :length="length"
+                  @input="pageChange"
+              /></span>
+            </div>
+          </div>
+        </v-row>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-  import SimpleCard from "./CardList.vue";
+  import CardDetail from "@/libs/feature-field/components/CardDetail";
+  import CardList from "./CardList.vue";
 
   export default {
     name: "CardListModal",
     props: ["focusedCard"],
     components: {
-      SimpleCard,
+      CardList,
+      CardDetail,
     },
     data() {
       return {
@@ -53,6 +69,8 @@
         page: 1,
         length: 0,
         pageSize: 12,
+        isSelected: false,
+        focusedCard: null,
       };
     },
     created() {
@@ -79,6 +97,15 @@
           this.pageSize * (pageNumber - 1),
           this.pageSize * pageNumber
         );
+      },
+      onCardDetailModalOpen: function (value) {
+        this.focusedCard = value;
+        document.documentElement.style.overflow = "hidden";
+        this.isSelected = true;
+      },
+      onCardDetailModalClose: function () {
+        document.documentElement.style.overflow = "auto";
+        this.isSelected = false;
       },
     },
     mounted() {
@@ -174,9 +201,8 @@
         display: flex;
         flex-direction: column;
         justify-content: start;
-        max-height: 400px;
-        margin-top: 1rem;
-
+        max-height: 430px;
+        margin: 0, 1.5rem;
         .list {
           .card {
             display: flex;
