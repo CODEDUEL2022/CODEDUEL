@@ -33,8 +33,19 @@
         isStartModalOpen: false,
         isHowToPlayOpen: false,
         roomId: null,
-        startSE: new Audio(require("/src/libs/ui/assets/sounds/start.mp3")),
-        back1SE: new Audio(require("/src/libs/ui/assets/sounds/back1.mp3")),
+        customStartSE: new Audio(
+          require("/src/libs/ui/assets/sounds/game-start/custom-start.mp3")
+        ),
+        randomStartSE: new Audio(
+          require("/src/libs/ui/assets/sounds/game-start/random-start.mp3")
+        ),
+        cpuStartSE: new Audio(
+          require("/src/libs/ui/assets/sounds/game-start/cpu-start.mp3")
+        ),
+        openModalSE: new Audio(
+          require("/src/libs/ui/assets/sounds/open-modal.mp3")
+        ),
+        backSE: new Audio(require("/src/libs/ui/assets/sounds/back.mp3")),
       };
     },
     mounted() {
@@ -42,7 +53,7 @@
     },
     methods: {
       onPushField: function (value) {
-        this.startSE.play();
+        this.customStartSE.play();
         this.roomId = value;
         this.playerId = Math.random().toString(32).substring(2);
         this.socket.emit("login", this.roomId);
@@ -68,7 +79,8 @@
           });
       },
       onPushCPU: function () {
-        this.startSE.play();
+        this.cpuStartSE.play();
+        alert("Happy hacking!");
         this.playerId = Math.random().toString(32).substring(2);
         this.$axios.post("/cpuPlayerData", {
           playerId: this.playerId,
@@ -81,7 +93,8 @@
         });
       },
       onPushAutoMatching: function () {
-        this.startSE.play();
+        this.randomStartSE.play();
+        alert("Happy hacking!");
         this.playerId = Math.random().toString(32).substring(2);
         this.socket.emit("AutoMatchingPreLogin", this.playerId);
         this.$router.push({
@@ -90,18 +103,20 @@
         });
       },
       onStartModalOpen: function (user) {
-        this.startSE.play();
+        this.backSE.play();
         this.userName = user;
         this.isStartModalOpen = true;
       },
       onStartModalClose: function () {
-        this.back1SE.play();
+        this.backSE.play();
         this.isStartModalOpen = false;
       },
       onShowHowToPlay: function () {
+        this.openModalSE.play();
         this.isHowToPlayOpen = true;
       },
       onHowToPlayClose: function () {
+        this.backSE.play();
         this.isHowToPlayOpen = false;
       },
     },

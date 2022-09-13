@@ -19,8 +19,18 @@
     props: ["isEnableAction"],
     data() {
       return {
+        ableToActionSE: new Audio(
+          require("/src/libs/ui/assets/sounds/able-to-action.mp3")
+        ),
         errorSE: new Audio(require("/src/libs/ui/assets/sounds/error.mp3")),
       };
+    },
+    methods: {
+      ableToAction: function () {
+        if (isEnableAction === true) {
+          this.ableToActionSE.play();
+        }
+      },
     },
   };
 </script>

@@ -71,28 +71,21 @@
     props: ["roomId", "userName"],
     data() {
       return {
+        selectSE: new Audio(require("/src/libs/ui/assets/sounds/select.mp3")),
+        backSE: new Audio(require("/src/libs/ui/assets/sounds/back.mp3")),
         modalContent: "selectGameMode",
-        clickSE: new Audio(require("/src/libs/ui/assets/sounds/click.mp3")),
-        back1SE: new Audio(require("/src/libs/ui/assets/sounds/back1.mp3")),
-        back2SE: new Audio(require("/src/libs/ui/assets/sounds/back2.mp3")),
       };
     },
     methods: {
-      handleChangeFirstToSecond: function (gameMode) {
-        this.clickSE.play();
+      handleChangeFirstToSecond: function () {
+        this.selectSE.play();
         this.modalContent = "selectMatchType";
       },
-      handleChangeSecondToThird: function (matchType) {
-        this.clickSE.play();
+      handleChangeSecondToThird: function () {
+        this.selectSE.play();
         this.modalContent = "inputRoomId";
       },
       handleStart: function (roomId) {
-        if (roomId == "cpu") {
-          alert("Play with CPU.");
-        }
-        if (roomId == "random") {
-          alert("Play random match.");
-        }
         this.$emit("handleStart", roomId);
       },
       handlePushCPUPage: function () {
@@ -102,11 +95,11 @@
         this.$emit("handlePushAutoMatching");
       },
       handleBackToFirst: function () {
-        this.back1SE.play();
+        this.backSE.play();
         this.modalContent = "selectGameMode";
       },
       handleBackToSecond: function () {
-        this.back1SE.play();
+        this.backSE.play();
         this.modalContent = "selectMatchType";
       },
     },
