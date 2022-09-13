@@ -249,86 +249,90 @@ export default {
             this.yourCardsData.push(res.data[i]);
           }
         });
-        this.currentFieldName = this.fieldData[this.roundCount % 4].name;
-        this.currentFieldImg = this.fieldData[this.roundCount % 4].img;
-        this.nextFieldName = this.fieldData[(this.roundCount + 1) % 4].name;
-        // 負け！
-        if (this.yourHP <= 0) {
-          this.showGeneralCutIn = false;
-          this.judgeWin = false;
-          this.showBattleOutcome = true;
-        }
-        // 勝ち！
-        if (this.opponentHP <= 0) {
-          this.showGeneralCutIn = false;
-          this.showBattleOutcome = true;
-        }
-      },
-      handleAction: function () {
-        this.actionSE.play();
-        console.log("handleAction発火");
-        const searchParams = new URLSearchParams(window.location.search);
-        this.$axios.post("/controlTurn", { playerId: searchParams.get("id") });
-        let cardValue = {
-          selectedCardData: this.selectedCardsData,
-          roomId: searchParams.get("room"),
-        };
-        this.socket.emit("cardValue", cardValue, searchParams.get("id"));
-        this.selectedCardsData.splice(
-          this.index,
-          this.selectedCardsData.length
-        );
-        this.showActionCutIn = true;
-      },
+      this.currentFieldName = this.fieldData[this.roundCount % 4].name;
+      this.currentFieldImg = this.fieldData[this.roundCount % 4].img;
+      this.nextFieldName = this.fieldData[(this.roundCount + 1) % 4].name;
+      // 負け！
+      if (this.yourHP <= 0) {
+        this.showGeneralCutIn = false;
+        this.judgeWin = false;
+        this.showBattleOutcome = true;
+      }
+      // 勝ち！
+      if (this.opponentHP <= 0) {
+        this.showGeneralCutIn = false;
+        this.showBattleOutcome = true;
+      }
     },
-    mounted() {
+    handleAction: function () {
+      this.actionSE.play();
+      console.log("handleAction発火");
       const searchParams = new URLSearchParams(window.location.search);
-      let playerId = searchParams.get("id");
-      let anotherThis = this;
-      this.socket.on("numPlayer", function (numPlayer) {
-        if (numPlayer == 1) {
-          anotherThis.isAlone = true;
-        } else {
-          anotherThis.isAlone = false;
-        }
-      });
-      this.socket.on(
-        "gameStart",
-        function (
-          playersName // 報告:この処理が走るとルームに二人が入ったことになる
-        ) {
-          anotherThis.$axios
-            .post("/getTurn", { playerId: searchParams.get("id") })
-            .then((res) => {
-              if (res.data < 2) {
-                console.log("gamestart");
-                // 2回書いているのは仕様です。
-                anotherThis.$axios.post("/controlTurn", {
-                  playerId: searchParams.get("id"),
-                });
-                anotherThis.$axios.post("/controlTurn", {
-                  playerId: searchParams.get("id"),
-                });
-                //ゲームスタート！みたいなカットイン＋opponentTurnによる場合分けで相手のターンみたいなのを表示する
-                anotherThis.showGeneralCutIn = true;
-                anotherThis.message = "Hello World!";
-                const changeMessage = () =>
-                  (anotherThis.message = `It's ${anotherThis.opponentName}'s turn.`);
-                const closeCutIn = () => (anotherThis.showGeneralCutIn = false);
-                if (anotherThis.opponentTurn % 2 == 1) {
-                  setTimeout(changeMessage, 1000);
-                } else {
-                  setTimeout(closeCutIn, 1000);
-                }
-                
+      this.$axios.post("/controlTurn", { playerId: searchParams.get("id") });
+      let cardValue = {
+        selectedCardData: this.selectedCardsData,
+        roomId: searchParams.get("room"),
+      };
+      this.socket.emit("cardValue", cardValue, searchParams.get("id"));
+      this.selectedCardsData.splice(this.index, this.selectedCardsData.length);
+      this.showActionCutIn = true;
+    },
+    onShowHowToPlay: function () {
+      this.isHowToPlayOpen = true;
+    },
+    onHowToPlayClose: function () {
+      this.isHowToPlayOpen = false;
+    },
+  },
+  mounted() {
+    const searchParams = new URLSearchParams(window.location.search);
+    let playerId = searchParams.get("id");
+    let anotherThis = this;
+    this.socket.on("numPlayer", function (numPlayer) {
+      if (numPlayer == 1) {
+        anotherThis.isAlone = true;
+      } else {
+        anotherThis.isAlone = false;
+      }
+    });
+    this.socket.on(
+      "gameStart",
+      function (
+        playersName // 報告:この処理が走るとルームに二人が入ったことになる
+      ) {
+        anotherThis.$axios
+          .post("/getTurn", { playerId: searchParams.get("id") })
+          .then((res) => {
+            if (res.data < 2) {
+              console.log("gamestart");
+              // 2回書いているのは仕様です。
+              anotherThis.$axios.post("/controlTurn", {
+                playerId: searchParams.get("id"),
+              });
+              anotherThis.$axios.post("/controlTurn", {
+                playerId: searchParams.get("id"),
+              });
+              //ゲームスタート！みたいなカットイン＋opponentTurnによる場合分けで相手のターンみたいなのを表示する
+              anotherThis.showGeneralCutIn = true;
+              anotherThis.message = "Hello World!";
+              const changeMessage = () =>
+                (anotherThis.message = `It's ${anotherThis.opponentName}'s turn.`);
+              const closeCutIn = () => (anotherThis.showGeneralCutIn = false);
+              if (anotherThis.opponentTurn % 2 == 1) {
+                setTimeout(changeMessage, 1000);
+              } else {
+                setTimeout(closeCutIn, 1000);
               }
-            });
-            setTimeout(
-              anotherThis.$axios.post("/getPlayerName",{
+            }
+          });
+        setTimeout(
+          anotherThis.$axios
+            .post("/getPlayerName", {
               roomId: searchParams.get("room"),
               playerId: searchParams.get("id"),
-            }).then((res) => {
-              console.log(res.data)
+            })
+            .then((res) => {
+              console.log(res.data);
               anotherThis.yourName = res.data.yourName;
               anotherThis.opponentName = res.data.opponentName;
             }),
