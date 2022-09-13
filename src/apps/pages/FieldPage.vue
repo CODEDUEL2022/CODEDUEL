@@ -23,9 +23,12 @@
     :isHowToPlayOpen="isHowToPlayOpen"
     :attackOptions="attackOptions()"
     :isEnableAction="isEnableAction()"
+    :isCardListModalOpen="isCardListModalOpen"
     @goHome="goHome()"
     @closeActionCutIn="closeActionCutIn()"
     @handleAction="handleAction()"
+    @handleModalOpen="onCardListModalOpen()"
+    @handleModalClose="onCardListModalClose()"
     @handleHowToPlayModalClose="onHowToPlayClose()"
     @handleShowHowToPlay="onShowHowToPlay()"
   />
@@ -51,6 +54,7 @@ export default {
       showBattleOutcome: false,
       judgeWin: true,
       isHowToPlayOpen: false,
+      isCardListModalOpen: false,
       actionType: "",
       actionPoint: "",
       yourHP: 200,
@@ -167,6 +171,34 @@ export default {
           this.opponentTurn = true;
         }
       });
+      this.$axios
+        .post("/getPlayerName", {
+          roomId: searchParams.get("room"),
+          playerId: searchParams.get("id"),
+        })
+        .then((res) => {
+          console.log("playername" + res.data.yourName);
+          this.yourName = res.data.yourName;
+          this.opponentName = res.data.opponentName;
+        });
+      //HPの共有
+      this.$axios
+        .post("/HPReload", {
+          playerId: searchParams.get("id"),
+        })
+        .then((res) => {
+          console.log(res.data);
+          this.yourHP = res.data.yourHP;
+          this.opponentHP = res.data.opponentHP;
+          if (this.yourHP <= 0) {
+            this.showGeneralCutIn = false;
+            this.judgeWin = false;
+            this.showBattleOutcome = true;
+          }
+          if (this.opponentHP <= 0) {
+            this.showGeneralCutIn = false;
+            this.showBattleOutcome = true;
+          }
   },
   methods: {
     // ターミナルuiに表示するために可能なコンボを取得
@@ -217,7 +249,6 @@ export default {
         const ableCombo = this.comboData.filter((comboData) => {
           return isIncludes(updatedData, comboData.idList);
         });
-        // 完全一致した攻撃だけを返す
         if (ableCombo.length == 0) {
           return false;
         } else if (isEqualArray(updatedData, ableCombo[0].idList)) {

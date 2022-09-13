@@ -91,9 +91,14 @@
             :isEnableAction="isEnableAction"
             @handleAction="$emit('handleAction')"
           ></ActionButton>
-          <div @click="$emit()" class="card-list-btn">
+          <div class = "card-list-btn" @click="$emit('handleModalOpen')">
             <span>Card List</span>
           </div>
+          <CardListModal
+            v-if="isCardListModalOpen"
+            :isCardListModalOpen="isCardListModalOpen"
+            @handleModalClose="$emit('handleModalClose')"
+          />
         </v-col>
       </v-row>
     </div>
@@ -121,7 +126,8 @@ import GeneralCutIn from "../components/GeneralCutIn.vue";
 import ActionCutIn from "../components/ActionCutIn.vue";
 import TerminalUI from "../components/TerminalUI.vue";
 import SimpleCard from "../components/SimpleCard.vue";
-import BattleOutcomeView from "../components/BattleOutcomeView.vue";
+import BattleOutcomeView from "../components/BattleOutcomeView.vue"
+import CardListModal from "../components/CardListModal.vue"
 import RoundCounter from "../components/RoundCounter.vue";
 import FieldDisplay from "../components/FieldDisplay.vue";
 
@@ -133,13 +139,14 @@ export default {
     HPDisplay,
     VueDrag,
     GeneralCutIn,
+    CardListModal,
     ActionCutIn,
     TerminalUI,
     SimpleCard,
     BattleOutcomeView,
     RoundCounter,
     FieldDisplay,
-  },
+},
   props: [
     "message",
     "showGeneralCutIn",
@@ -167,6 +174,7 @@ export default {
     "attackOptions",
     "focusedCard",
     "isHowToPlayOpen",
+    "isCardListModalOpen",
   ],
   methods: {
     handleShowHowToPlay: function () {
