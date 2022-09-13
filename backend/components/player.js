@@ -92,7 +92,7 @@ export const postPlayerData = function (req, res, numClients) {
       opponentHP: 200,
       cardListNumber: [],
       turnFlag: 1,
-      roundCount: 0,
+      roundCount: 1,
       decId: decId,
       field: "iOS,macOS",
 
@@ -109,12 +109,12 @@ export const postPlayerData = function (req, res, numClients) {
       cardListNumber: [],
       turnFlag: 0,
       decId: decId,
-      roundCount: 0,
+      roundCount: 1,
       field: "iOS,macOS",
       decList: [],
     });
   }
-  console.log(req.body.playerName)
+  console.log(req.body.playerName);
   return numClients[req.body.RoomId];
 };
 
@@ -297,25 +297,25 @@ const changeRound = function (playerId) {
 
 export const getPlayersName = function (roomId, playerId) {
   const yourIndex = playerDB.findIndex((e) => e.playerId === playerId);
-  let opponentIndex = 0
+  let opponentIndex = 0;
   const opponent = playerDB.filter((e) => {
     if (e.RoomId === roomId && e.playerId != playerId) {
       return true;
     }
   });
-  console.log(opponent)
-  if(opponent.length != 0){
+  console.log(opponent);
+  if (opponent.length != 0) {
     opponentIndex = playerDB.findIndex(
       (e) => e.playerId === opponent[0].playerId
     );
-  }else{
-    opponentIndex = 0
+  } else {
+    opponentIndex = 0;
   }
 
   const playersName = {
     yourName: playerDB[yourIndex].playerName,
     opponentName: playerDB[opponentIndex].playerName,
   };
-  console.log(playerDB[yourIndex].playerName)
+  console.log(playerDB[yourIndex].playerName);
   return playersName;
 };
