@@ -140,6 +140,7 @@
               他のプレイヤーではなくコンピュータと戦うモードです
             </div>
           </div>
+          <div class="credit">2022 ©CODE DUEL</div>
         </div>
       </div>
     </div>
@@ -256,6 +257,10 @@
           align-items: top;
           min-height: 325px;
           z-index: 10;
+        }
+
+        .credit {
+          text-align: center;
         }
       }
     }
