@@ -12,6 +12,7 @@ import {
   addDec,
   findOpponentUser,
   getPlayersName,
+  getRoundCount,
 } from "./components/player.js";
 import {
   cpuHPReload,
@@ -118,7 +119,6 @@ io.sockets.on("connection", function (socket) {
     } else {
       numClients[RoomId]++;
     }
-    let checkRoomJoin = false;
     //もしルームの人数が２人以上ならルームに入れない
     if (numClients[RoomId] > 2) {
       console.log("This room is full");
@@ -127,7 +127,6 @@ io.sockets.on("connection", function (socket) {
       console.log("Roomに入室が完了しました");
       console.log(RoomId);
       console.log("今のRoomに居る人数" + numClients[RoomId]);
-      checkRoomJoin = true;
     }
     //ルーム入室
   });
@@ -209,6 +208,9 @@ app.get("/api/reload", (req, res) => {
   res.send(reload(req, res));
 });
 
+app.post("/api/getRoundCount", (req, res) => {
+  res.json(getRoundCount(req));
+});
 /*
 以下CPU戦用のaxios
 */
