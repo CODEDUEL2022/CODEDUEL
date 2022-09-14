@@ -71,6 +71,7 @@
         pageSize: 12,
         isSelected: false,
         focusedCard: null,
+        backSE: new Audio(require("/src/libs/ui/assets/sounds/back.mp3")),
       };
     },
     created() {
@@ -104,6 +105,7 @@
         this.isSelected = true;
       },
       onCardDetailModalClose: function () {
+        this.backSE.play();
         document.documentElement.style.overflow = "auto";
         this.isSelected = false;
       },
