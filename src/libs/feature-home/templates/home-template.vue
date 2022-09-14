@@ -42,7 +42,7 @@
       />
       <SelectDeckModal
         v-if="isDeckModalOpen"
-        :deckCardData="deckCardData"
+        :deckImg="deckImg"
         @closeDeckModal="$emit('closeDeckModal')"
         @getDeckCardsImg="getDeckCardsImg"
       ></SelectDeckModal>
@@ -61,7 +61,7 @@
         StartModal,
         SelectDeckModal
     },
-    props: ["isStartModalOpen", "isDeckModalOpen", "selectedDeck", "roomId", "userName", "deckCardData", "isHowToPlayOpen"],
+    props: ["isStartModalOpen", "isDeckModalOpen", "selectedDeck", "roomId", "userName", "deckImg", "isHowToPlayOpen"],
     methods: {
       handleShowHowToPlay: function () {
         this.$emit("handleShowHowToPlay");
