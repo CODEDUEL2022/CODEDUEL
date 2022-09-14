@@ -3,7 +3,7 @@ import { comboDB } from "./DB.js";
 import { fieldDB } from "./DB.js";
 import { Dec1 } from "./DB.js";
 import { Dec2 } from "./DB.js";
-import { Dec3 } from "./DB.js";
+import { Dec3 } from "./DB.js"; 
 import {
   controlTurn,
   getTurn,
