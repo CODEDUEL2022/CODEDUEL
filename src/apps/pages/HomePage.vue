@@ -70,6 +70,7 @@
     },
     methods: {
       onPushField: function (value) {
+        let anotherThis = this
         this.customStartSE.play();
         this.roomId = value;
         this.playerId = Math.random().toString(32).substring(2);
@@ -82,6 +83,14 @@
             decId: 0, //仮においている。本来はデッキ選択用
           })
           .then((res) => {
+            anotherThis.$axios
+              .post("/dec", {
+                playerId: playerId,
+                decIdList: anotherThis.$store.state.selectedDeck,
+              })
+              .then((res) => {
+                console.log(res.data);
+              });
             //res.dataがRoomにいる人数ここで場合分けすればOK
             console.log(res.data);
             if (res.data > 2) {
@@ -90,7 +99,7 @@
               alert("Happy hacking!");
               this.$router.push({
                 name: "field",
-                query: { room: this.roomId, id: this.playerId },
+                query: { room: this.roomId, id: this.playerId},
               });
             }
           });
@@ -104,9 +113,17 @@
           playerName: this.userName,
           decId: 0, //仮においている。本来はデッキ選択用
         });
+        this.$axios
+          .post("/cpuDec", {
+            playerId: this.playerId,
+            decIdList: this.$store.state.selectedDeck,
+          })
+          .then((res) => {
+            console.log(res.data);
+          });
         this.$router.push({
           name: "cpu",
-          query: { id: this.playerId },
+          query: { id: this.playerId},
         });
       },
       onPushAutoMatching: function () {
@@ -116,7 +133,7 @@
         this.socket.emit("AutoMatchingPreLogin", this.playerId);
         this.$router.push({
           name: "waitingroom",
-          query: { id: this.playerId, playerName: this.userName },
+          query: { id: this.playerId, playerName: this.userName, dec: this.$store.state.selectedDeck},
         });
       },
       onStartModalOpen: function (user) {

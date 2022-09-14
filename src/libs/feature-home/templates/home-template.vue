@@ -53,48 +53,56 @@
   </div>
 </template>
 <script>
-  import Header from "/src/libs/layout/Header.vue";
-  import StartModal from "@/libs/feature-home/components/StartModal.vue";
-  import SelectDeckModal from "../components/SelectDeckModal.vue";
+import Header from "/src/libs/layout/Header.vue";
+import StartModal from "@/libs/feature-home/components/StartModal.vue";
+import SelectDeckModal from "../components/SelectDeckModal.vue";
 
-  export default {
-    name: "HomeTemplate",
-    components: {
-        Header,
-        StartModal,
-        SelectDeckModal
+export default {
+  name: "HomeTemplate",
+  components: {
+    Header,
+    StartModal,
+    SelectDeckModal,
+  },
+  props: [
+    "isStartModalOpen",
+    "isDeckModalOpen",
+    "selectedDeck",
+    "roomId",
+    "userName",
+    "deckImg",
+    "isHowToPlayOpen",
+  ],
+  methods: {
+    handleShowHowToPlay: function () {
+      this.$emit("handleShowHowToPlay");
     },
-    props: ["isStartModalOpen", "isDeckModalOpen", "selectedDeck", "roomId", "userName", "deckImg", "isHowToPlayOpen"],
-    methods: {
-      handleShowHowToPlay: function () {
-        this.$emit("handleShowHowToPlay");
-      },
-      handleModalOpen: function (userName) {
-        if (!userName) {
-          alert("ERROR! : Input your name.");
-          return;
-        }
-        console.log(userName);
-        this.$emit("handleModalOpen", userName);
-      },
-      handleStart: function (roomId) {
-        this.$emit("handleStart", roomId);
-      },
-      handlePushCPUPage: function () {
-        this.$emit("handlePushCPUPage");
-      },
-      handlePushAutoMatching: function () {
-        this.$emit("handlePushAutoMatching");
-      },
-      receiveDeckFromChild: function (receivedDeck) {
-        this.receivedDeck = receivedDeck
-      },
-      getDeckCardsImg: function () {
-        this.$emit('getDeckCardsImg')
-        console.log('aaa')
+    handleModalOpen: function (userName) {
+      if (!userName) {
+        alert("ERROR! : Input your name.");
+        return;
       }
-    }
-  };
+      console.log(userName);
+      this.$emit("handleModalOpen", userName);
+    },
+    handleStart: function (roomId) {
+      this.$emit("handleStart", roomId);
+    },
+    handlePushCPUPage: function () {
+      this.$emit("handlePushCPUPage");
+    },
+    handlePushAutoMatching: function () {
+      this.$emit("handlePushAutoMatching");
+    },
+    receiveDeckFromChild: function (receivedDeck) {
+      this.receivedDeck = receivedDeck;
+    },
+    getDeckCardsImg: function () {
+      this.$emit("getDeckCardsImg");
+      console.log("aaa");
+    },
+  },
+};
 </script>
 <style scoped lang="scss">
 .home-container {
@@ -198,7 +206,7 @@
     padding: 0.75rem 3rem;
     position: relative;
     border: 4px solid #d3fffd;
-    background-color: transparent;
+    background-color: #0e3145;
     box-shadow: 0px 0px 20px #d3fffd;
     cursor: pointer;
 
@@ -276,18 +284,18 @@
       display: flex;
       cursor: pointer;
 
-      &:hover {
-        cursor: pointer;
-        animation: fadein 0.5s forwards;
-        @keyframes fadein {
-          0% {
-            background-color: transparent;
-          }
-          100% {
-            background-color: #134e61;
-          }
+    &:hover {
+      cursor: pointer;
+      animation: fadein 0.5s forwards;
+      @keyframes fadein {
+        0% {
+          background-color: transparent;
+        }
+        100% {
+          background-color: #134e61;
         }
       }
+    }
 
       span {
         font-size: 24px;
@@ -297,13 +305,30 @@
       .icon {
         width: 10%;
       }
+      
+      animation: neon 2s infinite alternate;
     }
+  }
 
-    p {
-      margin-top: 32px;
-      font-size: 1.5rem;
+  .deck-btn:hover,
+  .deck-btn:hover:before,
+  .deck-btn:hover:after {
+    cursor: pointer;
+    animation: fadein 0.5s forwards !important;
+    @keyframes fadein {
+      0% {
+        background-color: #0e3145;
+      }
+      100% {
+        background-color: #134e61;
+      }
     }
+  }
 
+  p {
+    margin-top: 32px;
+    font-size: 1.5rem;
+  }
 
   .tempolary-btn {
     font-size: 1rem;

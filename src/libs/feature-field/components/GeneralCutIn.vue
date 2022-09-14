@@ -1,6 +1,14 @@
 <template>
   <div class="overlay">
-    <p class="message">{{ message }}</p>
+    <div v-if="message === opponentName">
+      <div class="message">
+        It's <span>{{ message }}</span
+        >'s turn.
+      </div>
+    </div>
+    <div v-else>
+      <p class="message">{{ message }}</p>
+    </div>
     <div v-show="message === 'Matching...'">
       <div class="pulse-container">
         <div class="pulse-bubble pulse-bubble-1"></div>
@@ -13,7 +21,7 @@
 <script>
   export default {
     name: "GeneralCutIn",
-    props: ["message"],
+    props: ["message", "opponentName"],
   };
 </script>
 <style scoped lang="scss">
@@ -35,6 +43,7 @@
     z-index: 1;
 
     .message {
+      width: 800px;
       animation: neon 2s infinite alternate;
       @keyframes neon {
         0% {
@@ -43,6 +52,12 @@
         100% {
           text-shadow: 0 0 12px #00fff2, 0 0 10px #fff, 0 0 0px #d3fffd;
         }
+      }
+
+      span {
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        white-space: nowrap !important;
       }
     }
 
