@@ -36,6 +36,7 @@
 <script>
 import FieldTemplate from "/src/libs/feature-field/templates/field-template.vue";
 export default {
+  title: 'CODE DUEL',
   name: "cpu",
   components: {
     FieldTemplate,

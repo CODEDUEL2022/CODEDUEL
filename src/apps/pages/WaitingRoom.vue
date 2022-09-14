@@ -19,6 +19,7 @@
 <script>
 import io from "socket.io-client";
 export default {
+  title: 'CODE DUEL',
   name: "WaitingRoom",
   data() {
     return {
