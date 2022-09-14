@@ -13,6 +13,9 @@
         :effectImages="effectImages"
         :actionType="actionType"
         :actionPoint="actionPoint"
+        :yourName="yourName"
+        :opponentName="opponentName"
+        :attackedPlayerId="attackedPlayerId"
         @closeActionCutIn="$emit('closeActionCutIn')"
       />
     </div>
@@ -102,18 +105,6 @@
         </v-col>
       </v-row>
     </div>
-
-    <div v-show="showGeneralCutIn">
-      <GeneralCutIn :message="message" />
-    </div>
-    <div v-show="showActionCutIn">
-      <ActionCutIn
-        :effectImages="effectImages"
-        :actionType="actionType"
-        :actionPoint="actionPoint"
-        @closeActionCutIn="$emit('closeActionCutIn')"
-      />
-    </div>
   </div>
 </template>
 
@@ -131,61 +122,68 @@
   import RoundCounter from "../components/RoundCounter.vue";
   import FieldDisplay from "../components/FieldDisplay.vue";
 
-  export default {
-    name: "FieldTemplate",
-    components: {
-      Header,
-      ActionButton,
-      HPDisplay,
-      VueDrag,
-      GeneralCutIn,
-      CardListModal,
-      ActionCutIn,
-      TerminalUI,
-      SimpleCard,
-      BattleOutcomeView,
-      RoundCounter,
-      FieldDisplay,
+
+export default {
+  name: "FieldTemplate",
+  components: {
+    Header,
+    ActionButton,
+    HPDisplay,
+    VueDrag,
+    GeneralCutIn,
+    CardListModal,
+    ActionCutIn,
+    TerminalUI,
+    SimpleCard,
+    BattleOutcomeView,
+    RoundCounter,
+    FieldDisplay,
+},
+  props: [
+    "message",
+    "showGeneralCutIn",
+    "showActionCutIn",
+    "showBattleOutcome",
+    "judgeWin",
+    "actionType",
+    "actionPoint",
+    "yourHP",
+    "yourName",
+    "opponentHP",
+    "opponentName",
+    "roundCount",
+    "currentFieldName",
+    "currentFieldImg",
+    "nextFieldName",
+    "yourCardsData",
+    "selectedCardsData",
+    "yourGroup",
+    "yourId",
+    "effectImages",
+    "selectedId",
+    "comboData",
+    "isEnableAction",
+    "attackOptions",
+    "focusedCard",
+    "isHowToPlayOpen",
+    "isCardListModalOpen",
+    "attackedPlayerId"
+  ],
+  methods: {
+    handleShowHowToPlay: function () {
+      this.$emit("handleShowHowToPlay");
     },
-    props: [
-      "message",
-      "showGeneralCutIn",
-      "showActionCutIn",
-      "showBattleOutcome",
-      "judgeWin",
-      "actionType",
-      "actionPoint",
-      "yourHP",
-      "yourName",
-      "opponentHP",
-      "opponentName",
-      "roundCount",
-      "currentFieldName",
-      "currentFieldImg",
-      "nextFieldName",
-      "yourCardsData",
-      "selectedCardsData",
-      "yourGroup",
-      "yourId",
-      "effectImages",
-      "selectedId",
-      "comboData",
-      "isEnableAction",
-      "attackOptions",
-      "focusedCard",
-      "isHowToPlayOpen",
-      "isCardListModalOpen",
-    ],
-    data() {
-      return {
-        // drag&drop用のデータ
-        options: {
-          group: "yourGroup",
-          animation: 200,
-        },
-      };
-    },
-  };
+  },
+  data() {
+    return {
+      // drag&drop用のデータ
+      options: {
+        group: "yourGroup",
+        animation: 200,
+      },
+    };
+  },
+};
 </script>
 
 <style scoped lang="scss">

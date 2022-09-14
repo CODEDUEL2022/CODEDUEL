@@ -10,6 +10,16 @@
       </div>
     </div>
     <div class="dalayEffect">{{ actionType }} {{ actionPoint }} pt</div>
+    <div 
+      class="player-name" 
+      v-if = "change()">
+      {{yourName}} 's attack
+    </div>
+    <div  
+      class="player-name" 
+      v-else>
+      {{opponentName}} 's attack
+    </div>
   </div>
 </template>
 <script>
@@ -17,10 +27,18 @@
 
   export default {
     name: "ActionCutIn",
-    props: ["effectImages", "actionType", "actionPoint"],
+    props: ["effectImages", "actionType", "actionPoint","yourName","opponentName","attackedPlayerId"],
     components: {
       SimpleCard,
     },
+    methods:{
+      change(){
+        const searchParams = new URLSearchParams(window.location.search);
+        if(searchParams.get("id") == this.attackedPlayerId){
+          return true
+        }
+      }
+    }
   };
 </script>
 <style scoped lang="scss">
@@ -47,16 +65,34 @@
     .dalayEffect {
       display: flex;
       justify-content: center;
-      align-items: center;
+      align-items: end;
       position: absolute;
       width: 100%;
       height: 30%;
       font-family: "Gill Sans", sans-serif;
       font-weight: 100;
-      font-size: 7rem;
+      font-size: 6rem;
       letter-spacing: 1.1rem;
       text-shadow: 0 0 20px #d3fffd;
       background: radial-gradient(#186883, #020508);
+      opacity: 0;
+      z-index: 3;
+      animation: SlideIn 0.4s;
+      animation-delay: 0.6s;
+      animation-fill-mode: forwards;
+    }
+    .player-name {
+      display: flex;
+      justify-content: center;
+      align-items: start;
+      position: absolute;
+      width: 100%;
+      height: 30%;
+      font-family: "Gill Sans", sans-serif;
+      font-weight: 100;
+      font-size: 4rem;
+      letter-spacing: 1.1rem;
+      text-shadow: 0 0 20px #d3fffd;
       opacity: 0;
       z-index: 3;
       animation: SlideIn 0.4s;
