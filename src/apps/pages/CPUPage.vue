@@ -62,8 +62,14 @@
         ),
         backSE: new Audio(require("/src/libs/ui/assets/sounds/back.mp3")),
         clickSE: new Audio(require("/src/libs/ui/assets/sounds/click.mp3")),
-        winSE: new Audio(require("/src/libs/ui/assets/sounds/win.mp3")),
+        winSE: new Audio(require("/src/libs/ui/assets/sounds/data.mp3")),
         loseSE: new Audio(require("/src/libs/ui/assets/sounds/lose.mp3")),
+        increaseHPSE: new Audio(
+          require("/src/libs/ui/assets/sounds/increase-hp.mp3")
+        ),
+        decreaseHPSE: new Audio(
+          require("/src/libs/ui/assets/sounds/decrease-hp.mp3")
+        ),
         cardsList: [],
         message: "準備が完了するまでしばらくお待ちください",
         showGeneralCutIn: true,
@@ -169,11 +175,11 @@
             this.oponentTurn = false;
           } else {
             this.oponentTurn = true;
-            this.message = "CPUのターンです";
+            this.message = "It's CPU's turn.";
           }
         });
       this.showGeneralCutIn = true;
-      this.message = "Hello World";
+      this.message = "Hello World!";
       const closeCutIn = () => (this.showGeneralCutIn = false);
       setTimeout(closeCutIn, 5000);
     },
@@ -248,6 +254,27 @@
         const giveNewProperty = function (object) {
           object.isCombined = true;
         };
+        if (this.yourHP > this.yourTmpHP) {
+          this.decreaseHPSE.volume = 0.3;
+          this.decreaseHPSE.pause();
+          this.decreaseHPSE.play();
+          const moveYourBar = document.getElementById("your-hp-frame");
+          moveYourBar.classList.add("moveHPBar");
+        }
+        if (this.opponentHP > this.opponentTmpHP) {
+          this.decreaseHPSE.volume = 0.3;
+          this.decreaseHPSE.pause();
+          this.decreaseHPSE.play();
+          const moveOpponentBar = document.getElementById("opponent-hp-frame");
+          moveOpponentBar.classList.add("moveHPBar");
+        }
+        if (
+          this.yourHP < this.yourTmpHP ||
+          this.opponentHP < this.opponentTmpHP
+        ) {
+          this.increaseHPSE.volume = 0.3;
+          this.increaseHPSE.play();
+        }
         this.yourHP = this.yourTmpHP;
         this.opponentHP = this.opponentTmpHP;
         this.$axios
@@ -281,15 +308,10 @@
           });
         if (this.yourHP > this.yourTmpHP) {
           this.decreaseHPSE.volume = 0.3;
+          this.decreaseHPSE.pause();
           this.decreaseHPSE.play();
           const moveYourBar = document.getElementById("your-hp-frame");
           moveYourBar.classList.add("moveHPBar");
-        }
-        if (this.opponentHP > this.opponentTmpHP) {
-          this.decreaseHPSE.volume = 0.3;
-          this.decreaseHPSE.play();
-          const moveOpponentBar = document.getElementById("opponent-hp-frame");
-          moveOpponentBar.classList.add("moveHPBar");
         }
         if (
           this.yourHP < this.yourTmpHP ||
@@ -298,8 +320,6 @@
           this.increaseHPSE.volume = 0.3;
           this.increaseHPSE.play();
         }
-        this.yourHP = this.yourTmpHP;
-        this.opponentHP = this.opponentTmpHP;
         this.yourHP = this.yourTmpHP;
         this.opponentHP = this.opponentTmpHP;
         // 負け！
