@@ -24,6 +24,7 @@ import HomeTemplate from "/src/libs/feature-home/templates/home-template.vue";
 import io from "socket.io-client";
 
 export default {
+  title: 'CODE DUEL',
   name: "home",
   components: {
     HomeTemplate,

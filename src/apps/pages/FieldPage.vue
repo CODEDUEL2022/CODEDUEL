@@ -40,6 +40,7 @@ import io from "socket.io-client";
 import nonNumericOnlyHash from "webpack/lib/util/nonNumericOnlyHash";
 
 export default {
+  title: 'CODE DUEL',
   name: "field",
   components: {
     FieldTemplate,
