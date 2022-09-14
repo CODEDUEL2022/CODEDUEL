@@ -26,7 +26,8 @@
         <div class="setting">
           <p>Select your Deck</p>
           <div class="deck-btn" @click="$emit('openDeckModal')">
-            <span>{{ $store.state.selectedDeck }} ></span>
+            <span>&emsp;Deck {{ $store.state.selectedDeck }}</span>
+            <v-img src="../../ui/assets/inverted-triangle.svg" class="icon" width="40" height="40"></v-img>
           </div>
         </div>
       </div>
@@ -277,15 +278,11 @@ export default {
   }
 
   .deck-btn {
-    margin-left: auto;
-    margin-right: auto;
-    width: fit-content;
-    padding: 0.3rem 2rem;
-    position: relative;
-    border: 4px solid #d3fffd;
-    background-color: transparent;
-    box-shadow: 0px 0px 20px #d3fffd;
-    cursor: pointer;
+      border-top: solid 1px #d3fffd;
+      border-bottom: solid 2px #d3fffd;
+      width: 220px;
+      display: flex;
+      cursor: pointer;
 
     &:hover {
       cursor: pointer;
@@ -300,41 +297,15 @@ export default {
       }
     }
 
-    &::before {
-      background-color: #0e3145;
-      position: absolute;
-      content: "";
-      display: block;
-      top: -3px;
-      bottom: -3px;
-      left: 10px;
-      right: 10px;
-    }
-
-    &::after {
-      background-color: #0e3145;
-      position: absolute;
-      content: "";
-      display: block;
-      top: 10px;
-      bottom: 10px;
-      left: -3px;
-      right: -3px;
-    }
-
-    span {
-      position: relative;
-      z-index: 1;
-      font-size: 22px;
-      letter-spacing: 0.15em;
-      @keyframes neon {
-        0% {
-          text-shadow: 0 0 10px #00fff2, 0 0 5px #fff, 0 0 13px #d3fffd;
-        }
-        100% {
-          text-shadow: 0 0 30px #00fff2, 0 0 15px #fff, 0 0 0px #d3fffd;
-        }
+      span {
+        font-size: 24px;
+        width: 90%;
       }
+
+      .icon {
+        width: 10%;
+      }
+      
       animation: neon 2s infinite alternate;
     }
   }
