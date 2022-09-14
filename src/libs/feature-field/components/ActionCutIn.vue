@@ -65,13 +65,13 @@
     .dalayEffect {
       display: flex;
       justify-content: center;
-      align-items: center;
+      align-items: end;
       position: absolute;
       width: 100%;
       height: 30%;
       font-family: "Gill Sans", sans-serif;
       font-weight: 100;
-      font-size: 7rem;
+      font-size: 6rem;
       letter-spacing: 1.1rem;
       text-shadow: 0 0 20px #d3fffd;
       background: radial-gradient(#186883, #020508);
@@ -90,7 +90,7 @@
       height: 30%;
       font-family: "Gill Sans", sans-serif;
       font-weight: 100;
-      font-size: 5rem;
+      font-size: 4rem;
       letter-spacing: 1.1rem;
       text-shadow: 0 0 20px #d3fffd;
       opacity: 0;
