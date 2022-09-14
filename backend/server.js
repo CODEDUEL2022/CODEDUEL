@@ -48,13 +48,11 @@ const io = new Server(http, {
   },
 });
 const PORT = process.env.PORT || 3000;
-const serveStatic = serverStatic;
 
 let numClients = {};
 let numPlayer = {};
 
-//post時にbodyを参照できるようにする
-app.use(bodyParser.urlencoded({ extended: true }));
+const serveStatic = serverStatic
 
 //post時にjsonファイルを扱えるようにする
 app.use(express.json());
@@ -65,6 +63,9 @@ app.use(
     optionsSuccessStatus: 200,
   })
 );
+//post時にbodyを参照できるようにする
+app.use(bodyParser.urlencoded({ extended: true }));
+
 if (process.env.NODE_ENV !== "production") {
   app.use(
     cors({
@@ -84,12 +85,12 @@ app.get("/*", function(req, res) {
 app.use(serveStatic(__dirname + "../dist"));
 
 //historyモードを追加(deploy後のreload対策になるらしい)
-app.use(
-  history({
-    disableDotRule: true,
-    verbose: true,
-  })
-);
+// app.use(
+//   history({
+//     disableDotRule: true,
+//     verbose: true,
+//   })
+// );
 
 let standByPlayer = [];
 
