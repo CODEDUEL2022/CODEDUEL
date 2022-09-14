@@ -5,7 +5,7 @@
         <span class="user-name">{{ yourName }}</span
         ><span>HP:{{ yourHP }}</span>
       </div>
-      <div id="hp-frame">
+      <div class="hp-frame" id="your-hp-frame">
         <div id="bar-you"></div>
         <div id="mark-you"></div>
       </div>
@@ -15,7 +15,7 @@
         <span class="user-name">{{ opponentName }}</span
         ><span>HP:{{ opponentHP }}</span>
       </div>
-      <div id="hp-frame">
+      <div class="hp-frame" id="opponent-hp-frame">
         <div id="bar-opponent"></div>
         <div id="mark-opponent"></div>
       </div>
@@ -89,7 +89,7 @@
         }
       }
     }
-    #hp-frame {
+    .hp-frame {
       background-color: #ffffff5e;
       height: 0.8rem;
       width: 100%;
@@ -127,6 +127,36 @@
       background-color: #ffffff;
       filter: saturate(300%);
       box-shadow: 0 0 5px 3px #d3fffd, 0 0 7px 7px #73fff8;
+    }
+
+    .moveHPBar {
+      animation: purupuru_anim 1.5s;
+      @keyframes purupuru_anim {
+        0% {
+          transform: translate(0, 0);
+        }
+        5% {
+          transform: translate(-5px, -0);
+        }
+        10% {
+          transform: translate(5px, 0);
+        }
+        15% {
+          transform: translate(-5px, -0);
+        }
+        20% {
+          transform: translate(5px, 0);
+        }
+        25% {
+          transform: translate(-5px, -0);
+        }
+        30% {
+          transform: translate(0, 0);
+        }
+        100% {
+          transform: translate(0, 0);
+        }
+      }
     }
   }
 </style>

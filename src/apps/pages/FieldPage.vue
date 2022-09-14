@@ -318,14 +318,25 @@
         this.currentFieldName = this.fieldData[this.roundCount % 4].name;
         this.currentFieldImg = this.fieldData[this.roundCount % 4].img;
         this.nextFieldName = this.fieldData[(this.roundCount + 1) % 4].name;
-        if (
-          this.yourHP > this.yourTmpHP ||
-          this.opponentHP > this.opponentTmpHP
-        ) {
-        } else {
+        if (this.yourHP > this.yourTmpHP) {
+          this.decreaseHPSE.volume = 0.3;
+          this.decreaseHPSE.play();
+          const moveYourBar = document.getElementById("your-hp-frame");
+          moveYourBar.classList.add("moveHPBar");
         }
-        this.decreaseHPSE.volume = 0.3;
-        this.decreaseHPSE.play();
+        if (this.opponentHP > this.opponentTmpHP) {
+          this.decreaseHPSE.volume = 0.3;
+          this.decreaseHPSE.play();
+          const moveOpponentBar = document.getElementById("opponent-hp-frame");
+          moveOpponentBar.classList.add("moveHPBar");
+        }
+        if (
+          this.yourHP < this.yourTmpHP ||
+          this.opponentHP < this.opponentTmpHP
+        ) {
+          this.increaseHPSE.volume = 0.3;
+          this.increaseHPSE.play();
+        }
         this.yourHP = this.yourTmpHP;
         this.opponentHP = this.opponentTmpHP;
         // 負け！
