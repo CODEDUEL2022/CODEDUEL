@@ -33,7 +33,7 @@ export default {
     return {
       number: "",
       userName: null,
-      socket: io("https://codeduel2.herokuapp.com/"),
+      socket: io("codeduel2.herokuapp.com/"),
       turn_flag: 0,
       playerId: "",
       deckList: [],

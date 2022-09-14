@@ -108,7 +108,7 @@ export default {
       isAlone: false,
       usedCardIdList: [], //攻撃された、攻撃したカードのIDのリスト
       effectImages: [],
-      socket: io("https://codeduel2.herokuapp.com/"),
+      socket: io("codeduel2.herokuapp.com/"),
       attackedPlayerId: "",
     };
   },
