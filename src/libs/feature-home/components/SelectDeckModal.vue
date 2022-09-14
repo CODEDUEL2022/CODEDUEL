@@ -2,28 +2,35 @@
   <div class="overlay" @click.self="$emit('closeDeckModal')">
     <div class="animation">
       <div class="modal">
-        <div class="container">
-          <ul>
-          <li>
-            <input type="radio" id="f-option" name="selector" value=1 v-model="selectedDeck">
-            <label for="f-option">Deck1</label>
-            <div class="check"></div>
-          </li>
-          <li>
-            <input type="radio" id="s-option" name="selector" value=2 v-model="selectedDeck">
-            <label for="s-option">Deck2</label>
-            <div class="check"></div>
-          </li>
-          <li>
-            <input type="radio" id="t-option" name="selector" value=3 v-model="selectedDeck">
-            <label for="t-option">Deck3</label>
-            <div class="check"></div>
-          </li>
-          </ul>
+        <div class="full">
+          <p class="text">デッキを選択してください</p>
+          <span class="close-btn" @click="$emit('closeDeckModal')">×</span>
         </div>
-        <div class="cards">
-          <div v-for="card in deckCardData" :key="card.id" >
-            <v-img height="150" width="110" :src="require(`../../ui/assets/cards/${card.img}`)" lazy-src></v-img>
+        <div class="full">
+          <div class="container">
+            <ul>
+            <li>
+              <input type="radio" id="f-option" name="selector" value=1 v-model="selectedDeck">
+              <label for="f-option">Deck1</label>
+              <div class="check"></div>
+            </li>
+            <li>
+              <input type="radio" id="s-option" name="selector" value=2 v-model="selectedDeck">
+              <label for="s-option">Deck2</label>
+              <div class="check"></div>
+            </li>
+            <li>
+              <input type="radio" id="t-option" name="selector" value=3 v-model="selectedDeck">
+              <label for="t-option">Deck3</label>
+              <div class="check"></div>
+            </li>
+            </ul>
+          </div>
+          <div class="cards">
+            <!-- <div v-for="card in deckCardData" :key="card.id" >
+              <v-img height="150" width="110" :src="require(`../../ui/assets/cards/${card.img}`)" lazy-src></v-img>
+            </div> -->
+            <v-img :src="require(`../../ui/assets/decks/${deckImg}`)"></v-img>
           </div>
         </div>
       </div>
@@ -33,7 +40,7 @@
 
 <script>
 export default {
-  props: ["deckCardData"],
+  props: ["deckImg"],
   computed: {
     selectedDeck: {
       get: function() {
@@ -75,8 +82,6 @@ export default {
         background-color: #0e3145;
         box-shadow: 0px 0px 20px #d3fffd;
         z-index: 10;
-        display: flex;
-        justify-content: space-between;
 
         &::before {
           background-color: #0e3145;
@@ -102,6 +107,28 @@ export default {
         }
       }
     }
+
+    .full {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .text {
+      z-index: 99;
+      font-size: 22px;
+      margin-top: 16px;
+      margin-left: 16px;
+    }
+
+    .close-btn {
+      cursor: pointer;
+      text-align: right;
+      font-size: 2rem;
+      text-shadow: none;
+      z-index: 1;
+    }
+
     .container{
     display: flex;
     flex-wrap: wrap;
