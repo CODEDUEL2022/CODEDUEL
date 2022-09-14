@@ -312,6 +312,11 @@ export default {
       this.currentFieldName = this.fieldData[this.roundCount % 4].name;
       this.currentFieldImg = this.fieldData[this.roundCount % 4].img;
       this.nextFieldName = this.fieldData[(this.roundCount + 1) % 4].name;
+      if(this.yourHP > this.yourTmpHP || this.opponentHP > this.opponentTmpHP){
+        
+      }else{
+        
+      }
       this.yourHP = this.yourTmpHP;
       this.opponentHP = this.opponentTmpHP;
       // 負け！
