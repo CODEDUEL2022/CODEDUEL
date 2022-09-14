@@ -41,8 +41,9 @@ export default {
     });
 
     const searchParams = new URLSearchParams(window.location.search);
-    let playerId = searchParams.get("id");
-    let playerName = searchParams.get("playerName")
+    const playerId = searchParams.get("id");
+    const playerName = searchParams.get("playerName")
+    const decId = searchParams.get("dec")
     let anotherThis = this;
     this.socket.on("FullRoom", function (roomId, playerId1, playerId2) {
       function logIn() {
@@ -63,7 +64,7 @@ export default {
         anotherThis.$axios
           .post("/dec", {
             playerId: playerId,
-            decIdList: [0, 1, 2, 3, 4, 5, 6],
+            decIdList: decId,
           })
           .then((res) => {
             console.log(res.data);

@@ -234,6 +234,11 @@ app.post("/api/cpuHPReload", (req, res) => {
   res.send(cpuHPReload(req, res));
 });
 
+
+app.post("/api/cpuDec", (req, res) => {
+  res.send(cpuAddDec(req, res));
+});
+
 app.post("/api/cpuPlayerData", (req, res) => {
   cpuPostPlayerData(req, res);
 });
