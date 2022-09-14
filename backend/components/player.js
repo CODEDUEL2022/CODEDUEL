@@ -46,7 +46,7 @@ export const cardDraw = function (selectId) {
       const tmp = Number(
         Math.floor(Math.random() * playerDB[selectId].decList.length)
       );
-      playerDB[selectId].cardList.push(cardDB[playerDB[selectId].decList[tmp]]);
+      playerDB[selectId].cardList.push(cardDB[playerDB[selectId].decList[tmp] - 1]);
       j++;
     }
   }
@@ -123,7 +123,9 @@ export const addDec = function (req, res) {
   const selectTurnId = playerDB.findIndex(
     (e) => e.playerId === req.body.playerId
   );
-  const decIdList = selectDec(req.body.decId)
+  console.log("デッキい"+req.body.decIdList)
+  const decIdList = selectDec(req.body.decIdList)
+  console.log("デッキ"+decIdList)
   decIdList.forEach((dec) => {
     playerDB[selectTurnId].decList.push(dec);
   });
