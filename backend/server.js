@@ -32,7 +32,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 import express from "express";
 import https from "http";
-import socket from "socket.io";
+import { Server } from "socket.io";
 import serverStatic from "serve-static";
 import cors from "cors";
 import bodyParser from "body-parser";
@@ -41,7 +41,7 @@ import history from "connect-history-api-fallback";
 const app = express();
 const http = https.Server(app);
 
-const io = socket(http, {
+const io = new Server(http, {
   cors: {
     origin: "https://codeduel2.herokuapp.com/",
     methods: ["GET", "POST"],
