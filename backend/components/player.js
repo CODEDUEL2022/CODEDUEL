@@ -9,6 +9,7 @@
 import { comboDB } from "../DB.js";
 import { cardDB } from "../DB.js";
 import { fieldDB } from "../DB.js";
+import {selectDec} from "./selectDec.js";
 
 let playerDB = [
   //初期化
@@ -122,7 +123,7 @@ export const addDec = function (req, res) {
   const selectTurnId = playerDB.findIndex(
     (e) => e.playerId === req.body.playerId
   );
-  const decIdList = req.body.decIdList;
+  const decIdList = selectDec(req.body.decId)
   decIdList.forEach((dec) => {
     playerDB[selectTurnId].decList.push(dec);
   });
