@@ -10,14 +10,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Riku-0801/PLbattle.git"
+    "url": "git+https://github.com/CODEDUEL2022/CODEDUEL.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Riku-0801/PLbattle/issues"
+    "url": "https://github.com/CODEDUEL2022/issues"
   },
-  "homepage": "https://github.com/Riku-0801/PLbattle#readme",
+  "homepage": "https://github.com/CODEDUEL2022#readme",
   "dependencies": {
     "@loadingio/css-spinner": "^2.0.2",
     "augmented-ui": "^2.0.0",
