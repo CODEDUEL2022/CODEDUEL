@@ -11,21 +11,23 @@
         <br />
         <div class="line"></div>
       </div>
-      <div>
-        <span class="input-text">
-          <p>Input your name</p>
-          <input
-            :value="userName"
-            type="text"
-            placeholder="user name:"
-            @input="$emit('update:userName', $event.target.value)"
-          />
-        </span>
-      </div>
-      <div>
-        <p>Select your Deck</p>
-        <div class="deck-btn" @click="$emit('openDeckModal')">
-          <span>{{ $store.state.selectedDeck }} ></span>
+      <div class="firstSetting">
+        <div class="setting">
+          <span class="input-text">
+            <p>Input your name</p>
+            <input
+              :value="userName"
+              type="text"
+              placeholder="user name:"
+              @input="$emit('update:userName', $event.target.value)"
+            />
+          </span>
+        </div>
+        <div class="setting">
+          <p>Select your Deck</p>
+          <div class="deck-btn" @click="$emit('openDeckModal')">
+            <span>{{ $store.state.selectedDeck }} ></span>
+          </div>
         </div>
       </div>
       <div class="play-btn" @click="handleModalOpen(userName)">
@@ -42,7 +44,7 @@
       />
       <SelectDeckModal
         v-if="isDeckModalOpen"
-        :deckCardData="deckCardData"
+        :deckImg="deckImg"
         @closeDeckModal="$emit('closeDeckModal')"
         @getDeckCardsImg="getDeckCardsImg"
       ></SelectDeckModal>
@@ -61,7 +63,7 @@
         StartModal,
         SelectDeckModal
     },
-    props: ["isStartModalOpen", "isDeckModalOpen", "selectedDeck", "roomId", "userName", "deckCardData", "isHowToPlayOpen"],
+    props: ["isStartModalOpen", "isDeckModalOpen", "selectedDeck", "roomId", "userName", "deckImg", "isHowToPlayOpen"],
     methods: {
       handleShowHowToPlay: function () {
         this.$emit("handleShowHowToPlay");
@@ -162,6 +164,15 @@
         #d3fffd,
         transparent
       );
+    }
+  }
+
+  .firstSetting {
+    display: flex;
+    justify-content: space-between;
+    .setting {
+      margin-left: 32px;
+      margin-right: 32px;
     }
   }
   .input-text {
