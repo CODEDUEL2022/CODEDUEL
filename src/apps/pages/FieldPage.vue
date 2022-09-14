@@ -66,7 +66,7 @@
         ),
         backSE: new Audio(require("/src/libs/ui/assets/sounds/back.mp3")),
         clickSE: new Audio(require("/src/libs/ui/assets/sounds/click.mp3")),
-        winSE: new Audio(require("/src/libs/ui/assets/sounds/win.mp3")),
+        winSE: new Audio(require("/src/libs/ui/assets/sounds/data.mp3")),
         loseSE: new Audio(require("/src/libs/ui/assets/sounds/lose.mp3")),
         increaseHPSE: new Audio(
           require("/src/libs/ui/assets/sounds/increase-hp.mp3")
