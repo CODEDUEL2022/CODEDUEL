@@ -1,9 +1,9 @@
 import { cardDB } from "./DB.js";
 import { comboDB } from "./DB.js";
 import { fieldDB } from "./DB.js";
-import { Dec1 } from "./DB.js"
-import { Dec2 } from "./DB.js"
-import { Dec3 } from "./DB.js"
+import { Dec1 } from "./DB.js";
+import { Dec2 } from "./DB.js";
+import { Dec3 } from "./DB.js";
 import {
   controlTurn,
   getTurn,
@@ -26,7 +26,7 @@ import {
   cpuPostPlayerData,
   cpuPlayerAction,
   cpuGetPlayerName,
-  cpuAddDec
+  cpuAddDec,
 } from "./components/cpu.js";
 import path from "path";
 import { fileURLToPath } from "url";
@@ -43,7 +43,7 @@ const http = importHttp.Server(app);
 
 const io = new Server(http, {
   cors: {
-    origin: "http://localhost:8080",
+    origin: "https://codeduel2.herokuapp.com/",
     methods: ["GET", "POST"],
   },
 });
@@ -196,16 +196,16 @@ app.get("/api/getFieldDB", (req, res) => {
 });
 
 app.get("/api/getDec1", (req, res) => {
-  res.json(Dec1)
-})
+  res.json(Dec1);
+});
 
 app.get("/api/getDec2", (req, res) => {
-  res.json(Dec2)
-})
+  res.json(Dec2);
+});
 
 app.get("/api/getDec3", (req, res) => {
-  res.json(Dec3)
-})
+  res.json(Dec3);
+});
 
 //ページリロード時のターンを決定づける。
 app.post("/api/getTurn", (req, res) => {
@@ -234,7 +234,6 @@ app.post("/api/getRoundCount", (req, res) => {
 app.post("/api/cpuHPReload", (req, res) => {
   res.send(cpuHPReload(req, res));
 });
-
 
 app.post("/api/cpuDec", (req, res) => {
   res.send(cpuAddDec(req, res));
