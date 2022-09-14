@@ -2,7 +2,8 @@
   <div class="hp-monitor">
     <div class="you">
       <div class="flex">
-        <span class="user-name">You</span><span>HP:{{ yourHP }}</span>
+        <span class="user-name">{{ yourName }}</span
+        ><span>HP:{{ yourHP }}</span>
       </div>
       <div id="hp-frame">
         <div id="bar-you"></div>
@@ -11,7 +12,8 @@
     </div>
     <div class="opponent">
       <div class="flex">
-        <span class="user-name">Opponent</span><span>HP:{{ opponentHP }}</span>
+        <span class="user-name">{{ opponentName }}</span
+        ><span>HP:{{ opponentHP }}</span>
       </div>
       <div id="hp-frame">
         <div id="bar-opponent"></div>
@@ -46,49 +48,52 @@
   };
 </script>
 
-<styled scoped lang="scss">
-.hp-monitor {
-  width: 70%;
-  letter-spacing: 0.1em;
-  text-shadow: 0 0 10px #d3fffd;
-  .you {
-    font-size: 1.5rem;
-    margin-bottom: 1.5rem;
-    .flex {
-      display: flex;
-      justify-content: space-between;
-      span {
-        flex-basis: 50%;
-        text-align: right;
-      }
-      .user-name {
-        text-align: left;
-      }
-    }
-  }
-  .opponent {
-    font-size: 1.25rem;
-    .flex {
-      display: flex;
-      span {
-        flex-basis: 50%;
-        text-align: right;
-      }
-      .user-name {
-        text-align: left;
+<style scoped lang="scss">
+  .hp-monitor {
+    width: 70%;
+    letter-spacing: 0.1em;
+
+    .you {
+      font-size: 1.5rem;
+      margin-bottom: 1.5rem;
+      .flex {
+        display: flex;
+        justify-content: space-between;
+        span {
+          flex-basis: 50%;
+          text-align: right;
+          text-shadow: 0 0 10px #ff5e00;
+        }
+        .user-name {
+          text-align: left;
+        }
       }
     }
-  }
-  #hp-frame {
-    background-color: #d3fffd;
-    height: 0.8rem;
-    width: 100%;
-    display: flex;
-    align-items: center;
+    .opponent {
+      font-size: 1.15rem;
+      .flex {
+        display: flex;
+        span {
+          flex-basis: 50%;
+          text-align: right;
+          text-shadow: 0 0 10px #d3fffd;
+        }
+        .user-name {
+          text-align: left;
+        }
+      }
+    }
+    #hp-frame {
+      background-color: #ffffff5e;
+      height: 0.8rem;
+      width: 100%;
+      display: flex;
+      align-items: center;
+    }
 
     #bar-you {
-      height: 0.75rem;
-      background-color: #00fff2;
+      height: 0.9rem;
+      background: linear-gradient(to right, #ffd000, #ff8844);
       transition: 300ms;
       width: 100%;
     }
@@ -99,12 +104,12 @@
       border-radius: 3px;
       background-color: #ffffff;
       filter: saturate(300%);
-      box-shadow: 0 0 5px 3px #d3fffd, 0 0 7px 7px #00fff2;
+      box-shadow: 0 0 5px 3px #fff1d3, 0 0 7px 7px #ffbc95;
     }
 
     #bar-opponent {
-      height: 0.75rem;
-      background-color: #00fff2;
+      height: 0.9rem;
+      background: linear-gradient(to right, #00fff2, #30a4a7);
       transition: 300ms;
       width: 100%;
     }
@@ -115,8 +120,7 @@
       border-radius: 3px;
       background-color: #ffffff;
       filter: saturate(300%);
-      box-shadow: 0 0 5px 3px #d3fffd, 0 0 7px 7px #00fff2;
+      box-shadow: 0 0 5px 3px #d3fffd, 0 0 7px 7px #73fff8;
     }
   }
-}
-</styled>
+</style>

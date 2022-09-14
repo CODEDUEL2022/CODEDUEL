@@ -1,6 +1,10 @@
 <template>
   <div>
-    <Header />
+    <Header
+      :isHowToPlayOpen="isHowToPlayOpen"
+      @handleShowHowToPlay="handleShowHowToPlay"
+      @handleHowToPlayModalClose="$emit('handleHowToPlayModalClose')"
+    />
     <div class="home-container">
       <div class="code-duel">
         <span>CODE DUEL</span>
@@ -57,8 +61,11 @@
         StartModal,
         SelectDeckModal
     },
-    props: ["isStartModalOpen", "isDeckModalOpen", "selectedDeck", "roomId", "userName", "deckCardData"],
+    props: ["isStartModalOpen", "isDeckModalOpen", "selectedDeck", "roomId", "userName", "deckCardData", "isHowToPlayOpen"],
     methods: {
+      handleShowHowToPlay: function () {
+        this.$emit("handleShowHowToPlay");
+      },
       handleModalOpen: function (userName) {
         if (!userName) {
           alert("ERROR! : Input your name.");
@@ -87,162 +94,108 @@
   };
 </script>
 <style scoped lang="scss">
-  .home-container {
-    font-family: "Gill Sans", sans-serif;
-    font-weight: 200;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding-top: 10rem;
-    text-align: center;
-    animation: neon 2s infinite alternate;
-    @keyframes neon {
-      0% {
-        text-shadow: 0 0 10px #00fff2, 0 0 5px #fff, 0 0 13px #d3fffd;
+.home-container {
+  font-family: "Gill Sans", sans-serif;
+  font-weight: 200;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 10rem;
+  text-align: center;
+  animation: neon 2s infinite alternate;
+  @keyframes neon {
+    0% {
+      text-shadow: 0 0 10px #00fff2, 0 0 5px #fff, 0 0 13px #d3fffd;
+    }
+    100% {
+      text-shadow: 0 0 12px #00fff2, 0 0 10px #fff, 0 0 0px #d3fffd;
+    }
+  }
+
+  .code-duel {
+    margin-bottom: 2rem;
+    font-size: 4rem;
+    letter-spacing: 0.15em;
+    @keyframes title-blink {
+      from,
+      to {
+        border-color: #ffffff;
       }
-      100% {
-        text-shadow: 0 0 12px #00fff2, 0 0 10px #fff, 0 0 0px #d3fffd;
+      50% {
+        border-color: #ffffff;
       }
     }
+    animation: title-blink 3s;
 
-    .code-duel {
-      margin-bottom: 2rem;
-      font-size: 4rem;
-      letter-spacing: 0.15em;
-      @keyframes title-blink {
-        from,
-        to {
-          border-color: #ffffff;
-        }
-        50% {
-          border-color: #ffffff;
-        }
-      }
-      animation: title-blink 3s;
+    span {
+      width: fit-content;
+      padding: 0 0 2rem;
+      font-weight: light;
+      animation: blurAnime 3s forwards;
 
-      span {
-        width: fit-content;
-        padding: 0 0 2rem;
-        font-weight: light;
-        animation: blurAnime 3s forwards;
-
-        hr {
-          width: 50%;
-          color: #ffffff;
-        }
-
-        @keyframes blurAnime {
-          from {
-            filter: blur(10px);
-            transform: scale(1.02);
-            opacity: 0;
-          }
-
-          to {
-            filter: blur(0);
-            transform: scale(1);
-            opacity: 1;
-          }
-        }
-      }
-      .line {
-        margin-top: 1rem;
-        margin-bottom: 3rem;
-        height: 2px;
-        background-image: linear-gradient(
-          to left,
-          transparent,
-          #d3fffd,
-          transparent
-        );
-      }
-    }
-    .input-text {
-      cursor: text;
-
-      p {
-        font-size: 1.5rem;
-      }
-
-      input {
-        width: 220px;
-        padding: 0.5rem;
-        border-top: solid 1px #d3fffd;
-        border-bottom: solid 2px #d3fffd;
-        font-size: 1rem;
+      hr {
+        width: 50%;
         color: #ffffff;
       }
-    }
-    .play-btn {
-      margin: 5rem;
-      width: fit-content;
-      padding: 1rem 5rem;
-      position: relative;
-      border: 4px solid #d3fffd;
-      background-color: transparent;
-      box-shadow: 0px 0px 20px #d3fffd;
-      cursor: pointer;
 
-      &:hover {
-        cursor: pointer;
-        animation: fadein 0.5s forwards;
-        @keyframes fadein {
-          0% {
-            background-color: transparent;
-          }
-          100% {
-            background-color: #134e61;
-          }
+      @keyframes blurAnime {
+        from {
+          filter: blur(10px);
+          transform: scale(1.02);
+          opacity: 0;
+        }
+
+        to {
+          filter: blur(0);
+          transform: scale(1);
+          opacity: 1;
         }
       }
+    }
+    .line {
+      margin-top: 1rem;
+      margin-bottom: 3rem;
+      height: 2px;
+      background-image: linear-gradient(
+        to left,
+        transparent,
+        #d3fffd,
+        transparent
+      );
+    }
+  }
+  .input-text {
+    cursor: text;
 
-      &::before {
-        background-color: #0e3145;
-        position: absolute;
-        content: "";
-        display: block;
-        top: -3px;
-        bottom: -3px;
-        left: 10px;
-        right: 10px;
-      }
-
-      &::after {
-        background-color: #0e3145;
-        position: absolute;
-        content: "";
-        display: block;
-        top: 10px;
-        bottom: 10px;
-        left: -3px;
-        right: -3px;
-      }
-
-      span {
-        position: relative;
-        z-index: 1;
-        font-size: 28px;
-        letter-spacing: 0.15em;
-        @keyframes neon {
-          0% {
-            text-shadow: 0 0 10px #00fff2, 0 0 5px #fff, 0 0 13px #d3fffd;
-          }
-          100% {
-            text-shadow: 0 0 30px #00fff2, 0 0 15px #fff, 0 0 0px #d3fffd;
-          }
-        }
-        animation: neon 2s infinite alternate;
-      }
+    p {
+      font-size: 1.5rem;
     }
 
-    .play-btn:hover,
-    .play-btn:hover:before,
-    .play-btn:hover:after {
+    input {
+      width: 220px;
+      padding: 0.5rem;
+      border-top: solid 1px #d3fffd;
+      border-bottom: solid 2px #d3fffd;
+      font-size: 1rem;
+      color: #ffffff;
+    }
+  }
+  .play-btn {
+    margin: 5rem;
+    width: fit-content;
+    padding: 0.75rem 3rem;
+    position: relative;
+    border: 4px solid #d3fffd;
+    background-color: transparent;
+    box-shadow: 0px 0px 20px #d3fffd;
+    cursor: pointer;
+
+    &:hover {
       cursor: pointer;
-      animation: fadein 0.5s forwards !important;
+      animation: fadein 0.5s forwards;
       @keyframes fadein {
         0% {
-          background-color: #0e3145;
+          background-color: transparent;
         }
         100% {
           background-color: #134e61;
@@ -250,7 +203,61 @@
       }
     }
 
-    .deck-btn {
+    &::before {
+      background-color: #0e3145;
+      position: absolute;
+      content: "";
+      display: block;
+      top: -3px;
+      bottom: -3px;
+      left: 10px;
+      right: 10px;
+    }
+
+    &::after {
+      background-color: #0e3145;
+      position: absolute;
+      content: "";
+      display: block;
+      top: 10px;
+      bottom: 10px;
+      left: -3px;
+      right: -3px;
+    }
+
+    span {
+      position: relative;
+      z-index: 1;
+      font-size: 28px;
+      letter-spacing: 0.15em;
+      @keyframes neon {
+        0% {
+          text-shadow: 0 0 10px #00fff2, 0 0 5px #fff, 0 0 13px #d3fffd;
+        }
+        100% {
+          text-shadow: 0 0 30px #00fff2, 0 0 15px #fff, 0 0 0px #d3fffd;
+        }
+      }
+      animation: neon 2s infinite alternate;
+    }
+  }
+
+  .play-btn:hover,
+  .play-btn:hover:before,
+  .play-btn:hover:after {
+    cursor: pointer;
+    animation: fadein 0.5s forwards !important;
+    @keyframes fadein {
+      0% {
+        background-color: #0e3145;
+      }
+      100% {
+        background-color: #134e61;
+      }
+    }
+  }
+
+  .deck-btn {
       margin-left: auto;
       margin-right: auto;
       width: fit-content;
@@ -333,15 +340,16 @@
       font-size: 1.5rem;
     }
 
-    .tempolary-btn {
-      font-size: 1rem;
-    }
-  }
 
-  @media screen and (max-width: 959px) {
-    /* 959px以下に適用されるCSS（タブレット用） */
+  .tempolary-btn {
+    font-size: 1rem;
   }
-  @media screen and (max-width: 480px) {
-    /* 480px以下に適用されるCSS（スマホ用） */
-  }
+}
+
+@media screen and (max-width: 959px) {
+  /* 959px以下に適用されるCSS（タブレット用） */
+}
+@media screen and (max-width: 480px) {
+  /* 480px以下に適用されるCSS（スマホ用） */
+}
 </style>

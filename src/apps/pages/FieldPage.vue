@@ -20,11 +20,17 @@
     :selectedId="selectedId"
     :yourId="yourId"
     :effectImages="effectImages"
+    :isHowToPlayOpen="isHowToPlayOpen"
     :attackOptions="attackOptions()"
     :isEnableAction="isEnableAction()"
+    :isCardListModalOpen="isCardListModalOpen"
     @goHome="goHome()"
     @closeActionCutIn="closeActionCutIn()"
     @handleAction="handleAction()"
+    @handleModalOpen="onCardListModalOpen()"
+    @handleModalClose="onCardListModalClose()"
+    @handleHowToPlayModalClose="onHowToPlayClose()"
+    @handleShowHowToPlay="onShowHowToPlay()"
   />
 </template>
 <script>
@@ -39,18 +45,33 @@
     },
     data() {
       return {
-        actionSE: new Audio(
-          require("/src/libs/ui/assets/sounds/action_se.mp3")
+        generalAttackSE: new Audio(
+          require("/src/libs/ui/assets/sounds/action/general-attack.mp3")
+        ),
+        comboAttackSE: new Audio(
+          require("/src/libs/ui/assets/sounds/action/combo-attack.mp3")
+        ),
+        enhancementSE: new Audio(
+          require("/src/libs/ui/assets/sounds/action/enhancement.mp3")
+        ),
+        hackerSE: new Audio(
+          require("/src/libs/ui/assets/sounds/action/hacker.mp3")
         ),
         damageSE: new Audio(
-          require("/src/libs/ui/assets/sounds/damage_se.mp3")
+          require("/src/libs/ui/assets/sounds/action/damage.mp3")
         ),
+        openModalSE: new Audio(
+          require("/src/libs/ui/assets/sounds/open-modal.mp3")
+        ),
+        backSE: new Audio(require("/src/libs/ui/assets/sounds/back.mp3")),
         clickSE: new Audio(require("/src/libs/ui/assets/sounds/click.mp3")),
         message: "",
         showGeneralCutIn: true,
         showActionCutIn: false,
         showBattleOutcome: false,
         judgeWin: true,
+        isHowToPlayOpen: false,
+        isCardListModalOpen: false,
         actionType: "",
         actionPoint: "",
         yourHP: 200,
@@ -99,6 +120,16 @@
           this.fieldData.push(res.data[i]);
         }
       });
+      this.$axios
+        .post("/getPlayerName", {
+          roomId: searchParams.get("room"),
+          playerId: searchParams.get("id"),
+        })
+        .then((res) => {
+          console.log("playername" + res.data.yourName);
+          this.yourName = res.data.yourName;
+          this.opponentName = res.data.opponentName;
+        });
       //HPの共有
       this.$axios
         .post("/HPReload", {
@@ -141,20 +172,53 @@
       this.$axios
         .post("/getTurn", { playerId: searchParams.get("id") })
         .then((res) => {
-          this.roundCount = res.data - 2;
           console.log(res.data);
           if (res.data == 0) {
             this.opponentTurn = false;
             this.showGeneralCutIn = false;
           } else if (res.data == 1) {
             this.opponentTurn = true;
-            this.message = "マッチング中";
+            this.message = "Matching...";
           } else if (res.data % 2 == 0) {
             this.opponentTurn = false;
             this.showGeneralCutIn = false;
           } else {
-            this.message = "相手のターンです";
+            this.message = `It's ${this.opponentName}'s turn.`;
             this.opponentTurn = true;
+          }
+        });
+      this.$axios
+        .post("/getRoundCount", { playerId: searchParams.get("id") })
+        .then((res) => {
+          this.roundCount = res.data;
+        });
+      this.$axios
+        .post("/getPlayerName", {
+          roomId: searchParams.get("room"),
+          playerId: searchParams.get("id"),
+        })
+        .then((res) => {
+          console.log("playername" + res.data.yourName);
+          this.yourName = res.data.yourName;
+          this.opponentName = res.data.opponentName;
+        });
+      //HPの共有
+      this.$axios
+        .post("/HPReload", {
+          playerId: searchParams.get("id"),
+        })
+        .then((res) => {
+          console.log(res.data);
+          this.yourHP = res.data.yourHP;
+          this.opponentHP = res.data.opponentHP;
+          if (this.yourHP <= 0) {
+            this.showGeneralCutIn = false;
+            this.judgeWin = false;
+            this.showBattleOutcome = true;
+          }
+          if (this.opponentHP <= 0) {
+            this.showGeneralCutIn = false;
+            this.showBattleOutcome = true;
           }
         });
     },
@@ -207,7 +271,6 @@
           const ableCombo = this.comboData.filter((comboData) => {
             return isIncludes(updatedData, comboData.idList);
           });
-          // 完全一致した攻撃だけを返す
           if (ableCombo.length == 0) {
             return false;
           } else if (isEqualArray(updatedData, ableCombo[0].idList)) {
@@ -218,6 +281,7 @@
         }
       },
       goHome: function () {
+        this.clickSE.play();
         this.$router.push("/");
       },
       closeActionCutIn: function () {
@@ -255,7 +319,7 @@
         }
       },
       handleAction: function () {
-        this.actionSE.play();
+        this.generalAttackSE.play();
         console.log("handleAction発火");
         const searchParams = new URLSearchParams(window.location.search);
         this.$axios.post("/controlTurn", { playerId: searchParams.get("id") });
@@ -269,6 +333,22 @@
           this.selectedCardsData.length
         );
         this.showActionCutIn = true;
+      },
+      onCardListModalOpen: function () {
+        this.openModalSE.play();
+        this.isCardListModalOpen = true;
+      },
+      onCardListModalClose: function () {
+        this.backSE.play();
+        this.isCardListModalOpen = false;
+      },
+      onShowHowToPlay: function () {
+        this.openModalSE.play();
+        this.isHowToPlayOpen = true;
+      },
+      onHowToPlayClose: function () {
+        this.backSE.play();
+        this.isHowToPlayOpen = false;
       },
     },
     mounted() {
@@ -292,37 +372,45 @@
             .then((res) => {
               if (res.data < 2) {
                 console.log("gamestart");
-                //2回書いているのは仕様です。
+                // 2回書いているのは仕様です。
                 anotherThis.$axios.post("/controlTurn", {
                   playerId: searchParams.get("id"),
                 });
                 anotherThis.$axios.post("/controlTurn", {
                   playerId: searchParams.get("id"),
                 });
-                //ここに処理を書いてほしいです
                 //ゲームスタート！みたいなカットイン＋opponentTurnによる場合分けで相手のターンみたいなのを表示する
                 anotherThis.showGeneralCutIn = true;
-                anotherThis.message = "Hello World";
+                anotherThis.message = "Hello World!";
                 const changeMessage = () =>
-                  (anotherThis.message = "相手のターンです");
+                  (anotherThis.message = `It's ${anotherThis.opponentName}'s turn.`);
                 const closeCutIn = () => (anotherThis.showGeneralCutIn = false);
                 if (anotherThis.opponentTurn % 2 == 1) {
                   setTimeout(changeMessage, 1000);
                 } else {
                   setTimeout(closeCutIn, 1000);
                 }
-                console.log(playersName.yourName);
-                console.log(playersName.opponentName);
               }
             });
+          setTimeout(
+            anotherThis.$axios
+              .post("/getPlayerName", {
+                roomId: searchParams.get("room"),
+                playerId: searchParams.get("id"),
+              })
+              .then((res) => {
+                console.log(res.data);
+                anotherThis.yourName = res.data.yourName;
+                anotherThis.opponentName = res.data.opponentName;
+              }),
+            1000
+          );
         }
       );
       this.socket.on("HPinfo", function (HPinfo) {
         anotherThis.$axios
           .post("/getTurn", { playerId: searchParams.get("id") })
-          .then((res) => {
-            anotherThis.roundCount = res.data - 2;
-          });
+          .then((res) => {});
         anotherThis.actionType = HPinfo.actionType; //攻撃の種類
         anotherThis.roundCount = HPinfo.roundCount; // 何ターン目かの情報
         anotherThis.actionPoint = HPinfo.actionPoint;
@@ -341,10 +429,11 @@
         }
         if (HPinfo.attackedPlayerID == playerId) {
           //攻撃した時の処理
+          anotherThis.generalAttackSE.play();
           anotherThis.yourHP = HPinfo.attackedPlayerHP;
           anotherThis.opponentHP = HPinfo.damagedPlayerHP;
           anotherThis.opponentTurn = true;
-          anotherThis.message = "相手のターンです";
+          anotherThis.message = `It's ${anotherThis.opponentName}'s turn.`;
           anotherThis.showGeneralCutIn = true;
         } else if (HPinfo.damagedPlayerID == playerId) {
           //攻撃された時の処理

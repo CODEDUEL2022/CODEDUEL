@@ -1,6 +1,10 @@
 <template>
   <div>
-    <Header />
+    <Header
+      :isHowToPlayOpen="isHowToPlayOpen"
+      @handleShowHowToPlay="$emit('handleShowHowToPlay')"
+      @handleHowToPlayModalClose="$emit('handleHowToPlayModalClose')"
+    />
     <div v-show="showGeneralCutIn">
       <GeneralCutIn :message="message" />
     </div>
@@ -87,9 +91,14 @@
             :isEnableAction="isEnableAction"
             @handleAction="$emit('handleAction')"
           ></ActionButton>
-          <div @click="$emit()" class="card-list-btn">
+          <div class="card-list-btn" @click="$emit('handleModalOpen')">
             <span>Card List</span>
           </div>
+          <CardListModal
+            v-if="isCardListModalOpen"
+            :isCardListModalOpen="isCardListModalOpen"
+            @handleModalClose="$emit('handleModalClose')"
+          />
         </v-col>
       </v-row>
     </div>
@@ -118,6 +127,7 @@
   import TerminalUI from "../components/TerminalUI.vue";
   import SimpleCard from "../components/SimpleCard.vue";
   import BattleOutcomeView from "../components/BattleOutcomeView.vue";
+  import CardListModal from "../components/CardListModal.vue";
   import RoundCounter from "../components/RoundCounter.vue";
   import FieldDisplay from "../components/FieldDisplay.vue";
 
@@ -129,6 +139,7 @@
       HPDisplay,
       VueDrag,
       GeneralCutIn,
+      CardListModal,
       ActionCutIn,
       TerminalUI,
       SimpleCard,
@@ -162,6 +173,8 @@
       "isEnableAction",
       "attackOptions",
       "focusedCard",
+      "isHowToPlayOpen",
+      "isCardListModalOpen",
     ],
     data() {
       return {

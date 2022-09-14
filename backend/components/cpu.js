@@ -13,7 +13,8 @@ export let cpuPlayerDB = [
         yourHP: 200,
         playerId: "",
         turnFlag: 0,
-        cardList: []
+        cardList: [],
+        playerName: ""
     }
 ]
 
@@ -28,6 +29,14 @@ export const cpuLevel = function(req, res){
     cpuHP = 300
     cpuComboFrec = 30
   }
+}
+
+export const cpuGetPlayerName = function(playerId){
+  const yourIndex = cpuPlayerDB.findIndex((e) => e.playerId === playerId);
+  const playerName = {
+    yourName: cpuPlayerDB[yourIndex].playerName
+  }
+  return playerName
 }
 
 export const cpuAttack = function () {
@@ -48,6 +57,7 @@ export const cpuAttack = function () {
 export const cpuPostPlayerData = function (req, res) {
   cpuPlayerDB.push({
     playerId: req.body.playerId,
+    playerName: req.body.playerName,
     cardList: [],
     yourHP: 200,
     turnFlag: 0,

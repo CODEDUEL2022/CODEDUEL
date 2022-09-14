@@ -23,7 +23,7 @@
         </div>
         <div class="cards">
           <div v-for="card in deckCardData" :key="card.id" >
-            <v-img height="150" width="110" :src="require(`../../ui/assets/new-cards/${card.img}`)" :retain-focus="false"></v-img>
+            <v-img height="150" width="110" :src="require(`../../ui/assets/cards/${card.img}`)" lazy-src></v-img>
           </div>
         </div>
       </div>

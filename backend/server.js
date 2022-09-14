@@ -1,4 +1,3 @@
-
 import { cardDB } from "./DB.js";
 import { comboDB } from "./DB.js";
 import { fieldDB } from "./DB.js";
@@ -16,6 +15,7 @@ import {
   addDec,
   findOpponentUser,
   getPlayersName,
+  getRoundCount,
 } from "./components/player.js";
 import {
   cpuHPReload,
@@ -24,7 +24,8 @@ import {
   cpuContorlTrun,
   cpuAction,
   cpuPostPlayerData,
-  cpuPlayerAction
+  cpuPlayerAction,
+  cpuGetPlayerName,
 } from "./components/cpu.js";
 import path from "path";
 import { fileURLToPath } from "url";
@@ -152,6 +153,11 @@ io.sockets.on("connection", function (socket) {
 });
 
 //カードドローリクエストがフロントから走った場合に発火
+app.post("/api/getPlayerName", (req, res) => {
+  res.send(getPlayersName(req.body.roomId, req.body.playerId));
+});
+
+//カードドローリクエストがフロントから走った場合に発火
 app.post("/api/cardDraw", (req, res) => {
   res.send(postCardDraw(req, res));
 });
@@ -217,6 +223,9 @@ app.get("/api/reload", (req, res) => {
   res.send(reload(req, res));
 });
 
+app.post("/api/getRoundCount", (req, res) => {
+  res.json(getRoundCount(req));
+});
 /*
 以下CPU戦用のaxios
 */
@@ -224,8 +233,13 @@ app.get("/api/reload", (req, res) => {
 app.post("/api/cpuHPReload", (req, res) => {
   res.send(cpuHPReload(req, res));
 });
+
 app.post("/api/cpuPlayerData", (req, res) => {
   cpuPostPlayerData(req, res);
+});
+
+app.post("/api/cpuGetPlayerName", (req, res) => {
+  res.send(cpuGetPlayerName(req.body.playerId));
 });
 
 app.post("/api/cpuGetTurn", (req, res) => {
@@ -244,9 +258,9 @@ app.post("/api/cpuControlTurn", (req, res) => {
 app.post("/api/cpuAction", (req, res) => {
   res.send(cpuAction(req, res));
 });
-app.post("/api/cpuPlayerAction", (req,res) => {
-  res.send(cpuPlayerAction(req,res))
-})
+app.post("/api/cpuPlayerAction", (req, res) => {
+  res.send(cpuPlayerAction(req, res));
+});
 
 http.listen(PORT, function () {
   console.log("server listening. Port:" + PORT);

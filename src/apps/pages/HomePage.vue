@@ -5,15 +5,18 @@
     :isStartModalOpen="isStartModalOpen"
     :isDeckModalOpen="isDeckModalOpen"
     :deckCardData="deckCardData"
+    :isHowToPlayOpen="isHowToPlayOpen"
     @openDeckModal="openDeckModal()"
     @closeDeckModal="closeDeckModal"
     @handleStart="onPushField"
     @handleSetIssue="onSetId()"
     @handlePushCPUPage="onPushCPU()"
-    @handleAutoMatching="onPushAutoMatching()"
-    @handleModalOpen="onStartModalOpen()"
+    @handlePushAutoMatching="onPushAutoMatching()"
+    @handleModalOpen="onStartModalOpen"
     @getDeckCardsImg="getDeckCardsImg()"
     @handleModalClose="onStartModalClose()"
+    @handleHowToPlayModalClose="onHowToPlayClose()"
+    @handleShowHowToPlay="onShowHowToPlay()"
   />
 </template>
 <script>
@@ -34,12 +37,24 @@
         playerId: "",
         deckList: [],
         isStartModalOpen: false,
+        isHowToPlayOpen: false,
         isDeckModalOpen: false,
         roomId: null,
         deckCardData: [],
         cardDB: [],
-        startSE: new Audio(require("/src/libs/ui/assets/sounds/start.mp3")),
-        back1SE: new Audio(require("/src/libs/ui/assets/sounds/back1.mp3")),
+        customStartSE: new Audio(
+          require("/src/libs/ui/assets/sounds/game-start/custom-start.mp3")
+        ),
+        randomStartSE: new Audio(
+          require("/src/libs/ui/assets/sounds/game-start/random-start.mp3")
+        ),
+        cpuStartSE: new Audio(
+          require("/src/libs/ui/assets/sounds/game-start/cpu-start.mp3")
+        ),
+        openModalSE: new Audio(
+          require("/src/libs/ui/assets/sounds/open-modal.mp3")
+        ),
+        backSE: new Audio(require("/src/libs/ui/assets/sounds/back.mp3")),
       };
     },
     created() {
@@ -54,33 +69,38 @@
     },
     methods: {
       onPushField: function (value) {
-        alert("Happy hacking!");
-        this.startSE.play();
+        this.customStartSE.play();
         this.roomId = value;
-        console.log(this.roomId);
         this.playerId = Math.random().toString(32).substring(2);
         this.socket.emit("login", this.roomId);
         this.$axios
           .post("/playerData", {
             RoomId: this.roomId,
             playerId: this.playerId,
+            playerName: this.userName,
             decId: 0, //仮においている。本来はデッキ選択用
           })
           .then((res) => {
             //res.dataがRoomにいる人数ここで場合分けすればOK
             console.log(res.data);
+            if (res.data > 2) {
+              alert("This room is FULL. Please enter other roomID");
+            } else {
+              alert("Happy hacking!");
+              this.$router.push({
+                name: "field",
+                query: { room: this.roomId, id: this.playerId },
+              });
+            }
           });
-        this.$router.push({
-          name: "field",
-          query: { room: this.roomId, id: this.playerId },
-        });
       },
       onPushCPU: function () {
-        alert("Play with CPU. Happy hacking!");
-        this.startSE.play();
+        this.cpuStartSE.play();
+        alert("Happy hacking!");
         this.playerId = Math.random().toString(32).substring(2);
         this.$axios.post("/cpuPlayerData", {
           playerId: this.playerId,
+          playerName: this.userName,
           decId: 0, //仮においている。本来はデッキ選択用
         });
         this.$router.push({
@@ -89,22 +109,22 @@
         });
       },
       onPushAutoMatching: function () {
-        alert("Play random match. Happy hacking!");
-        this.startSE.play();
+        this.randomStartSE.play();
+        alert("Happy hacking!");
         this.playerId = Math.random().toString(32).substring(2);
         this.socket.emit("AutoMatchingPreLogin", this.playerId);
         this.$router.push({
           name: "waitingroom",
-          query: { id: this.playerId },
+          query: { id: this.playerId, playerName: this.userName },
         });
       },
       onStartModalOpen: function (user) {
-        this.startSE.play();
+        this.backSE.play();
         this.userName = user;
         this.isStartModalOpen = true;
       },
       onStartModalClose: function () {
-        this.back1SE.play();
+        this.backSE.play();
         this.isStartModalOpen = false;
       },
       openDeckModal: function () {
@@ -112,7 +132,6 @@
       },
       closeDeckModal: function (){
         this.isDeckModalOpen = false;
-        console.log(this.$store.state.deck1)
       },
       getDeckCardsImg: function () {
         this.deckList = []
@@ -152,7 +171,15 @@
             this.deckCardData = setDeckCardData
           });
         };
-      }
+      },
+      onShowHowToPlay: function () {
+        this.openModalSE.play();
+        this.isHowToPlayOpen = true;
+      },
+      onHowToPlayClose: function () {
+        this.backSE.play();
+        this.isHowToPlayOpen = false;
+      },
     },
   };
 </script>

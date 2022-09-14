@@ -33,7 +33,7 @@ export const cardDraw = function (selectId) {
   if (playerDB[selectId].decList.length == 0) {
     console.log("デッキ指定がない為、全てのカードを参照してドローをします");
     for (let j = playerDB[selectId].cardList.length; j < 6; ) {
-      const tmp = Number(Math.floor(Math.random() * 64));
+      const tmp = Number(Math.floor(Math.random() * 65));
       playerDB[selectId].cardList.push(cardDB[tmp]);
       j++;
     }
@@ -92,7 +92,7 @@ export const postPlayerData = function (req, res, numClients) {
       opponentHP: 200,
       cardListNumber: [],
       turnFlag: 1,
-      roundCount: 0,
+      roundCount: 1,
       decId: decId,
       field: "iOS,macOS",
 
@@ -109,11 +109,12 @@ export const postPlayerData = function (req, res, numClients) {
       cardListNumber: [],
       turnFlag: 0,
       decId: decId,
-      roundCount: 0,
+      roundCount: 1,
       field: "iOS,macOS",
       decList: [],
     });
   }
+  console.log(req.body.playerName);
   return numClients[req.body.RoomId];
 };
 
@@ -135,6 +136,12 @@ export const getTurn = function (req, res) {
   return playerDB[selectTurnId].turnFlag;
 };
 
+export const getRoundCount = function (req) {
+  const selectTurnId = playerDB.findIndex(
+    (e) => e.playerId === req.body.playerId
+  );
+  return playerDB[selectTurnId].roundCount;
+};
 export const controlTurn = function (req, res) {
   const selectTurnId = playerDB.findIndex(
     (e) => e.playerId === req.body.playerId
@@ -296,17 +303,25 @@ const changeRound = function (playerId) {
 
 export const getPlayersName = function (roomId, playerId) {
   const yourIndex = playerDB.findIndex((e) => e.playerId === playerId);
+  let opponentIndex = 0;
   const opponent = playerDB.filter((e) => {
     if (e.RoomId === roomId && e.playerId != playerId) {
       return true;
     }
   });
-  const opponentIndex = playerDB.findIndex(
-    (e) => e.playerId === opponent[0].playerId
-  );
+  console.log(opponent);
+  if (opponent.length != 0) {
+    opponentIndex = playerDB.findIndex(
+      (e) => e.playerId === opponent[0].playerId
+    );
+  } else {
+    opponentIndex = 0;
+  }
+
   const playersName = {
     yourName: playerDB[yourIndex].playerName,
     opponentName: playerDB[opponentIndex].playerName,
   };
+  console.log(playerDB[yourIndex].playerName);
   return playersName;
 };
