@@ -6,14 +6,14 @@
     :isStartModalOpen="isStartModalOpen"
     :isDeckModalOpen="isDeckModalOpen"
     :deckCardData="deckCardData"
-    @sendSelectedDeck="receiveSelectedDeck"
-    @openDeckModal="openDeckModal"
+    @openDeckModal="openDeckModal()"
     @closeDeckModal="closeDeckModal"
     @handleStart="onPushField"
     @handleSetIssue="onSetId()"
     @handlePushCPUPage="onPushCPU()"
     @handleAutoMatching="onPushAutoMatching()"
-    @handleModalOpen="onStartModalOpen"
+    @handleModalOpen="onStartModalOpen()"
+    @getDeckCardsImg="getDeckCardsImg()"
     @handleModalClose="onStartModalClose()"
   />
 </template>
@@ -33,7 +33,6 @@
         socket: io("localhost:3000"),
         turn_flag: 0,
         playerId: "",
-        selectedDeck: 1,
         deckList: [],
         isStartModalOpen: false,
         isDeckModalOpen: false,
@@ -114,11 +113,11 @@
       },
       closeDeckModal: function (){
         this.isDeckModalOpen = false;
+        console.log(this.$store.state.deck1)
       },
-      receiveSelectedDeck: function (selectedDeck) {
-        this.selectedDeck = selectedDeck
+      getDeckCardsImg: function () {
         this.deckList = []
-        if(this.selectedDeck == 1) {
+        if(this.$store.state.selectedDeck == 1) {
           this.$axios.get("/getDec1").then((res) => {
             let deckCardData = []
             for (let i = 0; i < res.data.length; i++) {
@@ -129,7 +128,7 @@
             this.deckCardData = deckCardData
           });
         };
-        if(this.selectedDeck == 2) {
+        if(this.$store.state.selectedDeck == 2) {
           this.$axios.get("/getDec2").then((res) => {
             let deckCardData = []
             for (let i = 0; i < res.data.length; i++) {
@@ -140,7 +139,7 @@
             this.deckCardData = deckCardData
           });
         };
-        if(this.selectedDeck == 3) {
+        if(this.$store.state.selectedDeck == 3) {
           this.$axios.get("/getDec3").then((res) => {
             let deckCardData = []
             for (let i = 0; i < res.data.length; i++) {

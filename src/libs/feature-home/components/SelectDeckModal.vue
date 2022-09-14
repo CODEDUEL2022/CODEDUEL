@@ -5,17 +5,17 @@
         <div class="container">
           <ul>
           <li>
-            <input type="radio" id="f-option" name="selector" value=1 v-model="selectedDeckFromChild">
+            <input type="radio" id="f-option" name="selector" value=1 v-model="selectedDeck">
             <label for="f-option">Deck1</label>
             <div class="check"></div>
           </li>
           <li>
-            <input type="radio" id="s-option" name="selector" value=2 v-model="selectedDeckFromChild">
+            <input type="radio" id="s-option" name="selector" value=2 v-model="selectedDeck">
             <label for="s-option">Deck2</label>
             <div class="check"></div>
           </li>
           <li>
-            <input type="radio" id="t-option" name="selector" value=3 v-model="selectedDeckFromChild">
+            <input type="radio" id="t-option" name="selector" value=3 v-model="selectedDeck">
             <label for="t-option">Deck3</label>
             <div class="check"></div>
           </li>
@@ -31,15 +31,18 @@
 
 <script>
 export default {
-    data() {
-        return {
-            selectedDeckFromChild: 1
-        }
-    },
-    props: ["deckCardData"],
-    updated () {
-        this.$emit('sendDeckFromChild', this.selectedDeckFromChild)
+  props: ["deckCardData"],
+  computed: {
+    selectedDeck: {
+      get: function() {
+        return this.$store.state.selectedDeck;
+      },
+      set: function(updatedDeck) {
+        this.$store.commit('deckUpdate', updatedDeck);
+        this.$emit('getDeckCardsImg');
+      }
     }
+  }
 };
 </script>
 
