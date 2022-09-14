@@ -2,7 +2,6 @@
   <HomeTemplate
     :userName.sync="userName"
     :roomId.sync="roomId"
-    :userName="userName"
     :isStartModalOpen="isStartModalOpen"
     :isDeckModalOpen="isDeckModalOpen"
     :deckCardData="deckCardData"

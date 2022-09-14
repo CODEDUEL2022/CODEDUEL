@@ -6,7 +6,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    selectedDeck: null,
+    selectedDeck: "select",
     deck1: []
   },
   getters: {
