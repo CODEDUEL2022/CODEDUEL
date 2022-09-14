@@ -66,6 +66,9 @@
         }
         .user-name {
           text-align: left;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
         }
       }
     }
@@ -76,6 +79,9 @@
         span {
           flex-basis: 50%;
           text-align: right;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
           text-shadow: 0 0 10px #d3fffd;
         }
         .user-name {

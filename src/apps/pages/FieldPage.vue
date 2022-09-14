@@ -97,7 +97,7 @@
         usedCardIdList: [], //攻撃された、攻撃したカードのIDのリスト
         effectImages: [],
         socket: io("localhost:3000"),
-        attackedPlayerId: ""
+        attackedPlayerId: "",
       };
     },
     created() {
@@ -185,7 +185,7 @@
             this.opponentTurn = false;
             this.showGeneralCutIn = false;
           } else {
-            this.message = `It's ${this.opponentName}'s turn.`;
+            this.message = this.opponentName;
             this.opponentTurn = true;
           }
         });
@@ -416,8 +416,8 @@
         anotherThis.actionType = HPinfo.actionType; //攻撃の種類
         anotherThis.roundCount = HPinfo.roundCount; // 何ターン目かの情報
         anotherThis.actionPoint = HPinfo.actionPoint;
-        anotherThis.attackedPlayerId = HPinfo.attackedPlayerID
-        console.log(anotherThis.attackedPlayerId)
+        anotherThis.attackedPlayerId = HPinfo.attackedPlayerID;
+        console.log(anotherThis.attackedPlayerId);
         console.log("round:" + anotherThis.roundCount);
         anotherThis.effectImages.splice(
           anotherThis.index,
