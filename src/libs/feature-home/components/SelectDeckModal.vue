@@ -23,7 +23,7 @@
         </div>
         <div class="cards">
           <div v-for="card in deckCardData" :key="card.id" >
-            <v-img height="150" width="110":src="require(`../../ui/assets/new-cards/${card.img}`)" :retain-focus="false"></v-img>
+            <v-img height="150" width="110" :src="require(`../../ui/assets/new-cards/${card.img}`)" :retain-focus="false"></v-img>
           </div>
         </div>
       </div>
@@ -76,6 +76,7 @@ export default {
         box-shadow: 0px 0px 20px #d3fffd;
         z-index: 10;
         display: flex;
+        justify-content: space-between;
 
         &::before {
           background-color: #0e3145;
@@ -196,6 +197,6 @@ export default {
   display: flex;
   flex-wrap: wrap;
   flex-direction: row;
-  width: 80%;
+  width: 70%;
 }
 </style>
