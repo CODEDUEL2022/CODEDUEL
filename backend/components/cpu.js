@@ -1,6 +1,7 @@
 import {cardDB} from "../DB.js";
 import {comboDB} from "../DB.js";
 import { fieldDB } from "../DB.js";
+import {selectDec} from "./selectDec.js";
 
 export let cpuDB = [{
   playerId: "",
@@ -43,7 +44,7 @@ export const cpuAddDec = function(req,res){
   const selectTurnId = cpuPlayerDB.findIndex(
     (e) => e.playerId === req.body.playerId
   );
-  const decIdList = selectDec(req.body.decId)
+  const decIdList = selectDec(req.body.decIdList)
   decIdList.forEach((dec) => {
     cpuPlayerDB[selectTurnId].decList.push(dec);
   });
@@ -259,14 +260,24 @@ export const cpuHPReload = function(req,res){
 
 export const cardDraw = function (selectId) {
     console.log("ドロー関数が発火されました");
-    const decNumber = 6;
-    const cardNumber = 56;
-    for (let j = cpuPlayerDB[selectId].cardList.length; j < decNumber; ) {
-      //const tmp = Number(Math.floor(Math.random() * selectDec(playerDB[selectId].decId).length));
-      const tmp = Number(Math.floor(Math.random() * cardNumber));
-      //playerDB[selectId].cardList.push(selectDec(playerDB[selectId].decId)[tmp]);
-      cpuPlayerDB[selectId].cardList.push(cardDB[tmp]);
-      j++;
+    if (cpuPlayerDB[selectId].decList.length == 0) {
+      console.log("デッキ指定がない為、全てのカードを参照してドローをします");
+      for (let j = cpuPlayerDB[selectId].cardList.length; j < 6; ) {
+        const tmp = Number(Math.floor(Math.random() * 65));
+        cpuPlayerDB[selectId].cardList.push(cardDB[tmp]);
+        j++;
+      }
+    } else {
+      console.log(
+        "デッキが選択されている為、デッキの中から任意のカードをドローします"
+      );
+      for (let j = cpuPlayerDB[selectId].cardList.length; j < 6; ) {
+        const tmp = Number(
+          Math.floor(Math.random() * cpuPlayerDB[selectId].decList.length)
+        );
+        cpuPlayerDB[selectId].cardList.push(cardDB[cpuPlayerDB[selectId].decList[tmp] - 1]);
+        j++;
+      }
     }
   };
   
