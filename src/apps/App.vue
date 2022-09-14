@@ -15,8 +15,7 @@
   text-align: left;
   height: 100%;
   color: #ffffff;
-  background-image: url("/src/libs/ui/assets/Component 72.png");
-  background-color: radial-gradient(#144f61, #020508);
+  background-image: linear-gradient(#020508, #144f61);
 }
 v-main {
   margin: 0;
