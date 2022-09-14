@@ -22,6 +22,12 @@
           />
         </span>
       </div>
+      <div>
+        <p>Select your Deck</p>
+        <div class="deck-btn" @click="$emit('openDeckModal')">
+          <span>{{ $store.state.selectedDeck }} ></span>
+        </div>
+      </div>
       <div class="play-btn" @click="handleModalOpen(userName)">
         <span>＞ PLAY</span>
       </div>
@@ -34,43 +40,58 @@
         @handlePushCPUPage="handlePushCPUPage"
         @handlePushAutoMatching="handlePushAutoMatching"
       />
+      <SelectDeckModal
+        v-if="isDeckModalOpen"
+        :deckCardData="deckCardData"
+        @closeDeckModal="$emit('closeDeckModal')"
+        @getDeckCardsImg="getDeckCardsImg"
+      ></SelectDeckModal>
     </div>
   </div>
 </template>
 <script>
-import Header from "/src/libs/layout/Header.vue";
-import StartModal from "@/libs/feature-home/components/StartModal.vue";
+  import Header from "/src/libs/layout/Header.vue";
+  import StartModal from "@/libs/feature-home/components/StartModal.vue";
+  import SelectDeckModal from "../components/SelectDeckModal.vue";
 
-export default {
-  name: "HomeTemplate",
-  components: {
-    Header,
-    StartModal,
-  },
-  props: ["isStartModalOpen", "roomId", "userName", "isHowToPlayOpen"],
-  methods: {
-    handleShowHowToPlay: function () {
-      this.$emit("handleShowHowToPlay");
+  export default {
+    name: "HomeTemplate",
+    components: {
+        Header,
+        StartModal,
+        SelectDeckModal
     },
-    handleModalOpen: function (userName) {
-      if (!userName) {
-        alert("ERROR! : Input your name.");
-        return;
+    props: ["isStartModalOpen", "isDeckModalOpen", "selectedDeck", "roomId", "userName", "deckCardData", "isHowToPlayOpen"],
+    methods: {
+      handleShowHowToPlay: function () {
+        this.$emit("handleShowHowToPlay");
+      },
+      handleModalOpen: function (userName) {
+        if (!userName) {
+          alert("ERROR! : Input your name.");
+          return;
+        }
+        console.log(userName);
+        this.$emit("handleModalOpen", userName);
+      },
+      handleStart: function (roomId) {
+        this.$emit("handleStart", roomId);
+      },
+      handlePushCPUPage: function () {
+        this.$emit("handlePushCPUPage");
+      },
+      handlePushAutoMatching: function () {
+        this.$emit("handlePushAutoMatching");
+      },
+      receiveDeckFromChild: function (receivedDeck) {
+        this.receivedDeck = receivedDeck
+      },
+      getDeckCardsImg: function () {
+        this.$emit('getDeckCardsImg')
+        console.log('aaa')
       }
-      console.log(userName);
-      this.$emit("handleModalOpen", userName);
-    },
-    handleStart: function (roomId) {
-      this.$emit("handleStart", roomId);
-    },
-    handlePushCPUPage: function () {
-      this.$emit("handlePushCPUPage");
-    },
-    handlePushAutoMatching: function () {
-      this.$emit("handlePushAutoMatching");
-    },
-  },
-};
+    }
+  };
 </script>
 <style scoped lang="scss">
 .home-container {
@@ -235,6 +256,90 @@ export default {
       }
     }
   }
+
+  .deck-btn {
+      margin-left: auto;
+      margin-right: auto;
+      width: fit-content;
+      padding: 0.3rem 2rem;
+      position: relative;
+      border: 4px solid #d3fffd;
+      background-color: transparent;
+      box-shadow: 0px 0px 20px #d3fffd;
+      cursor: pointer;
+
+      &:hover {
+        cursor: pointer;
+        animation: fadein 0.5s forwards;
+        @keyframes fadein {
+          0% {
+            background-color: transparent;
+          }
+          100% {
+            background-color: #134e61;
+          }
+        }
+      }
+
+      &::before {
+        background-color: #0e3145;
+        position: absolute;
+        content: "";
+        display: block;
+        top: -3px;
+        bottom: -3px;
+        left: 10px;
+        right: 10px;
+      }
+
+      &::after {
+        background-color: #0e3145;
+        position: absolute;
+        content: "";
+        display: block;
+        top: 10px;
+        bottom: 10px;
+        left: -3px;
+        right: -3px;
+      }
+
+      span {
+        position: relative;
+        z-index: 1;
+        font-size: 22px;
+        letter-spacing: 0.15em;
+        @keyframes neon {
+          0% {
+            text-shadow: 0 0 10px #00fff2, 0 0 5px #fff, 0 0 13px #d3fffd;
+          }
+          100% {
+            text-shadow: 0 0 30px #00fff2, 0 0 15px #fff, 0 0 0px #d3fffd;
+          }
+        }
+        animation: neon 2s infinite alternate;
+      }
+    }
+
+    .deck-btn:hover,
+    .deck-btn:hover:before,
+    .deck-btn:hover:after {
+      cursor: pointer;
+      animation: fadein 0.5s forwards !important;
+      @keyframes fadein {
+        0% {
+          background-color: #0e3145;
+        }
+        100% {
+          background-color: #134e61;
+        }
+      }
+    }
+
+    p {
+      margin-top: 32px;
+      font-size: 1.5rem;
+    }
+
 
   .tempolary-btn {
     font-size: 1rem;

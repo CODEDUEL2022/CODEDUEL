@@ -3,12 +3,17 @@
     :userName.sync="userName"
     :roomId.sync="roomId"
     :isStartModalOpen="isStartModalOpen"
+    :isDeckModalOpen="isDeckModalOpen"
+    :deckCardData="deckCardData"
     :isHowToPlayOpen="isHowToPlayOpen"
+    @openDeckModal="openDeckModal()"
+    @closeDeckModal="closeDeckModal"
     @handleStart="onPushField"
     @handleSetIssue="onSetId()"
     @handlePushCPUPage="onPushCPU()"
     @handlePushAutoMatching="onPushAutoMatching()"
     @handleModalOpen="onStartModalOpen"
+    @getDeckCardsImg="getDeckCardsImg()"
     @handleModalClose="onStartModalClose()"
     @handleHowToPlayModalClose="onHowToPlayClose()"
     @handleShowHowToPlay="onShowHowToPlay()"
@@ -30,9 +35,13 @@
         socket: io("localhost:3000"),
         turn_flag: 0,
         playerId: "",
+        deckList: [],
         isStartModalOpen: false,
         isHowToPlayOpen: false,
+        isDeckModalOpen: false,
         roomId: null,
+        deckCardData: [],
+        cardDB: [],
         customStartSE: new Audio(
           require("/src/libs/ui/assets/sounds/game-start/custom-start.mp3")
         ),
@@ -47,6 +56,13 @@
         ),
         backSE: new Audio(require("/src/libs/ui/assets/sounds/back.mp3")),
       };
+    },
+    created() {
+      this.$axios.get("/getCardDB").then((res) => {
+        for (let i = 0; i < res.data.length; i++) {
+          this.cardDB.push(res.data[i]);
+        }
+      });
     },
     mounted() {
       this.socket.on("logined");
@@ -110,6 +126,51 @@
       onStartModalClose: function () {
         this.backSE.play();
         this.isStartModalOpen = false;
+      },
+      openDeckModal: function () {
+        this.isDeckModalOpen = true;
+      },
+      closeDeckModal: function (){
+        this.isDeckModalOpen = false;
+      },
+      getDeckCardsImg: function () {
+        this.deckList = []
+        if(this.$store.state.selectedDeck == 1) {
+          this.$axios.get("/getDec1").then((res) => {
+            let deckCardData = []
+            for (let i = 0; i < res.data.length; i++) {
+              this.deckList.push(res.data[i]);
+              const matchedCard = this.cardDB.find(e => e.id == res.data[i]);
+              deckCardData.push(matchedCard)
+            }
+            let setDeckCardData = new Set(deckCardData)
+            this.deckCardData = setDeckCardData
+          });
+        };
+        if(this.$store.state.selectedDeck == 2) {
+          this.$axios.get("/getDec2").then((res) => {
+            let deckCardData = []
+            for (let i = 0; i < res.data.length; i++) {
+              this.deckList.push(res.data[i]);
+              const matchedCard = this.cardDB.find(e => e.id == res.data[i]);
+              deckCardData.push(matchedCard)
+            }
+            let setDeckCardData = new Set(deckCardData)
+            this.deckCardData = setDeckCardData
+          });
+        };
+        if(this.$store.state.selectedDeck == 3) {
+          this.$axios.get("/getDec3").then((res) => {
+            let deckCardData = []
+            for (let i = 0; i < res.data.length; i++) {
+              this.deckList.push(res.data[i]);
+              const matchedCard = this.cardDB.find(e => e.id == res.data[i]);
+              deckCardData.push(matchedCard)
+            }
+            let setDeckCardData = new Set(deckCardData)
+            this.deckCardData = setDeckCardData
+          });
+        };
       },
       onShowHowToPlay: function () {
         this.openModalSE.play();

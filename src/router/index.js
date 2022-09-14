@@ -28,7 +28,7 @@ const routes = [
     path: "/waitingroom",
     name: "waitingroom",
     component: WaitingRoom
-  }
+  },
 ];
 
 const router = new VueRouter({

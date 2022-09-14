@@ -1,6 +1,9 @@
 import { cardDB } from "./DB.js";
 import { comboDB } from "./DB.js";
 import { fieldDB } from "./DB.js";
+import { Dec1 } from "./DB.js"
+import { Dec2 } from "./DB.js"
+import { Dec3 } from "./DB.js"
 import {
   controlTurn,
   getTurn,
@@ -190,6 +193,18 @@ app.get("/api/getCardDB", (req, res) => {
 app.get("/api/getFieldDB", (req, res) => {
   res.json(fieldDB);
 });
+
+app.get("/api/getDec1", (req, res) => {
+  res.json(Dec1)
+})
+
+app.get("/api/getDec2", (req, res) => {
+  res.json(Dec2)
+})
+
+app.get("/api/getDec3", (req, res) => {
+  res.json(Dec3)
+})
 
 //ページリロード時のターンを決定づける。
 app.post("/api/getTurn", (req, res) => {

@@ -112,7 +112,6 @@
       this.yourCardsData = [];
       console.log(this.yourCardsData);
       const searchParams = new URLSearchParams(window.location.search);
-
       this.$axios.get("/getComboDb").then((res) => {
         for (let i = 0; i < res.data.length; i++) {
           this.comboData.push(res.data[i]);
