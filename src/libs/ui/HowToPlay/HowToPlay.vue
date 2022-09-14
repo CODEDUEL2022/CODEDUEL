@@ -63,12 +63,16 @@
             <v-img
               class="Play&UserNameImg"
               width="500px"
-              :src="require(`../../ui/assets/HowToPlay/Play&UserName.png`)"
+              :src="require(`../../ui/assets/HowToPlay/homepage.png`)"
             ></v-img>
             <div class="paragraph">
               1.&emsp;<span>Input your name</span>
               と書かれているところに自分が使いたい名前を入力しましょう<br />
               ここで入力された名前は対戦中のHPバーに表示され、相手の画面にも表示されます<br />
+              その後、Select your Deck
+              と書かれているところで自分が使用したいデッキを選択しましょう.
+              <br />
+              Deck1はjavascriptを中心としたコンボを狙うデッキ、Deck2はpythonを中心としたコンボを狙うデッキ、Deck3はコンボの数は少ないけれど一つ一つの攻撃力が強いC系の言語を中心としたデッキです.<br />
             </div>
             <div class="paragraph">
               2.&emsp;＞<span>PLAY</span>ボタンを押し、ゲームモードを選択しましょう<br />
@@ -148,121 +152,121 @@
 </template>
 
 <script>
-  export default {
-    name: "HowToPlay",
-  };
+export default {
+  name: "HowToPlay",
+};
 </script>
 
 <style lang="scss" scoped>
-  .overlay {
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    height: 100vh;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 100;
+.overlay {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 100;
 
-    .animation {
-      .modal {
-        position: relative;
-        width: 600px;
-        min-height: 500px;
-        height: 500px;
-        margin: 5rem auto;
-        padding: 1rem;
-        border: 9px solid #d3fffd;
+  .animation {
+    .modal {
+      position: relative;
+      width: 600px;
+      min-height: 500px;
+      height: 500px;
+      margin: 5rem auto;
+      padding: 1rem;
+      border: 9px solid #d3fffd;
+      background-color: #0e3145;
+      box-shadow: 0px 0px 20px #d3fffd;
+      z-index: 10;
+
+      &::before {
         background-color: #0e3145;
-        box-shadow: 0px 0px 20px #d3fffd;
+        position: absolute;
+        content: "";
+        display: block;
+        top: -8px;
+        bottom: -8px;
+        left: 40px;
+        right: 40px;
+      }
+
+      &::after {
+        background-color: #0e3145;
+        position: absolute;
+        content: "";
+        display: block;
+        top: 40px;
+        bottom: 40px;
+        left: -8px;
+        right: -8px;
+      }
+
+      div {
+        position: relative;
+      }
+
+      .modal-content {
+        z-index: 100;
+        overflow-y: scroll;
+        overflow-x: hidden;
+        height: 400px;
+        padding: 0 1.5rem;
+        .title {
+          font-size: 1.75rem;
+          letter-spacing: 0.15rem !important;
+          padding-bottom: 0.25rem;
+          @keyframes neon {
+            0% {
+              text-shadow: 0 0 10px #00fff2, 0 0 5px #fff, 0 0 13px #d3fffd;
+            }
+            100% {
+              text-shadow: 0 0 10px #00fff2, 0 0 10px #fff, 0 0 0px #d3fffd;
+            }
+          }
+          animation: neon 2s infinite alternate;
+        }
+        .content {
+          font-size: 1rem;
+          color: white;
+          padding: 0.75rem 0.75rem 2.5rem;
+
+          .paragraph {
+            padding: 0.5rem 0;
+          }
+
+          span {
+            letter-spacing: 0.1rem !important;
+          }
+        }
+      }
+
+      .close-btn {
+        display: block;
+        padding: 0;
+        cursor: pointer;
+        text-align: right;
         z-index: 10;
+        text-shadow: none;
+        animation: none;
+      }
 
-        &::before {
-          background-color: #0e3145;
-          position: absolute;
-          content: "";
-          display: block;
-          top: -8px;
-          bottom: -8px;
-          left: 40px;
-          right: 40px;
-        }
+      .contents {
+        display: grid;
+        place-items: center;
+        align-items: top;
+        min-height: 325px;
+        z-index: 10;
+      }
 
-        &::after {
-          background-color: #0e3145;
-          position: absolute;
-          content: "";
-          display: block;
-          top: 40px;
-          bottom: 40px;
-          left: -8px;
-          right: -8px;
-        }
-
-        div {
-          position: relative;
-        }
-
-        .modal-content {
-          z-index: 100;
-          overflow-y: scroll;
-          overflow-x: hidden;
-          height: 400px;
-          padding: 0 1.5rem;
-          .title {
-            font-size: 1.75rem;
-            letter-spacing: 0.15rem !important;
-            padding-bottom: 0.25rem;
-            @keyframes neon {
-              0% {
-                text-shadow: 0 0 10px #00fff2, 0 0 5px #fff, 0 0 13px #d3fffd;
-              }
-              100% {
-                text-shadow: 0 0 10px #00fff2, 0 0 10px #fff, 0 0 0px #d3fffd;
-              }
-            }
-            animation: neon 2s infinite alternate;
-          }
-          .content {
-            font-size: 1rem;
-            color: white;
-            padding: 0.75rem 0.75rem 2.5rem;
-
-            .paragraph {
-              padding: 0.5rem 0;
-            }
-
-            span {
-              letter-spacing: 0.1rem !important;
-            }
-          }
-        }
-
-        .close-btn {
-          display: block;
-          padding: 0;
-          cursor: pointer;
-          text-align: right;
-          z-index: 10;
-          text-shadow: none;
-          animation: none;
-        }
-
-        .contents {
-          display: grid;
-          place-items: center;
-          align-items: top;
-          min-height: 325px;
-          z-index: 10;
-        }
-
-        .credit {
-          text-align: center;
-        }
+      .credit {
+        text-align: center;
       }
     }
   }
+}
 </style>
