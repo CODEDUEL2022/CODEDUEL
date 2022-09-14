@@ -85,7 +85,7 @@
           .then((res) => {
             anotherThis.$axios
               .post("/dec", {
-                playerId: playerId,
+                playerId: anotherThis.playerId,
                 decIdList: anotherThis.$store.state.selectedDeck,
               })
               .then((res) => {

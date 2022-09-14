@@ -305,7 +305,7 @@ export default {
       .icon {
         width: 10%;
       }
-      
+
       animation: neon 2s infinite alternate;
     }
   }
@@ -333,7 +333,6 @@ export default {
   .tempolary-btn {
     font-size: 1rem;
   }
-}
 
 @media screen and (max-width: 959px) {
   /* 959px以下に適用されるCSS（タブレット用） */
