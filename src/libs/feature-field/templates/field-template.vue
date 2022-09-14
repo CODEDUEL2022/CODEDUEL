@@ -13,6 +13,9 @@
         :effectImages="effectImages"
         :actionType="actionType"
         :actionPoint="actionPoint"
+        :yourName="yourName"
+        :opponentName="opponentName"
+        :attackedPlayerId="attackedPlayerId"
         @closeActionCutIn="$emit('closeActionCutIn')"
       />
     </div>
@@ -102,18 +105,6 @@
         </v-col>
       </v-row>
     </div>
-
-    <div v-show="showGeneralCutIn">
-      <GeneralCutIn :message="message" />
-    </div>
-    <div v-show="showActionCutIn">
-      <ActionCutIn
-        :effectImages="effectImages"
-        :actionType="actionType"
-        :actionPoint="actionPoint"
-        @closeActionCutIn="$emit('closeActionCutIn')"
-      />
-    </div>
   </div>
 </template>
 
@@ -175,6 +166,7 @@ export default {
     "focusedCard",
     "isHowToPlayOpen",
     "isCardListModalOpen",
+    "attackedPlayerId"
   ],
   methods: {
     handleShowHowToPlay: function () {
