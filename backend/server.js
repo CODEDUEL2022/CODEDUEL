@@ -80,9 +80,9 @@ if (process.env.NODE_ENV !== "production") {
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 app.get("/*", function(req, res) {
-  res.sendFile(path.join(__dirname, "../src/apps/pages/HomePage.vue"));
+  res.sendFile(path.join(__dirname, "../src/public/index.html"));
 });
-app.use(serveStatic(__dirname + "../dist"));
+app.use(serveStatic(__dirname + "/dist"));
 
 //historyモードを追加(deploy後のreload対策になるらしい)
 // app.use(
