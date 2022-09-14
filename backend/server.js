@@ -80,7 +80,7 @@ if (process.env.NODE_ENV !== "production") {
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 app.get("/*", function(req, res) {
-  res.sendFile(path.join(__dirname, "../src/public/index.html"));
+  res.sendFile(path.join(__dirname, "../src/apps/pages/HomePage.vue"));
 });
 app.use(serveStatic(__dirname + "../dist"));
 
