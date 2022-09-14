@@ -30,6 +30,7 @@
     @handleModalClose="onCardListModalClose()"
     @handleHowToPlayModalClose="onHowToPlayClose()"
     @handleShowHowToPlay="onShowHowToPlay()"
+    :attackedPlayerId="attackedPlayerId"
   />
 </template>
 <script>
@@ -104,6 +105,7 @@
           cardList: [],
         },
         showCPUAttack: false,
+        attackedPlayerId: ""
       };
     },
     created() {
@@ -257,6 +259,7 @@
                 userId: searchParams.get("id"),
                 selectedCardData: this.selectedCardsData,
               };
+              if(anotherThis.opponentHP > 0){
               anotherThis.$axios
                 .post("cpuAction", { cardValue: cardValue })
                 .then((res) => {
@@ -269,6 +272,7 @@
                     res.data.usedCardIdList;
                   anotherThis.isCpuAction(anotherThis.cpuAction);
                 });
+              }
             }
           });
 
@@ -301,6 +305,7 @@
         // 負け！
       },
       isPlayerAction: function (cardValue) {
+        const searchParams = new URLSearchParams(window.location.search);
         this.effectImages.splice(this.index, this.effectImages.length);
         this.actionPoint = cardValue.damageValue;
         console.log("length" + cardValue.usedCardIdList);
@@ -311,6 +316,7 @@
           );
           this.effectImages.push(usedCard.img);
         }
+        this.attackedPlayerId = searchParams.get("id")
         this.showGeneralCutIn = true;
         this.showActionCutIn = true;
       },
@@ -329,10 +335,11 @@
         this.$axios.post("/cpuControlTurn", {
           playerId: searchParams.get("id"),
         });
+        this.attackedPlayerId = "CPU"
         this.showActionCutIn = true;
       },
       handleAction: function () {
-        this.generalActionSE.play();
+        this.generalAttackSE.play();
         let anotherThis = this;
         const searchParams = new URLSearchParams(window.location.search);
         let cardValue = {

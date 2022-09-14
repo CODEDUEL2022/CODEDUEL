@@ -42,7 +42,7 @@ export const cpuGetPlayerName = function(playerId){
 export const cpuAttack = function () {
     let flag = Math.floor(Math.random() * 10);
     let cpuCard = []
-    if (flag < 5) {
+    if (flag < 8) {
         console.log("1枚カードが返ります")
         const cardNumber = Number(Math.floor(Math.random() * cardDB.length));
         cpuCard.push(cardDB[cardNumber])
