@@ -125,7 +125,8 @@
               const matchedCard = this.cardDB.find(e => e.id == res.data[i]);
               deckCardData.push(matchedCard)
             }
-            this.deckCardData = deckCardData
+            let setDeckCardData = new Set(deckCardData)
+            this.deckCardData = setDeckCardData
           });
         };
         if(this.$store.state.selectedDeck == 2) {
@@ -136,7 +137,8 @@
               const matchedCard = this.cardDB.find(e => e.id == res.data[i]);
               deckCardData.push(matchedCard)
             }
-            this.deckCardData = deckCardData
+            let setDeckCardData = new Set(deckCardData)
+            this.deckCardData = setDeckCardData
           });
         };
         if(this.$store.state.selectedDeck == 3) {
@@ -147,13 +149,10 @@
               const matchedCard = this.cardDB.find(e => e.id == res.data[i]);
               deckCardData.push(matchedCard)
             }
-            this.deckCardData = deckCardData
+            let setDeckCardData = new Set(deckCardData)
+            this.deckCardData = setDeckCardData
           });
         };
-        // deckListから対応するcardListをつくる
-        // for (let i = 0; i < this.deckList.length; i++) {
-        //   console.log(matchedCard)
-        // }
       }
     },
   };

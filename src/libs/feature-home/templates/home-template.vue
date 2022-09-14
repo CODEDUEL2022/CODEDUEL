@@ -18,11 +18,11 @@
           />
         </span>
       </div>
-      <DecSelectBox />
+      <p>Select your Deck</p>
+      <div class="play-btn" @click="$emit('openDeckModal')"><span>{{ $store.state.selectedDeck }} ></span></div>
       <div class="play-btn" @click="handleModalOpen(userName)">
         <span>＞ PLAY</span>
       </div>
-      <v-btn @click="$emit('openDeckModal')">Deck{{ $store.state.selectedDeck }}</v-btn>
       <StartModal
         v-if="isStartModalOpen"
         :userName="userName"

@@ -22,7 +22,9 @@
           </ul>
         </div>
         <div class="cards">
-          <v-img height="100" width="70" v-for="card in deckCardData" :key="card.id" :src="require(`../../ui/assets/new-cards/${card.img}`)" :retain-focus="false"></v-img>
+          <div v-for="card in deckCardData" :key="card.id" >
+            <v-img height="150" width="110":src="require(`../../ui/assets/new-cards/${card.img}`)" :retain-focus="false"></v-img>
+          </div>
         </div>
       </div>
     </div>
@@ -73,28 +75,29 @@ export default {
         background-color: #0e3145;
         box-shadow: 0px 0px 20px #d3fffd;
         z-index: 10;
+        display: flex;
 
-        // &::before {
-        //   background-color: #0e3145;
-        //   position: absolute;
-        //   content: "";
-        //   display: block;
-        //   top: -8px;
-        //   bottom: -8px;
-        //   left: 40px;
-        //   right: 40px;
-        // }
+        &::before {
+          background-color: #0e3145;
+          position: absolute;
+          content: "";
+          display: block;
+          top: -8px;
+          bottom: -8px;
+          left: 40px;
+          right: 40px;
+        }
 
-        // &::after {
-        //   background-color: #0e3145;
-        //   position: absolute;
-        //   content: "";
-        //   display: block;
-        //   top: 40px;
-        //   bottom: 40px;
-        //   left: -8px;
-        //   right: -8px;
-        // }
+        &::after {
+          background-color: #0e3145;
+          position: absolute;
+          content: "";
+          display: block;
+          top: 40px;
+          bottom: 40px;
+          left: -8px;
+          right: -8px;
+        }
         }
       }
     }
@@ -102,7 +105,6 @@ export default {
     display: flex;
     flex-wrap: wrap;
     position: relative;
-    height: auto;
     width: 20%;
     margin: 0;
     z-index: 1;
@@ -193,7 +195,7 @@ export default {
   z-index: 1000;
   display: flex;
   flex-wrap: wrap;
-  justify-content: stretch;
+  flex-direction: row;
   width: 80%;
 }
 </style>
