@@ -10,14 +10,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/CODEDUEL2022/CODEDUEL.git"
+    "url": "git+https://github.com/CODEDUEL2022/CODEDUEL"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/CODEDUEL2022/issues"
+    "url": "https://github.com/CODEDUEL2022/CODEDUEL/issues"
   },
-  "homepage": "https://github.com/CODEDUEL2022#readme",
+  "homepage": "https://github.com/CODEDUEL2022/CODEDUEL#readme",
   "dependencies": {
     "@loadingio/css-spinner": "^2.0.2",
     "augmented-ui": "^2.0.0",
