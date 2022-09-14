@@ -30,6 +30,7 @@
     @handleModalClose="onCardListModalClose()"
     @handleHowToPlayModalClose="onHowToPlayClose()"
     @handleShowHowToPlay="onShowHowToPlay()"
+    :attackedPlayerId="attackedPlayerId"
   />
 </template>
 <script>
@@ -106,13 +107,13 @@
           cardList: [],
         },
         showCPUAttack: false,
+        attackedPlayerId: ""
       };
     },
     created() {
       this.yourCardsData = [];
       console.log(this.yourCardsData);
       const searchParams = new URLSearchParams(window.location.search);
-
       this.$axios.get("/getComboDb").then((res) => {
         for (let i = 0; i < res.data.length; i++) {
           this.comboData.push(res.data[i]);
@@ -259,6 +260,7 @@
                 userId: searchParams.get("id"),
                 selectedCardData: this.selectedCardsData,
               };
+              if(anotherThis.opponentHP > 0){
               anotherThis.$axios
                 .post("cpuAction", { cardValue: cardValue })
                 .then((res) => {
@@ -271,6 +273,7 @@
                     res.data.usedCardIdList;
                   anotherThis.isCpuAction(anotherThis.cpuAction);
                 });
+              }
             }
           });
         // 負け！
@@ -305,6 +308,7 @@
         // 負け！
       },
       isPlayerAction: function (cardValue) {
+        const searchParams = new URLSearchParams(window.location.search);
         this.effectImages.splice(this.index, this.effectImages.length);
         this.actionPoint = cardValue.damageValue;
         console.log("length" + cardValue.usedCardIdList);
@@ -315,6 +319,7 @@
           );
           this.effectImages.push(usedCard.img);
         }
+        this.attackedPlayerId = searchParams.get("id")
         this.showGeneralCutIn = true;
         this.showActionCutIn = true;
       },
@@ -333,10 +338,11 @@
         this.$axios.post("/cpuControlTurn", {
           playerId: searchParams.get("id"),
         });
+        this.attackedPlayerId = "CPU"
         this.showActionCutIn = true;
       },
       handleAction: function () {
-        this.generalActionSE.play();
+        this.generalAttackSE.play();
         let anotherThis = this;
         const searchParams = new URLSearchParams(window.location.search);
         let cardValue = {

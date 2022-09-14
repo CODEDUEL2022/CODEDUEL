@@ -6,13 +6,16 @@
       @handleHowToPlayModalClose="$emit('handleHowToPlayModalClose')"
     />
     <div v-show="showGeneralCutIn">
-      <GeneralCutIn :message="message" />
+      <GeneralCutIn :message="message" :opponentName="opponentName" />
     </div>
     <div v-show="showActionCutIn">
       <ActionCutIn
         :effectImages="effectImages"
         :actionType="actionType"
         :actionPoint="actionPoint"
+        :yourName="yourName"
+        :opponentName="opponentName"
+        :attackedPlayerId="attackedPlayerId"
         @closeActionCutIn="$emit('closeActionCutIn')"
       />
     </div>
@@ -102,18 +105,6 @@
         </v-col>
       </v-row>
     </div>
-
-    <div v-show="showGeneralCutIn">
-      <GeneralCutIn :message="message" />
-    </div>
-    <div v-show="showActionCutIn">
-      <ActionCutIn
-        :effectImages="effectImages"
-        :actionType="actionType"
-        :actionPoint="actionPoint"
-        @closeActionCutIn="$emit('closeActionCutIn')"
-      />
-    </div>
   </div>
 </template>
 
@@ -175,7 +166,13 @@
       "focusedCard",
       "isHowToPlayOpen",
       "isCardListModalOpen",
+      "attackedPlayerId",
     ],
+    methods: {
+      handleShowHowToPlay: function () {
+        this.$emit("handleShowHowToPlay");
+      },
+    },
     data() {
       return {
         // drag&drop用のデータ

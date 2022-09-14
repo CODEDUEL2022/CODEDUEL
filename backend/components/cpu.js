@@ -39,10 +39,21 @@ export const cpuGetPlayerName = function(playerId){
   return playerName
 }
 
+export const cpuAddDec = function(req,res){
+  const selectTurnId = cpuPlayerDB.findIndex(
+    (e) => e.playerId === req.body.playerId
+  );
+  const decIdList = selectDec(req.body.decId)
+  decIdList.forEach((dec) => {
+    cpuPlayerDB[selectTurnId].decList.push(dec);
+  });
+  return cpuPlayerDB[selectTurnId].decList;
+}
+
 export const cpuAttack = function () {
     let flag = Math.floor(Math.random() * 10);
     let cpuCard = []
-    if (flag < 5) {
+    if (flag < 7) {
         console.log("1枚カードが返ります")
         const cardNumber = Number(Math.floor(Math.random() * cardDB.length));
         cpuCard.push(cardDB[cardNumber])

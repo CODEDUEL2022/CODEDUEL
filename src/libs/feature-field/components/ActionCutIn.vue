@@ -9,7 +9,17 @@
         <v-img :src="require(`../../ui/assets/cards/${effectImage}`)"></v-img>
       </div>
     </div>
-    <div class="dalayEffect">{{ actionType }} {{ actionPoint }} pt</div>
+    <div class="dalayEffect">
+      <div class="player-name" v-if="change()">
+        <div>{{ yourName }}</div>
+        <div>'s action</div>
+      </div>
+      <div class="player-name" v-else>
+        <div>{{ opponentName }}</div>
+        <div>'s action</div>
+      </div>
+      {{ actionType }} {{ actionPoint }} pt
+    </div>
   </div>
 </template>
 <script>
@@ -17,9 +27,24 @@
 
   export default {
     name: "ActionCutIn",
-    props: ["effectImages", "actionType", "actionPoint"],
+    props: [
+      "effectImages",
+      "actionType",
+      "actionPoint",
+      "yourName",
+      "opponentName",
+      "attackedPlayerId",
+    ],
     components: {
       SimpleCard,
+    },
+    methods: {
+      change() {
+        const searchParams = new URLSearchParams(window.location.search);
+        if (searchParams.get("id") == this.attackedPlayerId) {
+          return true;
+        }
+      },
     },
   };
 </script>
@@ -46,6 +71,7 @@
 
     .dalayEffect {
       display: flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
       position: absolute;
@@ -53,7 +79,7 @@
       height: 30%;
       font-family: "Gill Sans", sans-serif;
       font-weight: 100;
-      font-size: 7rem;
+      font-size: 6rem;
       letter-spacing: 1.1rem;
       text-shadow: 0 0 20px #d3fffd;
       background: radial-gradient(#186883, #020508);
@@ -62,6 +88,21 @@
       animation: SlideIn 0.4s;
       animation-delay: 0.6s;
       animation-fill-mode: forwards;
+
+      .player-name {
+        display: flex;
+        text-align: center;
+        font-size: 2rem;
+        letter-spacing: 0.25rem;
+        padding-top: 1.25rem;
+
+        div {
+          max-width: 400px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+      }
     }
   }
 
