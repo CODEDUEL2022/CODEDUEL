@@ -31,7 +31,7 @@ import {
 import path from "path";
 import { fileURLToPath } from "url";
 import express from "express";
-import http from "http";
+import https from "http";
 import socket from "socket.io";
 import serverStatic from "serve-static";
 import cors from "cors";
@@ -39,7 +39,7 @@ import bodyParser from "body-parser";
 import history from "connect-history-api-fallback";
 
 const app = express();
-const http = http.Server(app);
+const http = https.Server(app);
 
 const io = socket(http, {
   cors: {
