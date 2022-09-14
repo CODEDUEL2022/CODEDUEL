@@ -9,7 +9,7 @@
 import { comboDB } from "../DB.js";
 import { cardDB } from "../DB.js";
 import { fieldDB } from "../DB.js";
-import {selectDec} from "./selectDec.js";
+import { selectDec } from "./selectDec.js";
 
 let playerDB = [
   //初期化
@@ -46,7 +46,9 @@ export const cardDraw = function (selectId) {
       const tmp = Number(
         Math.floor(Math.random() * playerDB[selectId].decList.length)
       );
-      playerDB[selectId].cardList.push(cardDB[playerDB[selectId].decList[tmp] - 1]);
+      playerDB[selectId].cardList.push(
+        cardDB[playerDB[selectId].decList[tmp] - 1]
+      );
       j++;
     }
   }
@@ -123,9 +125,9 @@ export const addDec = function (req, res) {
   const selectTurnId = playerDB.findIndex(
     (e) => e.playerId === req.body.playerId
   );
-  console.log("デッキい"+req.body.decIdList)
-  const decIdList = selectDec(req.body.decIdList)
-  console.log("デッキ"+decIdList)
+  console.log("デッキい" + req.body.decIdList);
+  const decIdList = selectDec(req.body.decIdList);
+  console.log("デッキ" + decIdList);
   decIdList.forEach((dec) => {
     playerDB[selectTurnId].decList.push(dec);
   });
@@ -232,13 +234,13 @@ export const calculateHP = function (cardValue, playerId) {
     }
   });
   let thisTurnField = playerDB[indexAttacked].field;
-  changeField(indexAttacked);
-  changeField(indexDamaged);
-  let nextTurnField = playerDB[indexAttacked].field;
   let fieldBonus = 0;
   let fieldBonusFlag = "false";
   changeRound(indexAttacked);
   changeRound(indexDamaged);
+  changeField(indexAttacked);
+  changeField(indexDamaged);
+  let nextTurnField = playerDB[indexAttacked].field;
   let nextRoundCount = playerDB[indexAttacked].roundCount;
   if (cardValue.selectedCardData.length == 1) {
     if (cardValue.selectedCardData[0].field == thisTurnField) {
@@ -292,11 +294,11 @@ const changeField = function (playerId) {
   if (roundCount == 0 || roundCount == 1) {
     playerDB[playerId].field = "iOS,macOS";
   } else if (roundCount == 2 || roundCount == 3) {
-    playerDB[playerId].field = "AndroidOS";
+    playerDB[playerId].field = "Android";
   } else if (roundCount == 4 || roundCount == 5) {
-    playerDB[playerId].field = "WindowsOS";
+    playerDB[playerId].field = "Windows";
   } else if (roundCount == 6 || roundCount == 7) {
-    playerDB[playerId].field = "linuxOS";
+    playerDB[playerId].field = "linux";
   }
 };
 
