@@ -8,7 +8,7 @@
         <div class="select">
           <div class="select-icon" @click="handleChangeFirstToSecond('human')">
             <span>
-              <img src="../../ui/assets/people.svg" />
+              <img src="../../ui/assets/people.svg" decoding="async"/>
               <br />
               <span>Play against Human</span>
             </span>
@@ -16,7 +16,7 @@
           <span>or</span>
           <div class="select-icon" @click="handlePushCPUPage()">
             <span>
-              <img src="../../ui/assets/cpu.svg" />
+              <img src="../../ui/assets/cpu.svg" decoding="async"/>
               <br />
               <span>Play against CPU</span>
             </span>
@@ -29,7 +29,7 @@
         <div class="select">
           <div class="select-icon" @click="handleChangeSecondToThird('free')">
             <span>
-              <img src="../../ui/assets/custom-match.svg" />
+              <img src="../../ui/assets/custom-match.svg" decoding="async"/>
               <br />
               <span>Custom match</span>
             </span>
@@ -37,7 +37,7 @@
           <span>or</span>
           <div class="select-icon" @click="handlePushAutoMatching()">
             <span>
-              <img src="../../ui/assets/random-match.svg" />
+              <img src="../../ui/assets/random-match.svg" decoding="async"/>
               <br />
               <span>Random match</span>
             </span>

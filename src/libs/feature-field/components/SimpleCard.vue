@@ -1,6 +1,6 @@
 <template>
     <div class="grab">
-      <v-img :src="require(`../../ui/assets/cards/${focusedCard.img}`)" />
+      <v-img :src="require(`../../ui/assets/cards/${focusedCard.img}`)" decoding="async" />
     </div>
 </template>
 

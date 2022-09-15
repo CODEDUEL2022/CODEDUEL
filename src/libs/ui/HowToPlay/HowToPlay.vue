@@ -17,6 +17,7 @@
             class="HowToPlayImg"
             width="500px"
             :src="require(`../../ui/assets/HowToPlay/HowToPlay.png`)"
+            decoding="async"
           ></v-img>
           <div class="content">
             <div class="paragraph">
@@ -64,6 +65,7 @@
               class="Play&UserNameImg"
               width="500px"
               :src="require(`../../ui/assets/HowToPlay/homepage.png`)"
+              decoding="async"
             ></v-img>
             <div class="paragraph">
               1.&emsp;<span>Input your name</span>
@@ -84,21 +86,25 @@
               class="PlayImg"
               width="500px"
               :src="require(`../../ui/assets/HowToPlay/Play.png`)"
+              decoding="async"
             ></v-img>
             <v-img
               class="HumanOrCPUImg"
               width="500px"
               :src="require(`../../ui/assets/HowToPlay/HumanOrCPU.png`)"
+              decoding="async"
             ></v-img>
             <v-img
               class="CustomOrRandomImg"
               width="500px"
               :src="require(`../../ui/assets/HowToPlay/CustomOrRandom.png`)"
+              decoding="async"
             ></v-img>
             <v-img
               class="RoomIdImg"
               width="500px"
               :src="require(`../../ui/assets/HowToPlay/RoomId.png`)"
+              decoding="async"
             ></v-img>
             <div class="paragraph">
               <strong><span>Custom match</span>を遊びたい場合</strong><br />
