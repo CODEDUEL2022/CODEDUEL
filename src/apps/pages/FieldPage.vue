@@ -40,7 +40,7 @@ import io from "socket.io-client";
 import nonNumericOnlyHash from "webpack/lib/util/nonNumericOnlyHash";
 
 export default {
-  title: 'CODE DUEL',
+  title: "CODE DUEL",
   name: "field",
   components: {
     FieldTemplate,
@@ -108,7 +108,7 @@ export default {
       isAlone: false,
       usedCardIdList: [], //攻撃された、攻撃したカードのIDのリスト
       effectImages: [],
-      socket: io("localhost:3000"),
+      socket: io("codeduel2.herokuapp.com/"),
       attackedPlayerId: "",
     };
   },

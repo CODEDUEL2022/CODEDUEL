@@ -19,11 +19,11 @@
 <script>
 import io from "socket.io-client";
 export default {
-  title: 'CODE DUEL',
+  title: "CODE DUEL",
   name: "WaitingRoom",
   data() {
     return {
-      socket: io("localhost:3000"),
+      socket: io("codeduel2.herokuapp.com/"),
     };
   },
   methods: {
@@ -43,8 +43,8 @@ export default {
 
     const searchParams = new URLSearchParams(window.location.search);
     const playerId = searchParams.get("id");
-    const playerName = searchParams.get("playerName")
-    const decId = searchParams.get("dec")
+    const playerName = searchParams.get("playerName");
+    const decId = searchParams.get("dec");
     let anotherThis = this;
     this.socket.on("FullRoom", function (roomId, playerId1, playerId2) {
       function logIn() {

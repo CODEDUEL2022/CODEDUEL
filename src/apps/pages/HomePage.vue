@@ -24,7 +24,7 @@ import HomeTemplate from "/src/libs/feature-home/templates/home-template.vue";
 import io from "socket.io-client";
 
 export default {
-  title: 'CODE DUEL',
+  title: "CODE DUEL",
   name: "home",
   components: {
     HomeTemplate,
@@ -33,7 +33,7 @@ export default {
     return {
       number: "",
       userName: null,
-      socket: io("localhost:3000"),
+      socket: io("codeduel2.herokuapp.com/"),
       turn_flag: 0,
       playerId: "",
       deckList: [],
