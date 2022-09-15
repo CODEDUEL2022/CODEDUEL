@@ -73,15 +73,16 @@ if (process.env.NODE_ENV !== "production") {
       credentials: true,
       optionsSuccessStatus: 200,
     }),
-    express.static("../src/public")
+    // express.static("../src/public")
   );
 }
 
 const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-app.get("/*", function(req, res) {
-  res.sendFile(path.join(__dirname, "../src/public/index.html"));
-});
+let __dirname = path.dirname(__filename);
+__dirname = path.resolve(__dirname, "..")
+// app.get("/*", function(req, res) {
+//   res.sendFile(path.join(__dirname, "../src/public/index.html"));
+// });
 app.use(serveStatic(__dirname + "/dist"));
 
 //historyモードを追加(deploy後のreload対策になるらしい)
