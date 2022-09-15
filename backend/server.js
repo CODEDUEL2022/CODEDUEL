@@ -81,7 +81,7 @@ const __filename = fileURLToPath(import.meta.url);
 let __dirname = path.dirname(__filename);
 __dirname = path.resolve(__dirname, "..")
 app.get("/cpu", function(req, res) {
-  window.location.reload();
+  location.reload();
   res.send("cpuです")
 });
 // app.get("/waitingroom", function(req, res) {
