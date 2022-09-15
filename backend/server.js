@@ -85,7 +85,6 @@ __dirname = path.resolve(__dirname, "..")
 // });
 app.use(serveStatic(__dirname + "/dist"));
 
-historyモードを追加(deploy後のreload対策になるらしい)
 app.use(
   history({
     disableDotRule: true,
