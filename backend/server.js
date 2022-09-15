@@ -83,6 +83,12 @@ __dirname = path.resolve(__dirname, "..")
 app.get("/cpu", function(req, res) {
   res.sendFile(path.join(__dirname, "/src/apps/pages/CPUPage.vue"));
 });
+app.get("/waitingroom", function(req, res) {
+  res.sendFile(path.join(__dirname, "/src/apps/pages/WaitingRoom.vue"));
+});
+app.get("/field", function(req, res) {
+  res.sendFile(path.join(__dirname, "/src/apps/pages/FieldPage.vue"));
+});
 app.use(serveStatic(__dirname + "/dist"));
 
 app.use(
