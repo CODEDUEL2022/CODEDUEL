@@ -81,8 +81,7 @@ const __filename = fileURLToPath(import.meta.url);
 let __dirname = path.dirname(__filename);
 __dirname = path.resolve(__dirname, "..")
 app.get("/cpu", function(req, res) {
-  location.reload();
-  res.send("cpuです")
+  res.send()
 });
 // app.get("/waitingroom", function(req, res) {
 //   res.sendFile(path.join(__dirname, "/src/apps/pages/WaitingRoom.vue"));
