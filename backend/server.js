@@ -80,9 +80,9 @@ if (process.env.NODE_ENV !== "production") {
 const __filename = fileURLToPath(import.meta.url);
 let __dirname = path.dirname(__filename);
 __dirname = path.resolve(__dirname, "..")
-app.get("/*", function(req, res) {
-  res.sendFile(path.join(__dirname, "/dist"));
-});
+// app.get("/*", function(req, res) {
+//   res.sendFile(path.join(__dirname, "/dist"));
+// });
 app.use(serveStatic(__dirname + "/dist"));
 
 app.use(
