@@ -101,7 +101,7 @@ app.use(
 
 app.use(serveStatic(__dirname + "/dist"));
 
-app.get('/*', function (req, res) {
+app.get('/cpu', function (req, res) {
   res.render(path.join(__dirname + '/dist/src/public/index.html'));
 });
 
