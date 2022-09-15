@@ -81,14 +81,16 @@ const __filename = fileURLToPath(import.meta.url);
 let __dirname = path.dirname(__filename);
 __dirname = path.resolve(__dirname, "..")
 app.get("/cpu", function(req, res) {
-  res.sendFile(path.join(__dirname, "/src/apps/pages/CPUPage.vue"));
+  window.location.reload();
+  res.send("cpuです")
 });
-app.get("/waitingroom", function(req, res) {
-  res.sendFile(path.join(__dirname, "/src/apps/pages/WaitingRoom.vue"));
-});
-app.get("/field", function(req, res) {
-  res.sendFile(path.join(__dirname, "/src/apps/pages/FieldPage.vue"));
-});
+// app.get("/waitingroom", function(req, res) {
+//   res.sendFile(path.join(__dirname, "/src/apps/pages/WaitingRoom.vue"));
+// });
+// app.get("/field", function(req, res) {
+//   res.sendFile(path.join(__dirname, "/src/apps/pages/FieldPage.vue"));
+// });
+
 app.use(serveStatic(__dirname + "/dist"));
 
 app.use(
