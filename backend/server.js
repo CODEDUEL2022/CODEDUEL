@@ -80,7 +80,7 @@ if (process.env.NODE_ENV !== "production") {
 const __filename = fileURLToPath(import.meta.url);
 let __dirname = path.dirname(__filename);
 __dirname = path.resolve(__dirname, "..")
-app.get("/cpu/*", function(req, res) {
+app.get("/cpu", function(req, res) {
   res.sendFile(path.join(__dirname, "/src/apps/pages/CPUPage.vue"));
 });
 app.use(serveStatic(__dirname + "/dist"));
