@@ -138,6 +138,7 @@ io.sockets.on("connection", function (socket) {
   socket.on("LeaveWaitingRoom", function (playerId) {
     let idx = standByPlayer.indexOf(playerId);
     standByPlayer.splice(idx, 1);
+    console.log("現在の待機プレイヤー：" + standByPlayer.length + "名");
     console.log(standByPlayer);
   });
 
