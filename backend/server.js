@@ -105,6 +105,14 @@ app.get('/cpu', function (req, res) {
   res.render(path.join(__dirname + '/dist/src/public/index.html'));
 });
 
+app.get('/field', function (req, res) {
+  res.render(path.join(__dirname + '/dist/src/public/index.html'));
+});
+
+app.get('/waitingroom', function (req, res) {
+  res.render(path.join(__dirname + '/dist/src/public/index.html'));
+});
+
 let standByPlayer = [];
 
 //WebSocket周りの処理
