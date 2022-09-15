@@ -43,7 +43,7 @@
     z-index: 1;
 
     .message {
-      width: 800px;
+      max-width: 800px;
       animation: neon 2s infinite alternate;
       @keyframes neon {
         0% {

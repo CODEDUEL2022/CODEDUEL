@@ -26,6 +26,7 @@ import {
   cpuPostPlayerData,
   cpuPlayerAction,
   cpuGetPlayerName,
+  cpuAddDec
 } from "./components/cpu.js";
 import path from "path";
 import { fileURLToPath } from "url";
