@@ -12,21 +12,25 @@ const routes = [
   {
     path: "/",
     name: "home",
+    title: "CODE DUEL",
     component: HomePage,
   },
   {
     path: "/field",
     name: "field",
+    title: "CODE DUEL",
     component: FieldPage,
   },
   {
     path: "/cpu",
     name: "cpu",
+    title: "CODE DUEL",
     component: CPUPage,
   },
   {
     path: "/waitingroom",
     name: "waitingroom",
+    title: "CODE DUEL",
     component: WaitingRoom
   },
 ];

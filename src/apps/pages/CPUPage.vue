@@ -36,6 +36,7 @@
 <script>
   import FieldTemplate from "/src/libs/feature-field/templates/field-template.vue";
   export default {
+    title: "CODE DUEL",
     name: "cpu",
     components: {
       FieldTemplate,
@@ -89,6 +90,7 @@
         opponentHP: 200,
         opponentTmpHP: 200,
         roundCount: 1,
+        fieldIndex: 0,
         yourCardsData: [],
         selectedCardsData: [],
         yourId: "",
@@ -277,6 +279,7 @@
         }
         this.yourHP = this.yourTmpHP;
         this.opponentHP = this.opponentTmpHP;
+        this.roundCount += 1;
         this.$axios
           .post("/cpuGetTurn", { playerId: searchParams.get("id") })
           .then((res) => {
