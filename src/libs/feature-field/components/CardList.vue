@@ -1,12 +1,11 @@
 <template>
   <div class="item">
-    <v-card class="black" color="grey lighten-4">
       <v-img
         :src="require(`../../ui/assets/cards/${focusedCard.img}`)"
         @click="onCardDetailModalOpen"
+        decoding="async"
       >
       </v-img>
-    </v-card>
   </div>
 </template>
 

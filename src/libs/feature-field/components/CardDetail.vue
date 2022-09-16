@@ -3,7 +3,7 @@
     <v-row>
       <v-col cols="10"> </v-col>
       <v-col cols="2">
-        <span class="close-btn" @click="$emit('handleModalClose')">×</span>
+        <span class="close-btn" @click="$emit('handleModalClose')" decoding="async">×</span>
       </v-col>
     </v-row>
     <v-row>

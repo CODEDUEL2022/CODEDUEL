@@ -1,9 +1,7 @@
 <template>
-  <v-card hover class="grab">
-    <span>
-      <v-img :src="require(`../../ui/assets/cards/${focusedCard.img}`)" />
-    </span>
-  </v-card>
+    <div class="grab">
+      <v-img :src="require(`../../ui/assets/cards/${focusedCard.img}`)" decoding="async" />
+    </div>
 </template>
 
 <script>

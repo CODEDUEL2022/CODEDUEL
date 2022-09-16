@@ -93,7 +93,7 @@ export default {
       roundCount: 0,
       fieldIndex: 0,
       currentFieldName: "iOS,macOS",
-      currentFieldImg: "Apple.svg",
+      currentFieldImg: "apple.png",
       nextFieldName: "AndroidOS",
       yourCardsData: [],
       selectedCardsData: [],

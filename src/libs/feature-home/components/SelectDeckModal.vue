@@ -30,7 +30,7 @@
             <!-- <div v-for="card in deckCardData" :key="card.id" >
               <v-img height="150" width="110" :src="require(`../../ui/assets/cards/${card.img}`)" lazy-src></v-img>
             </div> -->
-            <v-img :src="require(`../../ui/assets/decks/${deckImg}`)"></v-img>
+            <v-img :src="require(`../../ui/assets/decks/${deckImg}`)" decoding="async"></v-img>
           </div>
         </div>
       </div>
