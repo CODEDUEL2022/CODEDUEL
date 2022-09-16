@@ -1,9 +1,9 @@
 import { cardDB } from "./DB.js";
 import { comboDB } from "./DB.js";
 import { fieldDB } from "./DB.js";
-import { Dec1 } from "./DB.js"
-import { Dec2 } from "./DB.js"
-import { Dec3 } from "./DB.js"
+import { Dec1 } from "./DB.js";
+import { Dec2 } from "./DB.js";
+import { Dec3 } from "./DB.js";
 import {
   controlTurn,
   getTurn,
@@ -26,12 +26,12 @@ import {
   cpuPostPlayerData,
   cpuPlayerAction,
   cpuGetPlayerName,
-  cpuAddDec
+  cpuAddDec,
 } from "./components/cpu.js";
 import path from "path";
 import { fileURLToPath } from "url";
 import express from "express";
-import importHttp from "http";
+import importHttp  from "http";
 import { Server } from "socket.io";
 import serverStatic from "serve-static";
 import cors from "cors";
@@ -43,18 +43,16 @@ const http = importHttp.Server(app);
 
 const io = new Server(http, {
   cors: {
-    origin: "http://localhost:8080",
+    origin: "https://codeduel2.herokuapp.com/",
     methods: ["GET", "POST"],
   },
 });
 const PORT = process.env.PORT || 3000;
-const serveStatic = serverStatic;
 
 let numClients = {};
 let numPlayer = {};
 
-//post時にbodyを参照できるようにする
-app.use(bodyParser.urlencoded({ extended: true }));
+const serveStatic = serverStatic
 
 //post時にjsonファイルを扱えるようにする
 app.use(express.json());
@@ -65,27 +63,55 @@ app.use(
     optionsSuccessStatus: 200,
   })
 );
+//post時にbodyを参照できるようにする
+app.use(bodyParser.urlencoded({ extended: true }));
+
 if (process.env.NODE_ENV !== "production") {
   app.use(
     cors({
       origin: true,
       credentials: true,
       optionsSuccessStatus: 200,
-    })
+    }),
+    // express.static("../src/public")
   );
 }
 
 const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+let __dirname = path.dirname(__filename);
+__dirname = path.resolve(__dirname, "..")
+// app.get("/cpu", function(req, res) {
+//   res.send()
+// });
+// app.get("/waitingroom", function(req, res) {
+//   res.sendFile(path.join(__dirname, "/src/apps/pages/WaitingRoom.vue"));
+// });
+// app.get("/field", function(req, res) {
+//   res.sendFile(path.join(__dirname, "/src/apps/pages/FieldPage.vue"));
+// });
+
 app.use(serveStatic(__dirname + "/dist"));
 
-//historyモードを追加(deploy後のreload対策になるらしい)
 app.use(
   history({
     disableDotRule: true,
     verbose: true,
   })
 );
+
+app.use(serveStatic(__dirname + "/dist"));
+
+app.get('/cpu', function (req, res) {
+  res.render(path.join(__dirname + '/dist/src/public/index.html'));
+});
+
+app.get('/field', function (req, res) {
+  res.render(path.join(__dirname + '/dist/src/public/index.html'));
+});
+
+app.get('/waitingroom', function (req, res) {
+  res.render(path.join(__dirname + '/dist/src/public/index.html'));
+});
 
 let standByPlayer = [];
 
@@ -112,6 +138,7 @@ io.sockets.on("connection", function (socket) {
   socket.on("LeaveWaitingRoom", function (playerId) {
     let idx = standByPlayer.indexOf(playerId);
     standByPlayer.splice(idx, 1);
+    console.log("現在の待機プレイヤー：" + standByPlayer.length + "名");
     console.log(standByPlayer);
   });
 
@@ -196,16 +223,16 @@ app.get("/api/getFieldDB", (req, res) => {
 });
 
 app.get("/api/getDec1", (req, res) => {
-  res.json(Dec1)
-})
+  res.json(Dec1);
+});
 
 app.get("/api/getDec2", (req, res) => {
-  res.json(Dec2)
-})
+  res.json(Dec2);
+});
 
 app.get("/api/getDec3", (req, res) => {
-  res.json(Dec3)
-})
+  res.json(Dec3);
+});
 
 //ページリロード時のターンを決定づける。
 app.post("/api/getTurn", (req, res) => {
@@ -234,7 +261,6 @@ app.post("/api/getRoundCount", (req, res) => {
 app.post("/api/cpuHPReload", (req, res) => {
   res.send(cpuHPReload(req, res));
 });
-
 
 app.post("/api/cpuDec", (req, res) => {
   res.send(cpuAddDec(req, res));
