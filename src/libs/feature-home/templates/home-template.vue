@@ -32,6 +32,7 @@
               class="icon"
               width="40"
               height="40"
+              decoding="async"
             ></v-img>
           </div>
         </div>

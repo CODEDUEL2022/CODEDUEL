@@ -6,6 +6,7 @@
       height="48"
       width="48"
       :src="require(`../../ui/assets/OSfield_tip/${currentFieldImg}`)"
+      decoding="async"
     ></v-img>
     <div class="os-info">
       <div class="name">{{ currentFieldName }}</div>

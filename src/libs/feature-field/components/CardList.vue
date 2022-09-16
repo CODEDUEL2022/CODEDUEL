@@ -3,6 +3,7 @@
       <v-img
         :src="require(`../../ui/assets/cards/${focusedCard.img}`)"
         @click="onCardDetailModalOpen"
+        decoding="async"
       >
       </v-img>
   </div>
