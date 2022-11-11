@@ -2,7 +2,7 @@
 
 CODE DUEL is a one-on-one card game in which the programming languages, frameworks, and libraries are used as characters.
 
-https://code--duel.herokuapp.com/
+https://codeduel2.herokuapp.com/
 
 
 ## Latest Update
