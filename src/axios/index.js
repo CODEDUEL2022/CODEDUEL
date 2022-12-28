@@ -4,7 +4,7 @@ import axios from "axios";
 const http = axios.create({
   baseURL:
     process.env.NODE_ENV !== "production"
-      ? "https://codeduel2.herokuapp.com/api"
+      ? "https://code-duel.onrender.com/api"
       : "/api",
 });
 

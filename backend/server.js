@@ -43,7 +43,7 @@ const http = importHttp.Server(app);
 
 const io = new Server(http, {
   cors: {
-    origin: "https://codeduel2.herokuapp.com/",
+    origin: "https://code-duel.onrender.com/",
     methods: ["GET", "POST"],
   },
 });

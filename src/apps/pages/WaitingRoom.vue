@@ -23,7 +23,7 @@ export default {
   name: "WaitingRoom",
   data() {
     return {
-      socket: io("codeduel2.herokuapp.com/"),
+      socket: io("code-duel.onrender.com/"),
     };
   },
   methods: {

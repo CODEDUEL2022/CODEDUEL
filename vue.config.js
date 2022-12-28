@@ -4,7 +4,7 @@ import { defineConfig } from "@vue/cli-service";
 import GoogleFontsPlugin from "google-fonts-webpack-plugin";
 defineConfig({
   devServer: {
-    proxy: "https://codeduel2.herokuapp.com/",
+    proxy: "https://code-duel.onrender.com/",
     clientLogLevel: "info",
   },
   transpileDependencies: ["vuetify"],
